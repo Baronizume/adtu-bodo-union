@@ -1,24 +1,22 @@
 :root {
---green: #166534;
---green-dark: #14532d;
---green-light: #22c55e;
+    --green: #166534;
+    --green-dark: #14532d;
+    --green-light: #22c55e;
 
---gold: #d4a017;
---gold-light: #f5d76e;
+    --primary: #166534;
 
---dark: #17211b;
---text: #37443a;
---muted: #6b756d;
+    --gold: #d4a017;
+    --gold-light: #f5d76e;
 
---background: #f7faf7;
---white: #ffffff;
-
---border: #e3e9e4;
-
---shadow: 0 15px 40px rgba(20, 83, 45, 0.10);
-
-
+    --dark: #17211b;
+    --text: #37443a;
+    --muted: #6b756d;
+    --background: #f7faf7;
+    --white: #fff;
+    --border: #e3e9e4;
+    --shadow: 0 15px 40px #14532d1a;
 }
+
 
 /* =========================
 RESET
@@ -1667,4 +1665,4 @@ SMALL MOBILE
         width: 100%;
         text-align: center;
     }
-}
+}
