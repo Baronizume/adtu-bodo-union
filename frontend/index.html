@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        ADTU Bodo Union | Event & Photo Hub
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a
+                href="#home"
+                class="brand"
+            >
+
+                <div class="brand-logo">
+                    ABU
+                </div>
+
+                <div class="brand-text">
+
+                    <strong>
+                        ADTU BODO UNION
+                    </strong>
+
+                    <span>
+                        Event & Photo Hub
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="Open menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+
+            <nav id="navigation">
+
+                <a href="#home">
+                    Home
+                </a>
+
+                <a href="#events">
+                    Events
+                </a>
+
+                <a href="#photos">
+                    Photos
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main>
+
+
+        <!-- =========================
+             HERO
+        ========================== -->
+
+        <section
+            class="hero"
+            id="home"
+        >
+
+            <div class="hero-content">
+
+                <span class="hero-label">
+                    ADTU BODO UNION
+                </span>
+
+
+                <h1>
+
+                    Culture.
+
+                    <span>
+                        Community.
+                    </span>
+
+                    Memories.
+
+                </h1>
+
+
+                <p>
+
+                    Discover ADTU Bodo Union events
+                    and capture the moments that bring
+                    our community together.
+
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#events"
+                        class="button button-primary"
+                    >
+                        Explore Events
+                    </a>
+
+
+                    <a
+                        href="#calendar"
+                        class="button button-outline"
+                    >
+                        View Calendar
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-visual">
+
+                <div
+                    class="visual-circle circle-purple"
+                ></div>
+
+
+                <div
+                    class="visual-circle circle-orange"
+                ></div>
+
+
+                <div class="camera-card">
+
+                    <span>
+                        📸
+                    </span>
+
+                    <strong>
+                        Capture
+                    </strong>
+
+                    <small>
+                        Your Moments
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             EVENTS SECTION
+        ========================== -->
+
+        <section
+            class="events-section"
+            id="events"
+        >
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        EVENTS
+                    </span>
+
+
+                    <h2>
+                        Upcoming Events
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Select a date from the calendar
+                    to view events.
+                </p>
+
+            </div>
+
+
+
+            <!-- =========================
+                 FILTERS
+            ========================== -->
+
+            <div class="event-filters">
+
+                <button
+                    type="button"
+                    class="filter-button active"
+                    data-filter="all"
+                >
+                    All
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-button"
+                    data-filter="upcoming"
+                >
+                    Upcoming
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-button"
+                    data-filter="today"
+                >
+                    Today
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-button"
+                    data-filter="past"
+                >
+                    Past
+                </button>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CALENDAR
+            ========================== -->
+
+            <div
+                class="calendar"
+                id="calendar"
+            >
+
+                <div class="calendar-header">
+
+                    <button
+                        type="button"
+                        id="prevMonth"
+                        aria-label="Previous month"
+                    >
+                        ←
+                    </button>
+
+
+                    <h3 id="calendarTitle">
+                    </h3>
+
+
+                    <button
+                        type="button"
+                        id="nextMonth"
+                        aria-label="Next month"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+
+
+                <div class="calendar-weekdays">
+
+                    <span>
+                        Sun
+                    </span>
+
+                    <span>
+                        Mon
+                    </span>
+
+                    <span>
+                        Tue
+                    </span>
+
+                    <span>
+                        Wed
+                    </span>
+
+                    <span>
+                        Thu
+                    </span>
+
+                    <span>
+                        Fri
+                    </span>
+
+                    <span>
+                        Sat
+                    </span>
+
+                </div>
+
+
+
+                <div
+                    class="calendar-days"
+                    id="calendarDays"
+                ></div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 SELECTED DATE
+            ========================== -->
+
+            <div
+                class="selected-date"
+                id="selectedDate"
+            >
+                Select a date to view events.
+            </div>
+
+
+
+            <!-- =========================
+                 CURRENT EVENT
+                 
+                 EMPTY BY DEFAULT
+                 
+                 JavaScript will add
+                 content only when needed.
+            ========================== -->
+
+            <div
+                id="current-event-container"
+                class="current-event-container"
+            ></div>
+
+
+
+            <!-- =========================
+                 EVENT LIST
+                 
+                 EMPTY BY DEFAULT
+                 
+                 JavaScript will add
+                 event cards when events
+                 exist in the backend.
+            ========================== -->
+
+            <div
+                id="events-container"
+                class="events-grid"
+            ></div>
+
+
+        </section>
+
+
+
+        <!-- =========================
+             PHOTO SECTION
+        ========================== -->
+
+        <section
+            class="photo-section"
+            id="photos"
+        >
+
+            <div class="photo-content">
+
+                <span class="section-label">
+                    EVENT PHOTOS
+                </span>
+
+
+                <h2>
+                    Be part of the memories.
+                </h2>
+
+
+                <p>
+
+                    During events, scan the event
+                    QR code to share your photos
+                    with the community.
+
+                </p>
+
+            </div>
+
+
+            <div class="photo-icon">
+                📷
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-container">
+
+
+            <div>
+
+                <strong>
+                    ADTU BODO UNION
+                </strong>
+
+
+                <p>
+                    Event & Photo Hub
+                </p>
+
+            </div>
+
+
+            <p>
+
+                ©
+                <span id="year"></span>
+
+                ADTU Bodo Union
+
+            </p>
+
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script src="js/app.js"></script>
+
+
+</body>
+
+</html>
