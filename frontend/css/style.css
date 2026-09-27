@@ -1666,3 +1666,560 @@ SMALL MOBILE
         text-align: center;
     }
 }
+
+/* =========================================
+   EVENT MANAGEMENT / ADD EVENT
+========================================= */
+
+.add-event-section {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.add-event-section .section-header {
+    margin-bottom: 35px;
+}
+
+.add-event-section .section-label {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: #7c3aed;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.add-event-section .section-header h2 {
+    margin: 0;
+    color: #171717;
+    font-size: 38px;
+    line-height: 1.2;
+}
+
+.add-event-section .section-header p {
+    margin-top: 10px;
+    color: #666;
+    font-size: 16px;
+}
+
+
+/* =========================================
+   FORM CARD
+========================================= */
+
+.event-form-card {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+
+    padding: 40px;
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+    border-radius: 22px;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.08);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+#eventForm {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #222222;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.form-group input,
+.form-group textarea {
+
+    width: 100%;
+
+    padding: 14px 16px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #222222;
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+/* Placeholder */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #a0a0a0;
+}
+
+
+/* Focus */
+
+.form-group input:focus,
+.form-group textarea:focus {
+
+    border-color: #7c3aed;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 4px rgba(124, 58, 237, 0.10);
+}
+
+
+/* Textarea */
+
+.form-group textarea {
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+
+/* Date input */
+
+.form-group input[type="date"] {
+    cursor: pointer;
+}
+
+
+/* =========================================
+   FORM ACTIONS
+========================================= */
+
+.form-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 5px;
+
+    flex-wrap: wrap;
+}
+
+
+/* =========================================
+   ADD EVENT BUTTON
+========================================= */
+
+.form-actions .button-primary {
+
+    border: none;
+
+    cursor: pointer;
+
+    padding: 14px 25px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #5b21b6
+        );
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 20px rgba(124, 58, 237, 0.25);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.form-actions .button-primary:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(124, 58, 237, 0.32);
+}
+
+
+.form-actions .button-primary:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* =========================================
+   CLEAR BUTTON
+========================================= */
+
+.form-actions .button-outline {
+
+    padding: 13px 23px;
+
+    border: 1px solid #d5d5d5;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    color: #555555;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.form-actions .button-outline:hover {
+
+    background: #fff5f5;
+
+    border-color: #dc2626;
+
+    color: #dc2626;
+}
+
+
+/* =========================================
+   SUCCESS / ERROR MESSAGE
+========================================= */
+
+.form-message {
+
+    min-height: 22px;
+
+    margin: 0;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.form-message.success {
+
+    color: #15803d;
+
+    padding: 10px 14px;
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 9px;
+}
+
+
+.form-message.error {
+
+    color: #b91c1c;
+
+    padding: 10px 14px;
+
+    background: #fef2f2;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 9px;
+}
+
+
+/* =========================================
+   EVENT CARDS
+========================================= */
+
+.events-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(280px, 1fr)
+        );
+
+    gap: 24px;
+
+    margin-top: 30px;
+}
+
+
+.event-card {
+
+    padding: 28px;
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.06);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.event-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.10);
+}
+
+
+.event-card h3 {
+
+    margin: 10px 0;
+
+    color: #171717;
+
+    font-size: 22px;
+}
+
+
+.event-card p {
+
+    color: #666;
+
+    line-height: 1.6;
+}
+
+
+.event-date {
+
+    margin-top: 15px;
+
+    color: #7c3aed;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   EVENT CARD BUTTONS
+========================================= */
+
+.event-card-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-top: 20px;
+}
+
+
+.view-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 10px 15px;
+
+    border-radius: 9px;
+
+    background: #7c3aed;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.view-button:hover {
+
+    background: #5b21b6;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .add-event-section {
+
+        padding: 55px 16px;
+
+    }
+
+
+    .add-event-section .section-header h2 {
+
+        font-size: 30px;
+
+    }
+
+
+    .event-form-card {
+
+        padding: 24px 18px;
+
+        border-radius: 16px;
+
+    }
+
+
+    #eventForm {
+
+        gap: 18px;
+
+    }
+
+
+    .form-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+    .form-actions .button-primary,
+    .form-actions .button-outline {
+
+        width: 100%;
+
+        text-align: center;
+
+        box-sizing: border-box;
+
+    }
+
+
+    .event-card {
+
+        padding: 22px;
+
+    }
+
+
+    .event-card-actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .view-button {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL SCREENS
+========================================= */
+
+@media (max-width: 400px) {
+
+    .add-event-section {
+
+        padding-left: 12px;
+
+        padding-right: 12px;
+
+    }
+
+
+    .event-form-card {
+
+        padding: 20px 15px;
+
+    }
+
+}

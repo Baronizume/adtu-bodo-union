@@ -2,14 +2,20 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>ADTU Bodo Union | Event & Photo Hub</title>
 
-    <!-- Main stylesheet -->
-    <link rel="stylesheet" href="./css/style.css">
+    <link
+        rel="stylesheet"
+        href="./css/style.css"
+    >
 
 </head>
 
@@ -18,19 +24,31 @@
     <!-- =========================
          NAVBAR
     ========================== -->
+
     <header class="navbar">
+
         <div class="nav-container">
 
             <a href="#home" class="brand">
+
                 <div class="brand-logo">
                     ABU
                 </div>
 
                 <div class="brand-text">
-                    <strong>ADTU BODO UNION</strong>
-                    <span>Event &amp; Photo Hub</span>
+
+                    <strong>
+                        ADTU BODO UNION
+                    </strong>
+
+                    <span>
+                        Event &amp; Photo Hub
+                    </span>
+
                 </div>
+
             </a>
+
 
             <button
                 class="menu-button"
@@ -42,25 +60,44 @@
                 ☰
             </button>
 
+
             <nav id="navigation">
-                <a href="#home">Home</a>
-                <a href="#events">Events</a>
-                <a href="#photos">Photos</a>
+
+                <a href="#home">
+                    Home
+                </a>
+
+                <a href="#events">
+                    Events
+                </a>
+
+                <a href="#photos">
+                    Photos
+                </a>
+
+                <a href="#add-event">
+                    Add Event
+                </a>
+
             </nav>
 
         </div>
+
     </header>
 
 
     <!-- =========================
          MAIN
     ========================== -->
+
     <main>
 
-        <!-- =========================
-             HERO
-        ========================== -->
-        <section class="hero" id="home">
+        <!-- HERO -->
+
+        <section
+            class="hero"
+            id="home"
+        >
 
             <div class="hero-content">
 
@@ -75,8 +112,9 @@
                 </h1>
 
                 <p>
-                    Discover ADTU Bodo Union events and capture
-                    the moments that bring our community together.
+                    Discover ADTU Bodo Union events and
+                    capture the moments that bring our
+                    community together.
                 </p>
 
                 <div class="hero-actions">
@@ -100,7 +138,6 @@
             </div>
 
 
-            <!-- Hero visual -->
             <div class="hero-visual">
 
                 <div class="visual-circle circle-purple"></div>
@@ -108,12 +145,173 @@
                 <div class="visual-circle circle-orange"></div>
 
                 <div class="camera-card">
-                    <span>📸</span>
 
-                    <strong>Capture</strong>
+                    <span>
+                        📸
+                    </span>
 
-                    <small>Your Moments</small>
+                    <strong>
+                        Capture
+                    </strong>
+
+                    <small>
+                        Your Moments
+                    </small>
+
                 </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             ADD EVENT
+        ========================== -->
+
+        <section
+            class="add-event-section"
+            id="add-event"
+        >
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        EVENT MANAGEMENT
+                    </span>
+
+                    <h2>
+                        Add Event
+                    </h2>
+
+                </div>
+
+                <p>
+                    Enter the event information manually.
+                </p>
+
+            </div>
+
+
+            <div class="event-form-card">
+
+                <form id="eventForm">
+
+                    <!-- EVENT NAME -->
+
+                    <div class="form-group">
+
+                        <label for="eventNameInput">
+                            Event Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="eventNameInput"
+                            placeholder="Enter event name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EVENT DATE -->
+
+                    <div class="form-group">
+
+                        <label for="eventDateInput">
+                            Event Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="eventDateInput"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group">
+
+                        <label for="eventDescriptionInput">
+                            Description
+                        </label>
+
+                        <textarea
+                            id="eventDescriptionInput"
+                            rows="5"
+                            placeholder="Enter event description"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- PHOTOS -->
+
+                    <div class="form-group">
+
+                        <label for="eventPhotosInput">
+                            Photos Link
+                        </label>
+
+                        <input
+                            type="url"
+                            id="eventPhotosInput"
+                            placeholder="https://drive.google.com/..."
+                        >
+
+                    </div>
+
+
+                    <!-- VIDEOS -->
+
+                    <div class="form-group">
+
+                        <label for="eventVideosInput">
+                            Videos Link
+                        </label>
+
+                        <input
+                            type="url"
+                            id="eventVideosInput"
+                            placeholder="https://drive.google.com/..."
+                        >
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            class="button button-primary"
+                        >
+                            Add Event
+                        </button>
+
+                        <button
+                            type="button"
+                            id="clearEventsButton"
+                            class="button button-outline"
+                        >
+                            Clear Saved Events
+                        </button>
+
+                    </div>
+
+
+                    <p
+                        id="eventFormMessage"
+                        class="form-message"
+                    ></p>
+
+                </form>
 
             </div>
 
@@ -123,18 +321,24 @@
         <!-- =========================
              EVENTS
         ========================== -->
-        <section class="events-section" id="events">
+
+        <section
+            class="events-section"
+            id="events"
+        >
 
             <div class="section-header">
 
                 <div>
+
                     <span class="section-label">
                         EVENTS
                     </span>
 
                     <h2>
-                        Upcoming Events
+                        Events
                     </h2>
+
                 </div>
 
                 <p>
@@ -144,7 +348,8 @@
             </div>
 
 
-            <!-- Event filters -->
+            <!-- FILTERS -->
+
             <div class="event-filters">
 
                 <button
@@ -182,9 +387,8 @@
             </div>
 
 
-            <!-- =========================
-                 CALENDAR
-            ========================== -->
+            <!-- CALENDAR -->
+
             <div
                 class="calendar-wrapper"
                 id="calendar"
@@ -234,7 +438,8 @@
             </div>
 
 
-            <!-- Selected date -->
+            <!-- SELECTED DATE -->
+
             <div
                 class="selected-date"
                 id="selectedDate"
@@ -243,14 +448,8 @@
             </div>
 
 
-            <!-- Current event -->
-            <div
-                id="current-event-container"
-                class="current-event-container"
-            ></div>
+            <!-- EVENTS -->
 
-
-            <!-- Event cards -->
             <div
                 id="events-container"
                 class="events-grid"
@@ -260,8 +459,9 @@
 
 
         <!-- =========================
-             EVENT PHOTOS
+             PHOTOS
         ========================== -->
+
         <section
             class="photo-section"
             id="photos"
@@ -296,11 +496,13 @@
     <!-- =========================
          FOOTER
     ========================== -->
+
     <footer>
 
         <div class="footer-container">
 
             <div>
+
                 <strong>
                     ADTU BODO UNION
                 </strong>
@@ -308,10 +510,12 @@
                 <p>
                     Event &amp; Photo Hub
                 </p>
+
             </div>
 
             <p>
-                © <span id="year"></span> ADTU Bodo Union
+                © <span id="year"></span>
+                ADTU Bodo Union
             </p>
 
         </div>
@@ -319,9 +523,6 @@
     </footer>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
     <script src="./js/app.js"></script>
 
 </body>
