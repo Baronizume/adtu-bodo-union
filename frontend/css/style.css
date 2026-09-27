@@ -2223,3 +2223,78 @@ SMALL MOBILE
     }
 
 }
+
+/* =========================================
+   INDIVIDUAL DELETE BUTTON
+========================================= */
+
+.delete-event-button {
+    padding: 10px 15px;
+
+    border: 1px solid #fecaca;
+
+    border-radius: 9px;
+
+    background: #fff1f2;
+
+    color: #dc2626;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.delete-event-button:hover {
+    background: #fee2e2;
+
+    border-color: #fca5a5;
+
+    transform: translateY(-1px);
+}
+
+.delete-event-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================
+   EVENT CARD BUTTONS
+========================================= */
+
+.event-card-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .event-card-actions {
+        flex-direction: column;
+    }
+
+    .event-card-actions .view-button,
+    .event-card-actions .delete-event-button {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        text-align: center;
+    }
+
+}
