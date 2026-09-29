@@ -1,70 +1,254 @@
 /*
     ADTU BODO UNION
-    MANUAL EVENT PAGE - FRONTEND ONLY
+    EVENT DETAILS PAGE
+    --------------------------------
+    Reads the event ID from:
+
+    events/event.html?id=EVENT_ID
 */
 
 // =====================================
-// EVENT INFORMATION
-// CHANGE ONLY THESE VALUES FOR A NEW EVENT
+// STORAGE
 // =====================================
-const EVENT = {
-    name: "ADTU Bodo Union Event",
-    description: "ADTU Bodo Union event and activities.",
-    photos: "https://drive.google.com/drive/u/0/folders/1sUWOsp7ex37ZWALa-06RYmQYFj0z4udw",
-    videos: "https://drive.google.com/drive/u/0/folders/1hNPvv_pFfPU7bXUdp-57YF5n_EBkGu1X"
-};
+
+const STORAGE_KEY = "adtuBodoUnionEvents";
+
 
 // =====================================
 // DOM ELEMENTS
 // =====================================
-const nameElement = document.getElementById("eventName");
-const descriptionElement = document.getElementById("eventDescription");
-const photosButton = document.querySelector(".event-media-buttons a:nth-child(1)");
-const videosButton = document.querySelector(".event-media-buttons a:nth-child(2)");
-const qrCode = document.getElementById("eventQRCode");
-const qrButton = document.getElementById("qrButton");
-const yearElement = document.getElementById("year");
+
+const nameElement =
+    document.getElementById("eventName");
+
+const descriptionElement =
+    document.getElementById("eventDescription");
+
+const mediaButton =
+    document.querySelector(
+        ".event-media-buttons a"
+    );
+
+const qrButton =
+    document.getElementById("qrButton");
+
+const yearElement =
+    document.getElementById("year");
+
 
 // =====================================
-// UPDATE YEAR IN FOOTER
+// FOOTER YEAR
 // =====================================
+
 if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
+
+    yearElement.textContent =
+        new Date().getFullYear();
+
 }
 
+
 // =====================================
-// POPULATE EVENT CONTENT
+// LOAD EVENTS
 // =====================================
-if (nameElement) {
-    nameElement.textContent = EVENT.name;
+
+function loadEvents() {
+
+    try {
+
+        const savedEvents =
+            localStorage.getItem(STORAGE_KEY);
+
+        if (!savedEvents) {
+            return [];
+        }
+
+        const parsedEvents =
+            JSON.parse(savedEvents);
+
+        return Array.isArray(parsedEvents)
+            ? parsedEvents
+            : [];
+
+    } catch (error) {
+
+        console.error(
+            "Could not load events:",
+            error
+        );
+
+        return [];
+    }
 }
 
-if (descriptionElement) {
-    descriptionElement.textContent = EVENT.description;
-}
 
 // =====================================
-// POPULATE MEDIA LINKS
+// GET EVENT ID
 // =====================================
-if (photosButton) {
-    photosButton.href = EVENT.photos;
-}
 
-if (videosButton) {
-    videosButton.href = EVENT.videos;
-}
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const eventId =
+    params.get("id");
+
 
 // =====================================
-// QR CODE GENERATION
+// FIND EVENT
 // =====================================
-// Generates a QR code pointing to this event page
-const eventURL = window.location.href;
-const qrURL = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + encodeURIComponent(eventURL);
 
-if (qrCode) {
-    qrCode.src = qrURL;
-}
+const events =
+    loadEvents();
 
-if (qrButton) {
-    qrButton.href = qrURL;
+const event =
+    events.find(
+        item =>
+            item.id === eventId
+    );
+
+
+// =====================================
+// EVENT NOT FOUND
+// =====================================
+
+if (!event) {
+
+    if (nameElement) {
+
+        nameElement.textContent =
+            "Event Not Found";
+    }
+
+
+    if (descriptionElement) {
+
+        descriptionElement.textContent =
+            "The selected event could not be found. Please return to the Events page and select an event.";
+    }
+
+
+    if (mediaButton) {
+        mediaButton.style.display =
+            "none";
+    }
+
+} else {
+
+    // =================================
+    // EVENT NAME
+    // =================================
+
+    if (nameElement) {
+
+        nameElement.textContent =
+            event.name;
+    }
+
+
+    // =================================
+    // EVENT DATE
+    // =================================
+
+    const eventDate =
+        new Date(
+            event.date + "T00:00:00"
+        );
+
+
+    const formattedDate =
+        eventDate.toLocaleDateString(
+            "en-IN",
+            {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }
+        );
+
+
+    // =================================
+    // DESCRIPTION + DATE
+    // =================================
+
+    if (descriptionElement) {
+
+        descriptionElement.textContent =
+            `${event.description} Date: ${formattedDate}`;
+    }
+
+
+    // =================================
+    // MEDIA LINK
+    // =================================
+
+    if (mediaButton) {
+
+        if (event.photos) {
+
+            mediaButton.href =
+                event.photos;
+
+            mediaButton.target =
+                "_blank";
+
+            mediaButton.rel =
+                "noopener noreferrer";
+
+        } else if (event.videos) {
+
+            mediaButton.href =
+                event.videos;
+
+            mediaButton.target =
+                "_blank";
+
+            mediaButton.rel =
+                "noopener noreferrer";
+
+        } else {
+
+            mediaButton.style.display =
+                "none";
+        }
+    }
+
+
+    // =================================
+    // QR CODE
+    // =================================
+
+    const eventURL =
+        window.location.href;
+
+
+    const qrURL =
+        "https://api.qrserver.com/v1/create-qr-code/" +
+        "?size=300x300&data=" +
+        encodeURIComponent(eventURL);
+
+
+    const qrImage =
+        document.querySelector(
+            ".event-qr"
+        );
+
+
+    if (qrImage) {
+
+        qrImage.src =
+            qrURL;
+    }
+
+
+    if (qrButton) {
+
+        qrButton.href =
+            eventURL;
+
+        qrButton.target =
+            "_self";
+    }
+
 }
