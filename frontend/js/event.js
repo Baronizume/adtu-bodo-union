@@ -27,9 +27,7 @@ const descriptionElement =
     document.getElementById("eventDescription");
 
 const mediaButton =
-    document.querySelector(
-        ".event-media-buttons a"
-    );
+    document.querySelector(".event-media-buttons a");
 
 const qrButton =
     document.getElementById("qrButton");
@@ -41,14 +39,7 @@ const yearElement =
     document.getElementById("year");
 
 const deleteEventButton =
-    document.getElementById(
-        "deleteEventButton"
-    );
-
-const eventContainer =
-    document.getElementById(
-        "event-details-container"
-    );
+    document.getElementById("deleteEventButton");
 
 
 // =====================================
@@ -56,10 +47,8 @@ const eventContainer =
 // =====================================
 
 if (yearElement) {
-
     yearElement.textContent =
         new Date().getFullYear();
-
 }
 
 
@@ -72,14 +61,10 @@ function loadEvents() {
     try {
 
         const savedEvents =
-            localStorage.getItem(
-                STORAGE_KEY
-            );
+            localStorage.getItem(STORAGE_KEY);
 
         if (!savedEvents) {
-
             return [];
-
         }
 
         const parsedEvents =
@@ -97,9 +82,7 @@ function loadEvents() {
         );
 
         return [];
-
     }
-
 }
 
 
@@ -117,11 +100,16 @@ const eventId =
 
 
 // =====================================
-// FIND EVENT
+// LOAD SAVED EVENTS
 // =====================================
 
 const events =
     loadEvents();
+
+
+// =====================================
+// FIND EVENT
+// =====================================
 
 let event =
     events.find(
@@ -129,6 +117,35 @@ let event =
             String(item.id) ===
             String(eventId)
     );
+
+
+// =====================================
+// DEFAULT EVENT
+// =====================================
+// This keeps the existing Rwnswndri Dance
+// event working if localStorage is empty.
+// =====================================
+
+if (!event && eventId === "rwnswndri-dance") {
+
+    event = {
+
+        id: "rwnswndri-dance",
+
+        name: "Rwnswndri Dance",
+
+        description:
+            "Tomorrow there will be a events",
+
+        date:
+            "2026-09-30",
+
+        photos:
+            "https://drive.google.com/drive/u/0/folders/1pdkZizfelsQe7A_S64hw9RUMYkremo8n"
+
+    };
+
+}
 
 
 // =====================================
@@ -147,36 +164,24 @@ if (!event) {
     if (descriptionElement) {
 
         descriptionElement.textContent =
-            "This event may have been deleted or does not exist.";
+            "This event does not exist or may have been deleted.";
 
     }
 
     if (mediaButton) {
-
-        mediaButton.style.display =
-            "none";
-
+        mediaButton.style.display = "none";
     }
 
     if (qrButton) {
-
-        qrButton.style.display =
-            "none";
-
+        qrButton.style.display = "none";
     }
 
     if (qrImage) {
-
-        qrImage.style.display =
-            "none";
-
+        qrImage.style.display = "none";
     }
 
     if (deleteEventButton) {
-
-        deleteEventButton.style.display =
-            "none";
-
+        deleteEventButton.style.display = "none";
     }
 
 }
@@ -227,7 +232,6 @@ if (event) {
                 );
 
         }
-
     }
 
 
@@ -304,7 +308,6 @@ if (event) {
         "?size=300x300&data=" +
         encodeURIComponent(eventURL);
 
-
     if (qrImage) {
 
         qrImage.src =
@@ -330,6 +333,9 @@ if (event) {
             qrButton.rel =
                 "noopener noreferrer";
 
+            qrButton.style.display =
+                "";
+
         } else {
 
             qrButton.style.display =
@@ -350,47 +356,28 @@ if (event) {
             "click",
             function () {
 
-
-                const eventName =
-                    event.name ||
-                    "this event";
-
-
-                // CONFIRM DELETE
-
                 const confirmed =
                     confirm(
-                        `Are you sure you want to delete "${eventName}"?`
+                        `Are you sure you want to delete "${event.name}"?`
                     );
 
-
                 if (!confirmed) {
-
                     return;
-
                 }
 
 
                 try {
-
-
-                    // GET CURRENT EVENTS
 
                     const savedEvents =
                         localStorage.getItem(
                             STORAGE_KEY
                         );
 
-
                     const currentEvents =
                         savedEvents
-                            ? JSON.parse(
-                                savedEvents
-                            )
+                            ? JSON.parse(savedEvents)
                             : [];
 
-
-                    // REMOVE EVENT
 
                     const updatedEvents =
                         currentEvents.filter(
@@ -400,8 +387,6 @@ if (event) {
                         );
 
 
-                    // SAVE UPDATED EVENTS
-
                     localStorage.setItem(
                         STORAGE_KEY,
                         JSON.stringify(
@@ -410,14 +395,10 @@ if (event) {
                     );
 
 
-                    // SUCCESS MESSAGE
-
                     alert(
                         "Event deleted successfully."
                     );
 
-
-                    // RETURN TO EVENTS
 
                     window.location.href =
                         "../index.html#events";
@@ -425,15 +406,13 @@ if (event) {
 
                 } catch (error) {
 
-
                     console.error(
                         "Could not delete event:",
                         error
                     );
 
-
                     alert(
-                        "Unable to delete the event. Please try again."
+                        "Unable to delete the event."
                     );
 
                 }
