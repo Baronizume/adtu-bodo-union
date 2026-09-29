@@ -1,10 +1,15 @@
 /*
-    ADTU BODO UNION
-    EVENT DETAILS PAGE
-    --------------------------------
-    Reads the event ID from:
+ADTU BODO UNION
+EVENT DETAILS PAGE
+--------------------------------
+Reads the event ID from:
 
-    events/event.html?id=EVENT_ID
+events/event.html?id=EVENT_ID
+
+If the event is not available in localStorage,
+the page can use the default event below.
+
+
 */
 
 // =====================================
@@ -12,7 +17,6 @@
 // =====================================
 
 const STORAGE_KEY = "adtuBodoUnionEvents";
-
 
 // =====================================
 // DOM ELEMENTS
@@ -32,9 +36,11 @@ const mediaButton =
 const qrButton =
     document.getElementById("qrButton");
 
+const qrImage =
+    document.querySelector(".event-qr");
+
 const yearElement =
     document.getElementById("year");
-
 
 // =====================================
 // FOOTER YEAR
@@ -45,8 +51,8 @@ if (yearElement) {
     yearElement.textContent =
         new Date().getFullYear();
 
-}
 
+}
 
 // =====================================
 // LOAD EVENTS
@@ -79,8 +85,9 @@ function loadEvents() {
 
         return [];
     }
-}
 
+
+}
 
 // =====================================
 // GET EVENT ID
@@ -94,161 +101,188 @@ const params =
 const eventId =
     params.get("id");
 
-
 // =====================================
-// FIND EVENT
+// FIND EVENT FROM LOCAL STORAGE
 // =====================================
 
 const events =
     loadEvents();
 
-const event =
+let event =
     events.find(
         item =>
-            item.id === eventId
+            String(item.id) === String(eventId)
     );
 
-
 // =====================================
-// EVENT NOT FOUND
+// DEFAULT EVENT
+// =====================================
+// This allows the page to work even if
+// localStorage is empty on a phone.
+//
+// Change these values for this event.
 // =====================================
 
 if (!event) {
 
-    if (nameElement) {
+    event = {
 
-        nameElement.textContent =
-            "Event Not Found";
-    }
+        id: "rwnswndri-dance",
 
+        name: "Rwnswndri Dance",
 
-    if (descriptionElement) {
+        description:
+            "Tomorrow there will be a events",
 
-        descriptionElement.textContent =
-            "The selected event could not be found. Please return to the Events page and select an event.";
-    }
+        date:
+            "2026-09-30",
 
+        photos:
+            "https://drive.google.com/drive/u/0/folders/1pdkZizfelsQe7A_S64hw9RUMYkremo8n"
 
-    if (mediaButton) {
-        mediaButton.style.display =
-            "none";
-    }
-
-} else {
-
-    // =================================
-    // EVENT NAME
-    // =================================
-
-    if (nameElement) {
-
-        nameElement.textContent =
-            event.name;
-    }
+    };
 
 
-    // =================================
-    // EVENT DATE
-    // =================================
+}
+
+// =====================================
+// DISPLAY EVENT
+// =====================================
+
+if (nameElement) {
+
+    nameElement.textContent =
+        event.name;
+
+
+}
+
+// =====================================
+// EVENT DATE
+// =====================================
+
+let formattedDate = "";
+
+if (event.date) {
 
     const eventDate =
         new Date(
             event.date + "T00:00:00"
         );
 
+    if (!isNaN(eventDate.getTime())) {
 
-    const formattedDate =
-        eventDate.toLocaleDateString(
-            "en-IN",
-            {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-            }
-        );
+        formattedDate =
+            eventDate.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
 
-
-    // =================================
-    // DESCRIPTION + DATE
-    // =================================
-
-    if (descriptionElement) {
-
-        descriptionElement.textContent =
-            `${event.description} Date: ${formattedDate}`;
     }
 
 
-    // =================================
-    // MEDIA LINK
-    // =================================
+}
 
-    if (mediaButton) {
+// =====================================
+// DESCRIPTION + DATE
+// =====================================
 
-        if (event.photos) {
+if (descriptionElement) {
 
-            mediaButton.href =
-                event.photos;
+    let description =
+        event.description || "";
 
-            mediaButton.target =
-                "_blank";
+    if (formattedDate) {
 
-            mediaButton.rel =
-                "noopener noreferrer";
+        description +=
+            ` Date: ${formattedDate}`;
 
-        } else if (event.videos) {
+    }
 
-            mediaButton.href =
-                event.videos;
+    descriptionElement.textContent =
+        description;
 
-            mediaButton.target =
-                "_blank";
 
-            mediaButton.rel =
-                "noopener noreferrer";
+}
 
-        } else {
+// =====================================
+// GOOGLE DRIVE MEDIA LINK
+// =====================================
 
-            mediaButton.style.display =
-                "none";
-        }
+if (mediaButton) {
+
+    if (event.photos) {
+
+        mediaButton.href =
+            event.photos;
+
+        mediaButton.target =
+            "_blank";
+
+        mediaButton.rel =
+            "noopener noreferrer";
+
+        mediaButton.style.display =
+            "";
+
+    } else {
+
+        mediaButton.style.display =
+            "none";
+
     }
 
 
-    // =================================
-    // QR CODE
-    // =================================
+}
 
-    const eventURL =
-        window.location.href;
+// =====================================
+// QR CODE
+// =====================================
+// QR points to THIS EVENT PAGE.
+// Anyone scanning it will open the
+// event page with its event ID.
+// =====================================
 
+const eventURL =
+    window.location.href;
 
-    const qrURL =
-        "https://api.qrserver.com/v1/create-qr-code/" +
-        "?size=300x300&data=" +
-        encodeURIComponent(eventURL);
+const qrURL =
+    "https://api.qrserver.com/v1/create-qr-code/" +
+    "?size=300x300&data=" +
+    encodeURIComponent(eventURL);
 
+if (qrImage) {
 
-    const qrImage =
-        document.querySelector(
-            ".event-qr"
-        );
-
-
-    if (qrImage) {
-
-        qrImage.src =
-            qrURL;
-    }
+    qrImage.src =
+        qrURL;
 
 
-    if (qrButton) {
+}
+
+// =====================================
+// QR BUTTON
+// =====================================
+// Open the Google Drive folder directly.
+// =====================================
+
+if (qrButton) {
+
+    if (event.photos) {
 
         qrButton.href =
-            eventURL;
+            event.photos;
 
         qrButton.target =
-            "_self";
+            "_blank";
+
+        qrButton.rel =
+            "noopener noreferrer";
+
     }
+
 
 }
