@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -13,6 +12,7 @@
     <link rel="stylesheet" href="../css/style.css">
 
 </head>
+
 
 <body>
 
@@ -44,6 +44,7 @@
 
             </a>
 
+
             <nav>
 
                 <a href="../index.html">
@@ -65,39 +66,58 @@
     </header>
 
 
+
     <!-- =========================
-         EVENT
+         MAIN CONTENT
     ========================== -->
 
     <main>
 
         <section class="event-details">
 
+            <!-- BACK BUTTON -->
+
             <a href="../index.html#events" class="back-button">
                 ← Back to Events
             </a>
 
 
+
+            <!-- EVENT CARD -->
+
             <div id="event-details-container" class="event-details-card">
+
+
+                <!-- EVENT ICON -->
 
                 <div class="event-detail-icon">
                     📅
                 </div>
 
 
+
+                <!-- EVENT LABEL -->
+
                 <span class="section-label">
                     EVENT
                 </span>
 
+
+
+                <!-- EVENT NAME -->
 
                 <h1 id="eventName">
                     ADTU Bodo Union Event
                 </h1>
 
 
+
+                <!-- EVENT DESCRIPTION -->
+
                 <p id="eventDescription" class="event-detail-description">
                     ADTU Bodo Union event and activities.
                 </p>
+
 
 
                 <!-- =========================
@@ -111,7 +131,8 @@
                     </h2>
 
                     <p>
-                        View all photos and videos from this event in one place.
+                        View all photos and videos from this event
+                        in one place.
                     </p>
 
 
@@ -127,6 +148,7 @@
                 </div>
 
 
+
                 <!-- =========================
                      QR CODE
                 ========================== -->
@@ -138,25 +160,33 @@
                     </h2>
 
 
-                    <img id="eventQRCode" src="" alt="QR Code for ADTU Bodo Union Event Media" class="event-qr-code">
+                    <!-- QR CODE IMAGE -->
+
+                    <img src="../images/event-qr.png" alt="QR Code to view event photos and videos" class="event-qr">
 
 
                     <p>
-                        Scan this QR code to view all event photos and videos.
+                        Scan this QR code to view all event
+                        photos and videos.
                     </p>
 
 
-                    <a id="qrButton" href="#" target="_blank" rel="noopener noreferrer" class="button button-primary">
+                    <!-- QR BUTTON -->
+
+                    <a id="qrButton" href="https://drive.google.com/drive/u/0/folders/MAIN_FOLDER_ID" target="_blank"
+                        rel="noopener noreferrer" class="button button-primary">
                         Open Event Media
                     </a>
 
                 </div>
+
 
             </div>
 
         </section>
 
     </main>
+
 
 
     <!-- =========================
@@ -166,6 +196,9 @@
     <footer>
 
         <div class="footer-container">
+
+
+            <!-- FOOTER BRAND -->
 
             <div>
 
@@ -180,14 +213,23 @@
             </div>
 
 
+
+            <!-- COPYRIGHT -->
+
             <p>
-                © <span id="year"></span>
+
+                ©
+                <span id="year"></span>
+
                 ADTU Bodo Union
+
             </p>
+
 
         </div>
 
     </footer>
+
 
 
     <!-- =========================
@@ -195,6 +237,7 @@
     ========================== -->
 
     <script src="../js/event.js"></script>
+
 
 </body>
 
