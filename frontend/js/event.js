@@ -28,6 +28,10 @@ const qrImage =
 const yearElement =
     document.getElementById("year");
 
+const deleteEventButton =
+    document.getElementById("deleteEventButton");
+
+
 
 // =====================================
 // FOOTER YEAR
@@ -320,4 +324,47 @@ if (event) {
                 "none";
         }
     }
+}
+// =====================================
+// DELETE EVENT
+// =====================================
+
+if (deleteEventButton) {
+
+    deleteEventButton.addEventListener("click", function () {
+
+        if (!event) {
+            alert("Event not found.");
+            return;
+        }
+
+        const confirmed =
+            confirm(
+                `Are you sure you want to delete "${event.name}"?`
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const savedEvents =
+            loadEvents();
+
+        const updatedEvents =
+            savedEvents.filter(
+                item =>
+                    String(item.id) !==
+                    String(eventId)
+            );
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(updatedEvents)
+        );
+
+        alert("Event deleted successfully.");
+
+        window.location.href =
+            "../index.html#events";
+    });
 }
