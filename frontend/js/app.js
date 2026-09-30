@@ -3,10 +3,10 @@
     EVENT & PHOTO HUB
     --------------------------------
     Multiple events + dates + calendar
-    Events are saved in localStorage.
+    Events are stored in Cloud Firestore.
 */
 
-const STORAGE_KEY = "adtuBodoUnionEvents";
+const STORAGE_COLLECTION = "events";
 
 
 // =====================================
@@ -69,84 +69,13 @@ const navigation =
 
 
 // =====================================
-// DEFAULT EVENTS
-// =====================================
-
-const DEFAULT_EVENTS = [];
-
-
-// =====================================
-// LOAD EVENTS
-// =====================================
-
-function loadEvents() {
-
-    try {
-
-        const savedEvents =
-            localStorage.getItem(STORAGE_KEY);
-
-        if (savedEvents) {
-
-            const parsedEvents =
-                JSON.parse(savedEvents);
-
-            if (Array.isArray(parsedEvents)) {
-                return parsedEvents;
-            }
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Could not load saved events:",
-            error
-        );
-    }
-
-    return [...DEFAULT_EVENTS];
-}
-
-
-// =====================================
-// SAVE EVENTS
-// =====================================
-
-function saveEvents(events) {
-
-    try {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(events)
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Could not save events:",
-            error
-        );
-
-        return false;
-    }
-}
-
-
-// =====================================
-// EVENTS
-// =====================================
-
-let events = loadEvents();
-
-
-// =====================================
 // CALENDAR STATE
 // =====================================
 
-let currentCalendarDate = new Date();
+let events = [];
+
+let currentCalendarDate =
+    new Date();
 
 let selectedDate = null;
 
@@ -267,6 +196,49 @@ function getDateStatus(eventDate) {
 
 
 // =====================================
+// LOAD EVENTS FROM FIRESTORE
+// =====================================
+
+function loadEvents() {
+
+    db.collection(STORAGE_COLLECTION)
+        .onSnapshot(
+            function (snapshot) {
+
+                events = snapshot.docs.map(
+                    function (doc) {
+
+                        return {
+                            id: doc.id,
+                            ...doc.data()
+                        };
+
+                    }
+                );
+
+                renderCalendar();
+
+                renderEvents();
+
+            },
+            function (error) {
+
+                console.error(
+                    "Could not load events from Firestore:",
+                    error
+                );
+
+                showMessage(
+                    "Could not load events from the server.",
+                    "error"
+                );
+
+            }
+        );
+}
+
+
+// =====================================
 // RENDER EVENTS
 // =====================================
 
@@ -317,7 +289,10 @@ function renderEvents() {
 
     filteredEvents.sort(
         (a, b) =>
-            a.date.localeCompare(b.date)
+            String(a.date || "")
+                .localeCompare(
+                    String(b.date || "")
+                )
     );
 
 
@@ -337,7 +312,9 @@ function renderEvents() {
             <p>No events found.</p>
         `;
 
-        eventsContainer.appendChild(empty);
+        eventsContainer.appendChild(
+            empty
+        );
 
         return;
     }
@@ -347,56 +324,58 @@ function renderEvents() {
     // EVENT CARDS
     // =================================
 
-    filteredEvents.forEach(event => {
+    filteredEvents.forEach(
+        function (event) {
 
-        const card =
-            document.createElement("article");
+            const card =
+                document.createElement("article");
 
-        card.className =
-            "event-card";
-
-
-        const status =
-            getDateStatus(event.date);
+            card.className =
+                "event-card";
 
 
-        card.innerHTML = `
+            const status =
+                getDateStatus(event.date);
 
-            <div class="event-card-icon">
-                📅
-            </div>
 
-            <span class="section-label">
-                ${status.toUpperCase()}
-            </span>
+            card.innerHTML = `
 
-            <h3>
-                ${escapeHTML(event.name)}
-            </h3>
+                <div class="event-card-icon">
+                    📅
+                </div>
 
-            <p class="event-date">
-                ${formatDate(event.date)}
-            </p>
+                <span class="section-label">
+                    ${status.toUpperCase()}
+                </span>
 
-            <p>
-                ${escapeHTML(event.description)}
-            </p>
+                <h3>
+                    ${escapeHTML(event.name)}
+                </h3>
 
-            <div class="event-card-actions">
+                <p class="event-date">
+                    ${formatDate(event.date)}
+                </p>
 
-                <a
-                    href="events/event.html?id=${encodeURIComponent(event.id)}"
-                    class="button button-primary"
-                >
-                    View Event
-                </a>
+                <p>
+                    ${escapeHTML(event.description)}
+                </p>
 
-            </div>
-        `;
+                <div class="event-card-actions">
 
-        eventsContainer.appendChild(card);
+                    <a
+                        href="events/event.html?id=${encodeURIComponent(event.id)}"
+                        class="button button-primary"
+                    >
+                        View Event
+                    </a>
 
-    });
+                </div>
+            `;
+
+            eventsContainer.appendChild(card);
+
+        }
+    );
 }
 
 
@@ -625,41 +604,46 @@ function updateSelectedDate() {
 
 function updateFilterButtons() {
 
-    filterButtons.forEach(button => {
+    filterButtons.forEach(
+        function (button) {
 
-        button.classList.toggle(
-            "active",
-            button.dataset.filter ===
-            currentFilter
-        );
-
-    });
-}
-
-
-filterButtons.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        function () {
-
-            currentFilter =
-                button.dataset.filter;
-
-            selectedDate =
-                null;
-
-            updateFilterButtons();
-
-            updateSelectedDate();
-
-            renderCalendar();
-
-            renderEvents();
+            button.classList.toggle(
+                "active",
+                button.dataset.filter ===
+                currentFilter
+            );
 
         }
     );
-});
+}
+
+
+filterButtons.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                currentFilter =
+                    button.dataset.filter;
+
+                selectedDate =
+                    null;
+
+                updateFilterButtons();
+
+                updateSelectedDate();
+
+                renderCalendar();
+
+                renderEvents();
+
+            }
+        );
+
+    }
+);
 
 
 // =====================================
@@ -732,7 +716,7 @@ if (eventForm) {
 
     eventForm.addEventListener(
         "submit",
-        function (e) {
+        async function (e) {
 
             e.preventDefault();
 
@@ -770,8 +754,6 @@ if (eventForm) {
 
             const newEvent = {
 
-                id: createEventId(),
-
                 name: name,
 
                 date: date,
@@ -780,64 +762,69 @@ if (eventForm) {
 
                 photos: photos,
 
-                videos: videos
+                videos: videos,
+
+                createdAt:
+                    firebase.firestore.FieldValue.serverTimestamp()
             };
 
 
-            events.push(
-                newEvent
-            );
+            try {
+
+                await db
+                    .collection(STORAGE_COLLECTION)
+                    .doc(createEventId())
+                    .set(newEvent);
 
 
-            if (!saveEvents(events)) {
+                showMessage(
+                    "Event added successfully.",
+                    "success"
+                );
+
+
+                eventForm.reset();
+
+
+                selectedDate =
+                    date;
+
+                currentFilter =
+                    "all";
+
+
+                const newDate =
+                    new Date(
+                        date + "T00:00:00"
+                    );
+
+
+                currentCalendarDate =
+                    new Date(
+                        newDate.getFullYear(),
+                        newDate.getMonth(),
+                        1
+                    );
+
+
+                updateFilterButtons();
+
+                updateSelectedDate();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not add event:",
+                    error
+                );
 
                 showMessage(
                     "Could not save the event.",
                     "error"
                 );
 
-                return;
             }
-
-
-            showMessage(
-                "Event added successfully.",
-                "success"
-            );
-
-
-            eventForm.reset();
-
-
-            // Show new event
-            selectedDate =
-                date;
-
-            currentFilter =
-                "all";
-
-
-            const newDate =
-                new Date(
-                    date + "T00:00:00"
-                );
-
-
-            currentCalendarDate =
-                new Date(
-                    newDate.getFullYear(),
-                    newDate.getMonth(),
-                    1
-                );
-
-
-            updateFilterButtons();
-
-            updateSelectedDate();
-
-            renderCalendar();
-
-            renderEvents();
 
         }
     );
@@ -852,11 +839,11 @@ if (clearEventsButton) {
 
     clearEventsButton.addEventListener(
         "click",
-        function () {
+        async function () {
 
             const confirmed =
                 window.confirm(
-                    "Are you sure you want to delete all saved events?"
+                    "Are you sure you want to delete all events?"
                 );
 
 
@@ -865,36 +852,61 @@ if (clearEventsButton) {
             }
 
 
-            localStorage.removeItem(
-                STORAGE_KEY
-            );
+            try {
+
+                const snapshot =
+                    await db
+                        .collection(STORAGE_COLLECTION)
+                        .get();
 
 
-            events = [
-                ...DEFAULT_EVENTS
-            ];
+                const batch =
+                    db.batch();
 
 
-            selectedDate =
-                null;
+                snapshot.forEach(
+                    function (doc) {
 
-            currentFilter =
-                "all";
+                        batch.delete(doc.ref);
 
-
-            updateFilterButtons();
-
-            updateSelectedDate();
-
-            renderCalendar();
-
-            renderEvents();
+                    }
+                );
 
 
-            showMessage(
-                "Saved events cleared.",
-                "success"
-            );
+                await batch.commit();
+
+
+                selectedDate =
+                    null;
+
+                currentFilter =
+                    "all";
+
+
+                updateFilterButtons();
+
+                updateSelectedDate();
+
+
+                showMessage(
+                    "All events deleted.",
+                    "success"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not delete events:",
+                    error
+                );
+
+                showMessage(
+                    "Could not delete the events.",
+                    "error"
+                );
+
+            }
 
         }
     );
@@ -966,25 +978,27 @@ if (
 
     navigation
         .querySelectorAll("a")
-        .forEach(link => {
+        .forEach(
+            function (link) {
 
-            link.addEventListener(
-                "click",
-                function () {
+                link.addEventListener(
+                    "click",
+                    function () {
 
-                    navigation.classList.remove(
-                        "open"
-                    );
+                        navigation.classList.remove(
+                            "open"
+                        );
 
-                    menuButton.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
 
-                }
-            );
+                    }
+                );
 
-        });
+            }
+        );
 }
 
 
@@ -1011,3 +1025,5 @@ updateSelectedDate();
 renderCalendar();
 
 renderEvents();
+
+loadEvents();

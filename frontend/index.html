@@ -5,17 +5,11 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ADTU Bodo Union | Event & Photo Hub</title>
 
-    <link
-        rel="stylesheet"
-        href="./css/style.css"
-    >
+    <link rel="stylesheet" href="./css/style.css">
 
 </head>
 
@@ -50,13 +44,7 @@
             </a>
 
 
-            <button
-                class="menu-button"
-                id="menuButton"
-                type="button"
-                aria-label="Open menu"
-                aria-expanded="false"
-            >
+            <button class="menu-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">
                 ☰
             </button>
 
@@ -94,10 +82,7 @@
 
         <!-- HERO -->
 
-        <section
-            class="hero"
-            id="home"
-        >
+        <section class="hero" id="home">
 
             <div class="hero-content">
 
@@ -119,17 +104,11 @@
 
                 <div class="hero-actions">
 
-                    <a
-                        href="#events"
-                        class="button button-primary"
-                    >
+                    <a href="#events" class="button button-primary">
                         Explore Events
                     </a>
 
-                    <a
-                        href="#calendar"
-                        class="button button-outline"
-                    >
+                    <a href="#calendar" class="button button-outline">
                         View Calendar
                     </a>
 
@@ -169,10 +148,7 @@
              ADD EVENT
         ========================== -->
 
-        <section
-            class="add-event-section"
-            id="add-event"
-        >
+        <section class="add-event-section" id="add-event">
 
             <div class="section-header">
 
@@ -207,12 +183,7 @@
                             Event Name
                         </label>
 
-                        <input
-                            type="text"
-                            id="eventNameInput"
-                            placeholder="Enter event name"
-                            required
-                        >
+                        <input type="text" id="eventNameInput" placeholder="Enter event name" required>
 
                     </div>
 
@@ -225,11 +196,7 @@
                             Event Date
                         </label>
 
-                        <input
-                            type="date"
-                            id="eventDateInput"
-                            required
-                        >
+                        <input type="date" id="eventDateInput" required>
 
                     </div>
 
@@ -242,12 +209,8 @@
                             Description
                         </label>
 
-                        <textarea
-                            id="eventDescriptionInput"
-                            rows="5"
-                            placeholder="Enter event description"
-                            required
-                        ></textarea>
+                        <textarea id="eventDescriptionInput" rows="5" placeholder="Enter event description"
+                            required></textarea>
 
                     </div>
 
@@ -260,11 +223,7 @@
                             Photos Link
                         </label>
 
-                        <input
-                            type="url"
-                            id="eventPhotosInput"
-                            placeholder="https://drive.google.com/..."
-                        >
+                        <input type="url" id="eventPhotosInput" placeholder="https://drive.google.com/...">
 
                     </div>
 
@@ -277,39 +236,25 @@
                             Videos Link
                         </label>
 
-                        <input
-                            type="url"
-                            id="eventVideosInput"
-                            placeholder="https://drive.google.com/..."
-                        >
+                        <input type="url" id="eventVideosInput" placeholder="https://drive.google.com/...">
 
                     </div>
 
 
                     <div class="form-actions">
 
-                        <button
-                            type="submit"
-                            class="button button-primary"
-                        >
+                        <button type="submit" class="button button-primary">
                             Add Event
                         </button>
 
-                        <button
-                            type="button"
-                            id="clearEventsButton"
-                            class="button button-outline"
-                        >
+                        <button type="button" id="clearEventsButton" class="button button-outline">
                             Clear Saved Events
                         </button>
 
                     </div>
 
 
-                    <p
-                        id="eventFormMessage"
-                        class="form-message"
-                    ></p>
+                    <p id="eventFormMessage" class="form-message"></p>
 
                 </form>
 
@@ -322,10 +267,7 @@
              EVENTS
         ========================== -->
 
-        <section
-            class="events-section"
-            id="events"
-        >
+        <section class="events-section" id="events">
 
             <div class="section-header">
 
@@ -352,35 +294,19 @@
 
             <div class="event-filters">
 
-                <button
-                    type="button"
-                    class="filter-button active"
-                    data-filter="all"
-                >
+                <button type="button" class="filter-button active" data-filter="all">
                     All
                 </button>
 
-                <button
-                    type="button"
-                    class="filter-button"
-                    data-filter="upcoming"
-                >
+                <button type="button" class="filter-button" data-filter="upcoming">
                     Upcoming
                 </button>
 
-                <button
-                    type="button"
-                    class="filter-button"
-                    data-filter="today"
-                >
+                <button type="button" class="filter-button" data-filter="today">
                     Today
                 </button>
 
-                <button
-                    type="button"
-                    class="filter-button"
-                    data-filter="past"
-                >
+                <button type="button" class="filter-button" data-filter="past">
                     Past
                 </button>
 
@@ -389,28 +315,17 @@
 
             <!-- CALENDAR -->
 
-            <div
-                class="calendar-wrapper"
-                id="calendar"
-            >
+            <div class="calendar-wrapper" id="calendar">
 
                 <div class="calendar-header">
 
-                    <button
-                        type="button"
-                        id="prevMonth"
-                        aria-label="Previous month"
-                    >
+                    <button type="button" id="prevMonth" aria-label="Previous month">
                         ←
                     </button>
 
                     <h3 id="calendarTitle"></h3>
 
-                    <button
-                        type="button"
-                        id="nextMonth"
-                        aria-label="Next month"
-                    >
+                    <button type="button" id="nextMonth" aria-label="Next month">
                         →
                     </button>
 
@@ -430,30 +345,21 @@
                 </div>
 
 
-                <div
-                    class="calendar-days"
-                    id="calendarDays"
-                ></div>
+                <div class="calendar-days" id="calendarDays"></div>
 
             </div>
 
 
             <!-- SELECTED DATE -->
 
-            <div
-                class="selected-date"
-                id="selectedDate"
-            >
+            <div class="selected-date" id="selectedDate">
                 Select a date to view events.
             </div>
 
 
             <!-- EVENTS -->
 
-            <div
-                id="events-container"
-                class="events-grid"
-            ></div>
+            <div id="events-container" class="events-grid"></div>
 
         </section>
 
@@ -462,10 +368,7 @@
              PHOTOS
         ========================== -->
 
-        <section
-            class="photo-section"
-            id="photos"
-        >
+        <section class="photo-section" id="photos">
 
             <div class="photo-content">
 
@@ -523,7 +426,12 @@
     </footer>
 
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script src="./js/firebase.js"></script>
     <script src="./js/app.js"></script>
+
 
 </body>
 

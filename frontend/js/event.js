@@ -1,9 +1,11 @@
 /*
     ADTU BODO UNION
     EVENT DETAILS PAGE
+    --------------------------------
+    Events are loaded from Cloud Firestore.
 */
 
-const STORAGE_KEY = "adtuBodoUnionEvents";
+const STORAGE_COLLECTION = "events";
 
 
 // =====================================
@@ -32,48 +34,15 @@ const deleteEventButton =
     document.getElementById("deleteEventButton");
 
 
-
 // =====================================
 // FOOTER YEAR
 // =====================================
 
 if (yearElement) {
+
     yearElement.textContent =
         new Date().getFullYear();
-}
 
-
-// =====================================
-// LOAD LOCAL EVENTS
-// =====================================
-
-function loadEvents() {
-
-    try {
-
-        const savedEvents =
-            localStorage.getItem(STORAGE_KEY);
-
-        if (!savedEvents) {
-            return [];
-        }
-
-        const parsedEvents =
-            JSON.parse(savedEvents);
-
-        return Array.isArray(parsedEvents)
-            ? parsedEvents
-            : [];
-
-    } catch (error) {
-
-        console.error(
-            "Could not load events:",
-            error
-        );
-
-        return [];
-    }
 }
 
 
@@ -91,133 +60,62 @@ const eventId =
 
 
 // =====================================
-// FIND LOCAL EVENT
-// =====================================
-
-const events =
-    loadEvents();
-
-let event =
-    events.find(
-        item =>
-            String(item.id) ===
-            String(eventId)
-    );
-
-
-// =====================================
-// PUBLIC EVENT FALLBACK
-// =====================================
-// This allows the GitHub Pages QR
-// to work on another phone.
-//
-// IMPORTANT:
-// This ID matches your existing QR.
-// =====================================
-
-if (
-    !event &&
-    eventId === "event-1790696014532-b5wk30"
-) {
-
-    event = {
-
-        id: "event-1790696014532-b5wk30",
-
-        name: "Rwnswndri Dance",
-
-        description:
-            "Tomorrow there will be a events",
-
-        date:
-            "2026-09-30",
-
-        photos:
-            "https://drive.google.com/drive/u/0/folders/1pdkZizfelsQe7A_S64hw9RUMYkremo8n",
-
-        videos: ""
-
-    };
-}
-
-
-// =====================================
-// OLD DEFAULT EVENT
-// =====================================
-
-if (
-    !event &&
-    eventId === "rwnswndri-dance"
-) {
-
-    event = {
-
-        id: "rwnswndri-dance",
-
-        name: "Rwnswndri Dance",
-
-        description:
-            "Tomorrow there will be a events",
-
-        date:
-            "2026-09-30",
-
-        photos:
-            "https://drive.google.com/drive/u/0/folders/1pdkZizfelsQe7A_S64hw9RUMYkremo8n",
-
-        videos: ""
-
-    };
-}
-
-
-// =====================================
-// EVENT NOT FOUND
-// =====================================
-
-if (!event) {
-
-    if (nameElement) {
-        nameElement.textContent =
-            "Event Not Found";
-    }
-
-    if (descriptionElement) {
-        descriptionElement.textContent =
-            "This event could not be found.";
-    }
-
-    if (mediaButton) {
-        mediaButton.style.display = "none";
-    }
-
-    if (qrButton) {
-        qrButton.style.display = "none";
-    }
-
-    if (qrImage) {
-        qrImage.style.display = "none";
-    }
-
-}
-
-
-// =====================================
 // DISPLAY EVENT
 // =====================================
 
-if (event) {
+function displayEvent(event) {
 
+    if (!event) {
+
+        if (nameElement) {
+            nameElement.textContent =
+                "Event Not Found";
+        }
+
+        if (descriptionElement) {
+            descriptionElement.textContent =
+                "This event could not be found.";
+        }
+
+        if (mediaButton) {
+            mediaButton.style.display =
+                "none";
+        }
+
+        if (qrButton) {
+            qrButton.style.display =
+                "none";
+        }
+
+        if (qrImage) {
+            qrImage.style.display =
+                "none";
+        }
+
+        if (deleteEventButton) {
+            deleteEventButton.style.display =
+                "none";
+        }
+
+        return;
+    }
+
+
+    // =================================
     // EVENT NAME
+    // =================================
 
     if (nameElement) {
 
         nameElement.textContent =
-            event.name || "Untitled Event";
+            event.name ||
+            "Untitled Event";
     }
 
 
+    // =================================
     // DATE
+    // =================================
 
     let formattedDate = "";
 
@@ -243,7 +141,9 @@ if (event) {
     }
 
 
+    // =================================
     // DESCRIPTION
+    // =================================
 
     if (descriptionElement) {
 
@@ -261,7 +161,9 @@ if (event) {
     }
 
 
+    // =================================
     // GOOGLE DRIVE
+    // =================================
 
     if (mediaButton) {
 
@@ -278,6 +180,7 @@ if (event) {
 
             mediaButton.style.display =
                 "";
+
         } else {
 
             mediaButton.style.display =
@@ -286,7 +189,9 @@ if (event) {
     }
 
 
-    // QR FOR THIS EVENT
+    // =================================
+    // QR CODE
+    // =================================
 
     const eventURL =
         window.location.href;
@@ -297,11 +202,18 @@ if (event) {
         encodeURIComponent(eventURL);
 
     if (qrImage) {
-        qrImage.src = qrURL;
+
+        qrImage.src =
+            qrURL;
+
+        qrImage.style.display =
+            "";
     }
 
 
+    // =================================
     // OPEN MEDIA
+    // =================================
 
     if (qrButton) {
 
@@ -318,6 +230,7 @@ if (event) {
 
             qrButton.style.display =
                 "";
+
         } else {
 
             qrButton.style.display =
@@ -325,46 +238,168 @@ if (event) {
         }
     }
 }
+
+
+// =====================================
+// LOAD EVENT FROM FIRESTORE
+// =====================================
+
+async function loadEvent() {
+
+    if (!eventId) {
+
+        displayEvent(null);
+
+        return;
+    }
+
+
+    try {
+
+        const documentSnapshot =
+            await db
+                .collection(STORAGE_COLLECTION)
+                .doc(eventId)
+                .get();
+
+
+        if (!documentSnapshot.exists) {
+
+            displayEvent(null);
+
+            return;
+        }
+
+
+        const event = {
+
+            id:
+                documentSnapshot.id,
+
+            ...documentSnapshot.data()
+
+        };
+
+
+        displayEvent(event);
+
+
+    } catch (error) {
+
+        console.error(
+            "Could not load event:",
+            error
+        );
+
+
+        if (nameElement) {
+
+            nameElement.textContent =
+                "Error Loading Event";
+        }
+
+
+        if (descriptionElement) {
+
+            descriptionElement.textContent =
+                "Could not connect to the event database.";
+        }
+
+    }
+}
+
+
 // =====================================
 // DELETE EVENT
 // =====================================
 
 if (deleteEventButton) {
 
-    deleteEventButton.addEventListener("click", function () {
+    deleteEventButton.addEventListener(
+        "click",
+        async function () {
 
-        if (!event) {
-            alert("Event not found.");
-            return;
+            if (!eventId) {
+
+                alert(
+                    "Event ID not found."
+                );
+
+                return;
+            }
+
+
+            const eventName =
+                nameElement
+                    ? nameElement.textContent
+                    : "this event";
+
+
+            const confirmed =
+                window.confirm(
+                    `Are you sure you want to delete "${eventName}"?`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            // Disable button while deleting
+
+            deleteEventButton.disabled =
+                true;
+
+            deleteEventButton.textContent =
+                "Deleting...";
+
+
+            try {
+
+                await db
+                    .collection(STORAGE_COLLECTION)
+                    .doc(eventId)
+                    .delete();
+
+
+                alert(
+                    "Event deleted successfully."
+                );
+
+
+                window.location.href =
+                    "../index.html#events";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not delete event:",
+                    error
+                );
+
+
+                alert(
+                    "Could not delete the event. Please try again."
+                );
+
+
+                deleteEventButton.disabled =
+                    false;
+
+                deleteEventButton.textContent =
+                    "🗑️ Delete Event";
+
+            }
+
         }
-
-        const confirmed =
-            confirm(
-                `Are you sure you want to delete "${event.name}"?`
-            );
-
-        if (!confirmed) {
-            return;
-        }
-
-        const savedEvents =
-            loadEvents();
-
-        const updatedEvents =
-            savedEvents.filter(
-                item =>
-                    String(item.id) !==
-                    String(eventId)
-            );
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(updatedEvents)
-        );
-
-        alert("Event deleted successfully.");
-
-        window.location.href =
-            "../index.html#events";
-    });
+    );
 }
+
+
+// =====================================
+// START
+// =====================================
+
+loadEvent();
