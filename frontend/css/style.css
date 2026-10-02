@@ -2476,3 +2476,254 @@ SMALL MOBILE
 
     margin: 0 auto 30px auto;
 }
+/* =====================================
+EVENT MEDIA GALLERY
+===================================== */
+
+.event-gallery-section {
+margin-top: 40px;
+padding-top: 30px;
+border-top: 1px solid #ddd;
+}
+
+.event-gallery-section h2 {
+margin-top: 30px;
+margin-bottom: 10px;
+}
+
+.event-gallery-description {
+margin-bottom: 25px;
+color: #666;
+}
+
+/* =====================================
+PHOTO GALLERY
+===================================== */
+
+.event-photo-gallery {
+display: grid;
+grid-template-columns: repeat(
+auto-fit,
+minmax(220px, 1fr)
+);
+
+gap: 18px;
+margin-top: 20px;
+
+
+}
+
+.event-photo-gallery img {
+width: 100%;
+height: 240px;
+
+object-fit: cover;
+
+display: block;
+
+border-radius: 12px;
+
+cursor: pointer;
+
+background: #eee;
+
+transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+
+}
+
+.event-photo-gallery img:hover {
+transform: scale(1.02);
+
+box-shadow:
+    0 8px 25px
+    rgba(0, 0, 0, 0.15);
+
+
+}
+
+/* =====================================
+VIDEO GALLERY
+===================================== */
+
+.event-video-gallery {
+margin-top: 20px;
+}
+
+.event-video-gallery video {
+width: 100%;
+max-width: 900px;
+
+display: block;
+
+border-radius: 12px;
+
+background: #000;
+
+box-shadow:
+    0 5px 20px
+    rgba(0, 0, 0, 0.12);
+
+
+}
+
+/* =====================================
+EMPTY MEDIA MESSAGE
+===================================== */
+
+.media-empty {
+padding: 25px;
+
+background: #f5f5f5;
+
+border-radius: 12px;
+
+color: #666;
+
+text-align: center;
+
+
+}
+
+/* =====================================
+PHOTO LIGHTBOX
+===================================== */
+
+.photo-lightbox {
+position: fixed;
+
+inset: 0;
+
+background:
+    rgba(0, 0, 0, 0.9);
+
+display: none;
+
+align-items: center;
+justify-content: center;
+
+z-index: 9999;
+
+padding: 20px;
+
+
+}
+
+.photo-lightbox.active {
+display: flex;
+}
+
+.photo-lightbox img {
+max-width: 95%;
+max-height: 90vh;
+
+object-fit: contain;
+
+border-radius: 8px;
+
+
+}
+
+/* =====================================
+LIGHTBOX CLOSE BUTTON
+===================================== */
+
+.lightbox-close {
+position: absolute;
+
+top: 20px;
+right: 25px;
+
+color: #fff;
+
+background: transparent;
+
+border: none;
+
+font-size: 40px;
+
+line-height: 1;
+
+cursor: pointer;
+
+z-index: 10000;
+
+
+}
+
+.lightbox-close:hover {
+color: #ddd;
+}
+
+/* =====================================
+VIEW MEDIA BUTTON
+===================================== */
+
+#viewMediaButton {
+cursor: pointer;
+}
+
+/* =====================================
+MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+.event-gallery-section {
+    margin-top: 30px;
+    padding-top: 25px;
+}
+
+.event-photo-gallery {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+}
+
+.event-photo-gallery img {
+    height: 260px;
+}
+
+.event-video-gallery video {
+    width: 100%;
+}
+
+.lightbox-close {
+    top: 10px;
+    right: 15px;
+
+    font-size: 35px;
+}
+
+
+}
+
+/* =====================================
+TABLET
+===================================== */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+.event-photo-gallery {
+    grid-template-columns:
+        repeat(2, 1fr);
+}
+
+
+}
+
+/* =====================================
+LARGE SCREENS
+===================================== */
+
+@media (min-width: 1200px) {
+
+.event-photo-gallery {
+    grid-template-columns:
+        repeat(3, 1fr);
+}
+
+
+}

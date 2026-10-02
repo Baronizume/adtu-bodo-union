@@ -1,230 +1,318 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ADTU Bodo Union | Event</title>
+```
+<title>ADTU Bodo Union | Event</title>
 
-    <link rel="stylesheet" href="../css/style.css">
+<!-- Main CSS -->
+<link rel="stylesheet" href="../css/style.css">
+
+<!-- Event Page CSS -->
+<link rel="stylesheet" href="../css/event.css">
+```
+
 </head>
 
 <body>
 
-    <!-- =========================
-         NAVBAR
-    ========================== -->
+```
+<!-- =========================
+     NAVBAR
+========================== -->
 
-    <header class="navbar">
-        <div class="nav-container">
+<header class="navbar">
 
-            <a href="../index.html" class="brand">
+    <div class="nav-container">
 
-                <div class="brand-logo">
-                    ABU
-                </div>
+        <a href="../index.html" class="brand">
 
-                <div class="brand-text">
-                    <strong>
-                        ADTU BODO UNION
-                    </strong>
-
-                    <span>
-                        Event &amp; Photo Hub
-                    </span>
-                </div>
-
-            </a>
-
-            <nav>
-                <a href="../index.html">
-                    Home
-                </a>
-
-                <a href="../index.html#events">
-                    Events
-                </a>
-
-                <a href="../index.html#photos">
-                    Photos
-                </a>
-            </nav>
-
-        </div>
-    </header>
-
-
-    <!-- =========================
-         MAIN CONTENT
-    ========================== -->
-
-    <main>
-
-        <section class="event-details">
-
-            <!-- BACK BUTTON -->
-
-            <a href="../index.html#events" class="back-button">
-                ← Back to Events
-            </a>
-
-
-            <!-- =========================
-                 EVENT CARD
-            ========================== -->
-
-            <div id="event-details-container" class="event-details-card">
-
-                <!-- EVENT ICON -->
-
-                <div class="event-detail-icon">
-                    📅
-                </div>
-
-
-                <!-- EVENT LABEL -->
-
-                <span class="section-label">
-                    EVENT
-                </span>
-
-
-                <!-- EVENT NAME -->
-
-                <h1 id="eventName">
-                    Loading event...
-                </h1>
-
-
-                <!-- EVENT DESCRIPTION -->
-
-                <p id="eventDescription" class="event-detail-description">
-                    Loading event details...
-                </p>
-
-
-                <!-- =========================
-                     EVENT ACTIONS
-                ========================== -->
-
-                <div class="event-actions">
-
-                    <button id="deleteEventButton" class="delete-event-button" type="button">
-                        🗑️ Delete Event
-                    </button>
-
-                </div>
-
-
-                <!-- =========================
-                     EVENT MEDIA
-                ========================== -->
-
-                <div class="event-media-section">
-
-                    <h2>
-                        Event Media
-                    </h2>
-
-                    <p>
-                        View all photos and videos from this event
-                        in one place.
-                    </p>
-
-
-                    <div class="event-media-buttons">
-
-                        <a href="#" target="_blank" rel="noopener noreferrer" class="button button-primary">
-
-                            📷🎥 View Photos &amp; Videos
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =========================
-                     QR CODE
-                ========================== -->
-
-                <div class="event-qr-section">
-
-                    <h2>
-                        Scan to View Event Media
-                    </h2>
-
-
-                    <img src="../images/event-qr.png" alt="QR Code to view event photos and videos" class="event-qr">
-
-
-                    <p>
-                        Scan this QR code to view all event
-                        photos and videos.
-                    </p>
-
-
-                    <a id="qrButton" href="#" target="_blank" rel="noopener noreferrer" class="button button-primary">
-
-                        Open Event Media
-
-                    </a>
-
-                </div>
-
+            <div class="brand-logo">
+                ABU
             </div>
 
-        </section>
-
-    </main>
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer>
-
-        <div class="footer-container">
-
-            <div>
+            <div class="brand-text">
 
                 <strong>
                     ADTU BODO UNION
                 </strong>
 
-                <p>
+                <span>
                     Event &amp; Photo Hub
-                </p>
+                </span>
+
+            </div>
+
+        </a>
+
+        <nav>
+
+            <a href="../index.html">
+                Home
+            </a>
+
+            <a href="../index.html#events">
+                Events
+            </a>
+
+            <a href="../index.html#photos">
+                Photos
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+
+<main>
+
+    <section class="event-details">
+
+        <a href="../index.html#events" class="back-button">
+            ← Back to Events
+        </a>
+
+
+        <!-- =========================
+             EVENT CARD
+        ========================== -->
+
+        <div
+            id="event-details-container"
+            class="event-details-card">
+
+            <div class="event-detail-icon">
+                📅
+            </div>
+
+            <span class="section-label">
+                EVENT
+            </span>
+
+            <h1 id="eventName">
+                Loading event...
+            </h1>
+
+            <p
+                id="eventDescription"
+                class="event-detail-description">
+
+                Loading event details...
+
+            </p>
+
+
+            <!-- =========================
+                 EVENT ACTIONS
+            ========================== -->
+
+            <div class="event-actions">
+
+                <button
+                    id="deleteEventButton"
+                    class="delete-event-button"
+                    type="button">
+
+                    🗑️ Delete Event
+
+                </button>
 
             </div>
 
 
+            <!-- =========================
+                 EVENT MEDIA
+            ========================== -->
+
+            <div class="event-media-section">
+
+                <h2>
+                    📷🎥 Event Media
+                </h2>
+
+                <p>
+                    View all photos and videos from this event
+                    in one place.
+                </p>
+
+                <div class="event-media-buttons">
+
+                    <button
+                        id="viewMediaButton"
+                        type="button"
+                        class="button button-primary">
+
+                        📷🎥 View Photos &amp; Videos
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 MEDIA GALLERY
+            ========================== -->
+
+            <div
+                id="eventGallery"
+                class="event-gallery-section">
+
+                <!-- Photos -->
+
+                <h2>
+                    📸 Photos
+                </h2>
+
+                <p class="event-gallery-description">
+                    Photos from this event.
+                </p>
+
+                <div
+                    id="photoGallery"
+                    class="event-photo-gallery">
+                </div>
+
+
+                <!-- Videos -->
+
+                <h2>
+                    🎥 Videos
+                </h2>
+
+                <p class="event-gallery-description">
+                    Videos from this event.
+                </p>
+
+                <div
+                    id="videoGallery"
+                    class="event-video-gallery">
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 QR CODE
+            ========================== -->
+
+            <div class="event-qr-section">
+
+                <h2>
+                    Scan to View Event Media
+                </h2>
+
+                <img
+                    id="eventQrImage"
+                    src=""
+                    alt="QR Code to view event photos and videos"
+                    class="event-qr">
+
+                <p>
+                    Scan this QR code to open this event
+                    and view its photos and videos.
+                </p>
+
+                <a
+                    id="qrButton"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="button button-primary">
+
+                    Open Event
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     PHOTO LIGHTBOX
+========================== -->
+
+<div
+    id="photoLightbox"
+    class="photo-lightbox">
+
+    <button
+        id="lightboxClose"
+        class="lightbox-close"
+        type="button"
+        aria-label="Close photo">
+
+        &times;
+
+    </button>
+
+    <img
+        id="lightboxImage"
+        src=""
+        alt="Full size event photo">
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div>
+
+            <strong>
+                ADTU BODO UNION
+            </strong>
+
             <p>
-
-                ©
-                <span id="year"></span>
-                ADTU Bodo Union
-
+                Event &amp; Photo Hub
             </p>
 
         </div>
 
-    </footer>
+        <p>
+            ©
+            <span id="year"></span>
+            ADTU Bodo Union
+        </p>
+
+    </div>
+
+</footer>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
+<!-- =========================
+     FIREBASE
+========================== -->
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-    <script src="../js/firebase.js"></script>
-    <script src="../js/event.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
+<script src="../js/firebase.js"></script>
+
+<script src="../js/event.js"></script>
+```
 
 </body>
 
