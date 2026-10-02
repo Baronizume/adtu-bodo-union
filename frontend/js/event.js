@@ -4,7 +4,7 @@ EVENT DETAILS PAGE
 --------------------------------
 Events are loaded from Cloud Firestore.
 
-Media is stored in the repository:
+Event media is stored in:
 
 media/
     rwnswndri-dance/
@@ -99,7 +99,7 @@ const EVENT_MEDIA = {
         ],
 
         videos: [
-            "WhatsApp Video 2026-09-30 at 10.14.53PM (1) (1).mp4"
+            "WhatsApp Video 2026-09-30 at 10.14.53 PM (1) (1).mp4"
         ]
 
     }
@@ -116,16 +116,19 @@ function getMediaFolder(event) {
     const name =
         event.name || "";
 
-    return name
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+    const slug =
+        name
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+
+    return slug;
 }
 
 
 // =====================================
-// CREATE GITHUB PAGES MEDIA URL
+// CREATE MEDIA URL
 // =====================================
 
 function getMediaUrl(
@@ -135,26 +138,28 @@ function getMediaUrl(
 ) {
 
     /*
-        GitHub Pages site:
+        event.html is inside:
 
-        https://baronizume.github.io/adtu-bodo-union/
+        frontend/events/event.html
 
-        Media:
+        media is at:
 
-        https://baronizume.github.io/adtu-bodo-union/media/
+        media/
 
-        encodeURIComponent() is used because
-        the video filename contains spaces and brackets.
+        Therefore:
+
+        ../../media/
     */
 
     return (
-        "/adtu-bodo-union/media/" +
-        encodeURIComponent(mediaFolder) +
+        "../../media/" +
+        mediaFolder +
         "/" +
-        encodeURIComponent(type) +
+        type +
         "/" +
         encodeURIComponent(fileName)
     );
+
 }
 
 
@@ -199,11 +204,12 @@ function loadEventMedia(event) {
             media.photos.length === 0
         ) {
 
-            photoGallery.innerHTML = `
+            photoGallery.innerHTML =
+                `
                 <div class="media-empty">
                     No photos available for this event.
                 </div>
-            `;
+                `;
 
         } else {
 
@@ -242,17 +248,22 @@ function loadEventMedia(event) {
                         }
                     );
 
+                    /*
+                        If an image fails,
+                        show useful information.
+                    */
+
                     image.addEventListener(
                         "error",
                         function () {
 
                             console.error(
-                                "IMAGE 404:",
+                                "Could not load image:",
                                 imageUrl
                             );
 
-                            image.style.display =
-                                "none";
+                            image.alt =
+                                "Photo could not be loaded";
 
                         }
                     );
@@ -282,11 +293,12 @@ function loadEventMedia(event) {
             media.videos.length === 0
         ) {
 
-            videoGallery.innerHTML = `
+            videoGallery.innerHTML =
+                `
                 <div class="media-empty">
                     No videos available for this event.
                 </div>
-            `;
+                `;
 
         } else {
 
@@ -330,12 +342,18 @@ function loadEventMedia(event) {
                         source
                     );
 
+                    /*
+                        Helpful error message
+                        if GitHub Pages cannot
+                        load the video.
+                    */
+
                     video.addEventListener(
                         "error",
                         function () {
 
                             console.error(
-                                "VIDEO 404:",
+                                "Could not load video:",
                                 videoUrl
                             );
 
@@ -385,6 +403,7 @@ function openLightbox(
 
     document.body.style.overflow =
         "hidden";
+
 }
 
 
@@ -411,6 +430,7 @@ function closeLightbox() {
 
     document.body.style.overflow =
         "";
+
 }
 
 
@@ -497,38 +517,52 @@ function displayEvent(event) {
     if (!event) {
 
         if (nameElement) {
+
             nameElement.textContent =
                 "Event Not Found";
+
         }
 
         if (descriptionElement) {
+
             descriptionElement.textContent =
                 "This event could not be found.";
+
         }
 
         if (viewMediaButton) {
+
             viewMediaButton.style.display =
                 "none";
+
         }
 
         if (qrButton) {
+
             qrButton.style.display =
                 "none";
+
         }
 
         if (qrImage) {
+
             qrImage.style.display =
                 "none";
+
         }
 
         if (deleteEventButton) {
+
             deleteEventButton.style.display =
                 "none";
+
         }
 
         if (eventGallery) {
+
             eventGallery.style.display =
                 "none";
+
         }
 
         return;
@@ -688,6 +722,7 @@ async function loadEvent() {
             displayEvent(null);
 
             return;
+
         }
 
         const event = {
@@ -744,6 +779,7 @@ if (deleteEventButton) {
                 );
 
                 return;
+
             }
 
             const eventName =
