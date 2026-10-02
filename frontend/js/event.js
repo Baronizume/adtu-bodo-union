@@ -4,15 +4,32 @@ EVENT DETAILS PAGE
 --------------------------------
 Events are loaded from Cloud Firestore.
 
-Event media is stored in:
+GitHub Pages structure:
 
-media/
-    rwnswndri-dance/
-        photos/
-        videos/
+adtu-bodo-union/
+├── frontend/
+│   ├── events/
+│   │   └── event.html
+│   ├── js/
+│   │   └── event.js
+│   └── ...
+│
+└── media/
+    └── rwnswndri-dance/
+        ├── photos/
+        │   ├── DSC_0049.JPG
+        │   ├── DSC_0050.JPG
+        │   ├── DSC_0057.JPG
+        │   ├── DSC_0058.JPG
+        │   ├── DSC_0059.JPG
+        │   └── DSC_0060.JPG
+        │
+        └── videos/
+            └── WhatsApp Video 2026-09-30 at10.14.53 PM (1) (1).mp4
 */
 
 const STORAGE_COLLECTION = "events";
+
 
 // =====================================
 // DOM ELEMENTS
@@ -63,8 +80,10 @@ const lightboxClose =
 // =====================================
 
 if (yearElement) {
+
     yearElement.textContent =
         new Date().getFullYear();
+
 }
 
 
@@ -90,16 +109,20 @@ const EVENT_MEDIA = {
     "rwnswndri-dance": {
 
         photos: [
+
             "DSC_0049.JPG",
             "DSC_0050.JPG",
             "DSC_0057.JPG",
             "DSC_0058.JPG",
             "DSC_0059.JPG",
             "DSC_0060.JPG"
+
         ],
 
         videos: [
-            "WhatsApp Video 2026-09-30 at 10.14.53 PM (1) (1).mp4"
+
+            "WhatsApp Video 2026-09-30 at10.14.53 PM (1) (1).mp4"
+
         ]
 
     }
@@ -120,15 +143,22 @@ function getMediaFolder(event) {
         name
             .toLowerCase()
             .trim()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+            .replace(
+                /[^a-z0-9]+/g,
+                "-"
+            )
+            .replace(
+                /^-+|-+$/g,
+                ""
+            );
 
     return slug;
+
 }
 
 
 // =====================================
-// CREATE MEDIA URL
+// CREATE GITHUB PAGES MEDIA URL
 // =====================================
 
 function getMediaUrl(
@@ -138,21 +168,20 @@ function getMediaUrl(
 ) {
 
     /*
-        event.html is inside:
+        GitHub Pages URL:
 
-        frontend/events/event.html
+        https://baronizume.github.io/adtu-bodo-union/
 
-        media is at:
+        Media:
 
-        media/
+        /adtu-bodo-union/media/
 
-        Therefore:
-
-        ../../media/
+        Therefore we use the repository
+        root path directly.
     */
 
     return (
-        "../../media/" +
+        "/adtu-bodo-union/media/" +
         mediaFolder +
         "/" +
         type +
@@ -173,11 +202,18 @@ function loadEventMedia(event) {
         return;
     }
 
+
     const mediaFolder =
         getMediaFolder(event);
 
+
     const media =
         EVENT_MEDIA[mediaFolder];
+
+
+    // =================================
+    // MEDIA NOT FOUND
+    // =================================
 
     if (!media) {
 
@@ -185,7 +221,9 @@ function loadEventMedia(event) {
             "none";
 
         return;
+
     }
+
 
     eventGallery.style.display =
         "";
@@ -197,19 +235,20 @@ function loadEventMedia(event) {
 
     if (photoGallery) {
 
-        photoGallery.innerHTML = "";
+        photoGallery.innerHTML =
+            "";
+
 
         if (
             !media.photos ||
             media.photos.length === 0
         ) {
 
-            photoGallery.innerHTML =
-                `
+            photoGallery.innerHTML = `
                 <div class="media-empty">
                     No photos available for this event.
                 </div>
-                `;
+            `;
 
         } else {
 
@@ -217,7 +256,10 @@ function loadEventMedia(event) {
                 function (fileName) {
 
                     const image =
-                        document.createElement("img");
+                        document.createElement(
+                            "img"
+                        );
+
 
                     const imageUrl =
                         getMediaUrl(
@@ -226,15 +268,32 @@ function loadEventMedia(event) {
                             fileName
                         );
 
+
                     image.src =
                         imageUrl;
 
+
                     image.alt =
-                        (event.name || "Event") +
+                        (event.name ||
+                            "Event") +
                         " photo";
+
 
                     image.loading =
                         "lazy";
+
+
+                    image.decoding =
+                        "async";
+
+
+                    image.style.cursor =
+                        "pointer";
+
+
+                    // -----------------------------
+                    // PHOTO CLICK
+                    // -----------------------------
 
                     image.addEventListener(
                         "click",
@@ -248,25 +307,26 @@ function loadEventMedia(event) {
                         }
                     );
 
-                    /*
-                        If an image fails,
-                        show useful information.
-                    */
+
+                    // -----------------------------
+                    // PHOTO ERROR
+                    // -----------------------------
 
                     image.addEventListener(
                         "error",
                         function () {
 
                             console.error(
-                                "Could not load image:",
+                                "PHOTO LOAD ERROR:",
                                 imageUrl
                             );
 
-                            image.alt =
-                                "Photo could not be loaded";
+                            image.style.display =
+                                "none";
 
                         }
                     );
+
 
                     photoGallery.appendChild(
                         image
@@ -286,19 +346,20 @@ function loadEventMedia(event) {
 
     if (videoGallery) {
 
-        videoGallery.innerHTML = "";
+        videoGallery.innerHTML =
+            "";
+
 
         if (
             !media.videos ||
             media.videos.length === 0
         ) {
 
-            videoGallery.innerHTML =
-                `
+            videoGallery.innerHTML = `
                 <div class="media-empty">
                     No videos available for this event.
                 </div>
-                `;
+            `;
 
         } else {
 
@@ -306,24 +367,10 @@ function loadEventMedia(event) {
                 function (fileName) {
 
                     const video =
-                        document.createElement("video");
+                        document.createElement(
+                            "video"
+                        );
 
-                    video.controls =
-                        true;
-
-                    video.preload =
-                        "metadata";
-
-                    video.playsInline =
-                        true;
-
-                    video.setAttribute(
-                        "controlsList",
-                        "nodownload"
-                    );
-
-                    const source =
-                        document.createElement("source");
 
                     const videoUrl =
                         getMediaUrl(
@@ -332,33 +379,82 @@ function loadEventMedia(event) {
                             fileName
                         );
 
+
+                    video.controls =
+                        true;
+
+
+                    video.preload =
+                        "metadata";
+
+
+                    video.playsInline =
+                        true;
+
+
+                    video.setAttribute(
+                        "controlsList",
+                        "nodownload"
+                    );
+
+
+                    video.setAttribute(
+                        "webkit-playsinline",
+                        "true"
+                    );
+
+
+                    video.style.width =
+                        "100%";
+
+
+                    video.style.maxWidth =
+                        "900px";
+
+
+                    video.style.display =
+                        "block";
+
+
+                    video.style.margin =
+                        "20px auto";
+
+
+                    const source =
+                        document.createElement(
+                            "source"
+                        );
+
+
                     source.src =
                         videoUrl;
 
+
                     source.type =
                         "video/mp4";
+
 
                     video.appendChild(
                         source
                     );
 
-                    /*
-                        Helpful error message
-                        if GitHub Pages cannot
-                        load the video.
-                    */
+
+                    // -----------------------------
+                    // VIDEO ERROR
+                    // -----------------------------
 
                     video.addEventListener(
                         "error",
                         function () {
 
                             console.error(
-                                "Could not load video:",
+                                "VIDEO LOAD ERROR:",
                                 videoUrl
                             );
 
                         }
                     );
+
 
                     videoGallery.appendChild(
                         video
@@ -387,19 +483,25 @@ function openLightbox(
         !photoLightbox ||
         !lightboxImage
     ) {
+
         return;
+
     }
+
 
     lightboxImage.src =
         imageSource;
+
 
     lightboxImage.alt =
         imageAlt ||
         "Event photo";
 
+
     photoLightbox.classList.add(
         "active"
     );
+
 
     document.body.style.overflow =
         "hidden";
@@ -417,9 +519,11 @@ function closeLightbox() {
         return;
     }
 
+
     photoLightbox.classList.remove(
         "active"
     );
+
 
     if (lightboxImage) {
 
@@ -428,6 +532,7 @@ function closeLightbox() {
 
     }
 
+
     document.body.style.overflow =
         "";
 
@@ -435,7 +540,7 @@ function closeLightbox() {
 
 
 // =====================================
-// LIGHTBOX EVENTS
+// LIGHTBOX CLOSE BUTTON
 // =====================================
 
 if (lightboxClose) {
@@ -446,6 +551,11 @@ if (lightboxClose) {
     );
 
 }
+
+
+// =====================================
+// LIGHTBOX BACKGROUND CLICK
+// =====================================
 
 if (photoLightbox) {
 
@@ -467,12 +577,18 @@ if (photoLightbox) {
 
 }
 
+
+// =====================================
+// ESC KEY
+// =====================================
+
 document.addEventListener(
     "keydown",
     function (event) {
 
         if (
-            event.key === "Escape"
+            event.key ===
+            "Escape"
         ) {
 
             closeLightbox();
@@ -497,6 +613,7 @@ if (viewMediaButton) {
                 return;
             }
 
+
             eventGallery.scrollIntoView({
                 behavior: "smooth",
                 block: "start"
@@ -514,6 +631,10 @@ if (viewMediaButton) {
 
 function displayEvent(event) {
 
+    // =================================
+    // EVENT NOT FOUND
+    // =================================
+
     if (!event) {
 
         if (nameElement) {
@@ -523,12 +644,14 @@ function displayEvent(event) {
 
         }
 
+
         if (descriptionElement) {
 
             descriptionElement.textContent =
                 "This event could not be found.";
 
         }
+
 
         if (viewMediaButton) {
 
@@ -537,12 +660,14 @@ function displayEvent(event) {
 
         }
 
+
         if (qrButton) {
 
             qrButton.style.display =
                 "none";
 
         }
+
 
         if (qrImage) {
 
@@ -551,12 +676,14 @@ function displayEvent(event) {
 
         }
 
+
         if (deleteEventButton) {
 
             deleteEventButton.style.display =
                 "none";
 
         }
+
 
         if (eventGallery) {
 
@@ -565,7 +692,9 @@ function displayEvent(event) {
 
         }
 
+
         return;
+
     }
 
 
@@ -583,10 +712,12 @@ function displayEvent(event) {
 
 
     // =================================
-    // DATE
+    // EVENT DATE
     // =================================
 
-    let formattedDate = "";
+    let formattedDate =
+        "";
+
 
     if (event.date) {
 
@@ -595,6 +726,7 @@ function displayEvent(event) {
                 event.date +
                 "T00:00:00"
             );
+
 
         if (
             !isNaN(
@@ -606,9 +738,14 @@ function displayEvent(event) {
                 eventDate.toLocaleDateString(
                     "en-IN",
                     {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric"
+                        day:
+                            "numeric",
+
+                        month:
+                            "long",
+
+                        year:
+                            "numeric"
                     }
                 );
 
@@ -624,14 +761,24 @@ function displayEvent(event) {
     if (descriptionElement) {
 
         let description =
-            event.description || "";
+            event.description ||
+            "";
+
 
         if (formattedDate) {
 
+            if (description) {
+
+                description +=
+                    " ";
+
+            }
+
             description +=
-                ` Date: ${formattedDate}`;
+                `Date: ${formattedDate}`;
 
         }
+
 
         descriptionElement.textContent =
             description;
@@ -653,15 +800,20 @@ function displayEvent(event) {
     const eventURL =
         window.location.href;
 
+
     const qrURL =
         "https://api.qrserver.com/v1/create-qr-code/" +
         "?size=300x300&data=" +
-        encodeURIComponent(eventURL);
+        encodeURIComponent(
+            eventURL
+        );
+
 
     if (qrImage) {
 
         qrImage.src =
             qrURL;
+
 
         qrImage.style.display =
             "";
@@ -678,11 +830,14 @@ function displayEvent(event) {
         qrButton.href =
             eventURL;
 
+
         qrButton.target =
             "_blank";
 
+
         qrButton.rel =
             "noopener noreferrer";
+
 
         qrButton.style.display =
             "";
@@ -703,7 +858,9 @@ async function loadEvent() {
         displayEvent(null);
 
         return;
+
     }
+
 
     try {
 
@@ -715,6 +872,7 @@ async function loadEvent() {
                 .doc(eventId)
                 .get();
 
+
         if (
             !documentSnapshot.exists
         ) {
@@ -725,6 +883,7 @@ async function loadEvent() {
 
         }
 
+
         const event = {
 
             id:
@@ -734,7 +893,11 @@ async function loadEvent() {
 
         };
 
-        displayEvent(event);
+
+        displayEvent(
+            event
+        );
+
 
     } catch (error) {
 
@@ -743,12 +906,14 @@ async function loadEvent() {
             error
         );
 
+
         if (nameElement) {
 
             nameElement.textContent =
                 "Error Loading Event";
 
         }
+
 
         if (descriptionElement) {
 
@@ -782,25 +947,33 @@ if (deleteEventButton) {
 
             }
 
+
             const eventName =
                 nameElement
                     ? nameElement.textContent
                     : "this event";
+
 
             const confirmed =
                 window.confirm(
                     `Are you sure you want to delete "${eventName}"?`
                 );
 
+
             if (!confirmed) {
+
                 return;
+
             }
+
 
             deleteEventButton.disabled =
                 true;
 
+
             deleteEventButton.textContent =
                 "Deleting...";
+
 
             try {
 
@@ -811,12 +984,15 @@ if (deleteEventButton) {
                     .doc(eventId)
                     .delete();
 
+
                 alert(
                     "Event deleted successfully."
                 );
 
+
                 window.location.href =
                     "../index.html#events";
+
 
             } catch (error) {
 
@@ -825,12 +1001,15 @@ if (deleteEventButton) {
                     error
                 );
 
+
                 alert(
                     "Could not delete the event. Please try again."
                 );
 
+
                 deleteEventButton.disabled =
                     false;
+
 
                 deleteEventButton.textContent =
                     "🗑️ Delete Event";
