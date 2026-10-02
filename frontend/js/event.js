@@ -119,11 +119,10 @@ const EVENT_MEDIA = {
 
         ],
 
-        videos: [
+      videos: [
+        "rwnswndri-dance.mp4"
+    ]
 
-            "WhatsApp Video 2026-09-30 at10.14.53 PM (1) (1).mp4"
-
-        ]
 
     }
 
