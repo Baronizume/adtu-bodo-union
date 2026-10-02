@@ -4,14 +4,12 @@ EVENT DETAILS PAGE
 --------------------------------
 Events are loaded from Cloud Firestore.
 
-Event media is stored manually in:
+Event media is stored in:
 
-D:\ADTU BODO UNION\media\
-    rwnswndri-dance\
-        photos\
-        videos\
-
-
+media/
+    rwnswndri-dance/
+        photos/
+        videos/
 */
 
 const STORAGE_COLLECTION = "events";
@@ -21,67 +19,67 @@ const STORAGE_COLLECTION = "events";
 // =====================================
 
 const nameElement =
-document.getElementById("eventName");
+    document.getElementById("eventName");
 
 const descriptionElement =
-document.getElementById("eventDescription");
+    document.getElementById("eventDescription");
 
 const viewMediaButton =
-document.getElementById("viewMediaButton");
+    document.getElementById("viewMediaButton");
 
 const qrButton =
-document.getElementById("qrButton");
+    document.getElementById("qrButton");
 
 const qrImage =
-document.getElementById("eventQrImage");
+    document.getElementById("eventQrImage");
 
 const yearElement =
-document.getElementById("year");
+    document.getElementById("year");
 
 const deleteEventButton =
-document.getElementById("deleteEventButton");
+    document.getElementById("deleteEventButton");
 
 const eventGallery =
-document.getElementById("eventGallery");
+    document.getElementById("eventGallery");
 
 const photoGallery =
-document.getElementById("photoGallery");
+    document.getElementById("photoGallery");
 
 const videoGallery =
-document.getElementById("videoGallery");
+    document.getElementById("videoGallery");
 
 const photoLightbox =
-document.getElementById("photoLightbox");
+    document.getElementById("photoLightbox");
 
 const lightboxImage =
-document.getElementById("lightboxImage");
+    document.getElementById("lightboxImage");
 
 const lightboxClose =
-document.getElementById("lightboxClose");
+    document.getElementById("lightboxClose");
+
 
 // =====================================
 // FOOTER YEAR
 // =====================================
 
 if (yearElement) {
-
-yearElement.textContent =
-    new Date().getFullYear();
-
-
+    yearElement.textContent =
+        new Date().getFullYear();
 }
+
 
 // =====================================
 // GET EVENT ID
 // =====================================
 
 const params =
-new URLSearchParams(
-window.location.search
-);
+    new URLSearchParams(
+        window.location.search
+    );
 
 const eventId =
-params.get("id");
+    params.get("id");
+
 
 // =====================================
 // EVENT MEDIA
@@ -89,29 +87,25 @@ params.get("id");
 
 const EVENT_MEDIA = {
 
-"rwnswndri-dance": {
+    "rwnswndri-dance": {
 
-    photos: [
+        photos: [
+            "DSC_0049.JPG",
+            "DSC_0050.JPG",
+            "DSC_0057.JPG",
+            "DSC_0058.JPG",
+            "DSC_0059.JPG",
+            "DSC_0060.JPG"
+        ],
 
-        "DSC_0049.JPG",
-        "DSC_0050.JPG",
-        "DSC_0057.JPG",
-        "DSC_0058.JPG",
-        "DSC_0059.JPG",
-        "DSC_0060.JPG"
+        videos: [
+            "WhatsApp Video 2026-09-30 at 10.14.53 PM (1) (1).mp4"
+        ]
 
-    ],
-
-    videos: [
-
-        "WhatsApp Video 2026-09-30 at 10.14.53 PM (1).mp4"
-
-    ]
-
-}
-
+    }
 
 };
+
 
 // =====================================
 // FIND MEDIA FOLDER
@@ -119,20 +113,55 @@ const EVENT_MEDIA = {
 
 function getMediaFolder(event) {
 
-const name =
-    event.name || "";
+    const name =
+        event.name || "";
 
-const slug =
-    name
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+    const slug =
+        name
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
 
-return slug;
+    return slug;
+}
 
+
+// =====================================
+// CREATE MEDIA URL
+// =====================================
+
+function getMediaUrl(
+    mediaFolder,
+    type,
+    fileName
+) {
+
+    /*
+        event.html is inside:
+
+        frontend/events/event.html
+
+        media is at:
+
+        media/
+
+        Therefore:
+
+        ../../media/
+    */
+
+    return (
+        "../../media/" +
+        mediaFolder +
+        "/" +
+        type +
+        "/" +
+        encodeURIComponent(fileName)
+    );
 
 }
+
 
 // =====================================
 // LOAD EVENT MEDIA
@@ -140,209 +169,243 @@ return slug;
 
 function loadEventMedia(event) {
 
-if (!eventGallery) {
-    return;
-}
+    if (!eventGallery) {
+        return;
+    }
 
+    const mediaFolder =
+        getMediaFolder(event);
 
-const mediaFolder =
-    getMediaFolder(event);
+    const media =
+        EVENT_MEDIA[mediaFolder];
 
+    if (!media) {
 
-const media =
-    EVENT_MEDIA[mediaFolder];
+        eventGallery.style.display =
+            "none";
 
-
-if (!media) {
+        return;
+    }
 
     eventGallery.style.display =
-        "none";
-
-    return;
-}
+        "";
 
 
-eventGallery.style.display =
-    "";
+    // =================================
+    // PHOTOS
+    // =================================
 
+    if (photoGallery) {
 
-// =================================
-// PHOTOS
-// =================================
+        photoGallery.innerHTML = "";
 
-if (photoGallery) {
+        if (
+            !media.photos ||
+            media.photos.length === 0
+        ) {
 
-    photoGallery.innerHTML = "";
+            photoGallery.innerHTML =
+                `
+                <div class="media-empty">
+                    No photos available for this event.
+                </div>
+                `;
 
+        } else {
 
-    if (
-        !media.photos ||
-        media.photos.length === 0
-    ) {
+            media.photos.forEach(
+                function (fileName) {
 
-        photoGallery.innerHTML =
-            `<div class="media-empty">
-                No photos available for this event.
-            </div>`;
+                    const image =
+                        document.createElement("img");
 
-    } else {
-
-        media.photos.forEach(
-            function (fileName) {
-
-                const image =
-                    document.createElement("img");
-
-
-                image.src =
-                    "../../../media/" +
-                    mediaFolder +
-                    "/photos/" +
-                    encodeURIComponent(fileName);
-
-
-                image.alt =
-                    event.name +
-                    " photo";
-
-
-                image.loading =
-                    "lazy";
-
-
-                image.addEventListener(
-                    "click",
-                    function () {
-
-                        openLightbox(
-                            image.src,
-                            image.alt
+                    const imageUrl =
+                        getMediaUrl(
+                            mediaFolder,
+                            "photos",
+                            fileName
                         );
 
-                    }
-                );
+                    image.src =
+                        imageUrl;
+
+                    image.alt =
+                        (event.name || "Event") +
+                        " photo";
+
+                    image.loading =
+                        "lazy";
+
+                    image.addEventListener(
+                        "click",
+                        function () {
+
+                            openLightbox(
+                                imageUrl,
+                                image.alt
+                            );
+
+                        }
+                    );
+
+                    /*
+                        If an image fails,
+                        show useful information.
+                    */
+
+                    image.addEventListener(
+                        "error",
+                        function () {
+
+                            console.error(
+                                "Could not load image:",
+                                imageUrl
+                            );
+
+                            image.alt =
+                                "Photo could not be loaded";
+
+                        }
+                    );
+
+                    photoGallery.appendChild(
+                        image
+                    );
+
+                }
+            );
+
+        }
+
+    }
 
 
-                photoGallery.appendChild(
-                    image
-                );
+    // =================================
+    // VIDEOS
+    // =================================
 
-            }
-        );
+    if (videoGallery) {
+
+        videoGallery.innerHTML = "";
+
+        if (
+            !media.videos ||
+            media.videos.length === 0
+        ) {
+
+            videoGallery.innerHTML =
+                `
+                <div class="media-empty">
+                    No videos available for this event.
+                </div>
+                `;
+
+        } else {
+
+            media.videos.forEach(
+                function (fileName) {
+
+                    const video =
+                        document.createElement("video");
+
+                    video.controls =
+                        true;
+
+                    video.preload =
+                        "metadata";
+
+                    video.playsInline =
+                        true;
+
+                    video.setAttribute(
+                        "controlsList",
+                        "nodownload"
+                    );
+
+                    const source =
+                        document.createElement("source");
+
+                    const videoUrl =
+                        getMediaUrl(
+                            mediaFolder,
+                            "videos",
+                            fileName
+                        );
+
+                    source.src =
+                        videoUrl;
+
+                    source.type =
+                        "video/mp4";
+
+                    video.appendChild(
+                        source
+                    );
+
+                    /*
+                        Helpful error message
+                        if GitHub Pages cannot
+                        load the video.
+                    */
+
+                    video.addEventListener(
+                        "error",
+                        function () {
+
+                            console.error(
+                                "Could not load video:",
+                                videoUrl
+                            );
+
+                        }
+                    );
+
+                    videoGallery.appendChild(
+                        video
+                    );
+
+                }
+            );
+
+        }
 
     }
 
 }
 
-
-// =================================
-// VIDEOS
-// =================================
-
-if (videoGallery) {
-
-    videoGallery.innerHTML = "";
-
-
-    if (
-        !media.videos ||
-        media.videos.length === 0
-    ) {
-
-        videoGallery.innerHTML =
-            `<div class="media-empty">
-                No videos available for this event.
-            </div>`;
-
-    } else {
-
-        media.videos.forEach(
-            function (fileName) {
-
-                const video =
-                    document.createElement("video");
-
-
-                video.controls =
-                    true;
-
-
-                video.preload =
-                    "metadata";
-
-
-                video.playsInline =
-                    true;
-
-
-                const source =
-                    document.createElement("source");
-
-
-                source.src =
-                    "../../../media/" +
-                    mediaFolder +
-                    "/videos/" +
-                    encodeURIComponent(fileName);
-
-
-                source.type =
-                    "video/mp4";
-
-
-                video.appendChild(
-                    source
-                );
-
-
-                videoGallery.appendChild(
-                    video
-                );
-
-            }
-        );
-
-    }
-
-}
-
-
-}
 
 // =====================================
 // PHOTO LIGHTBOX
 // =====================================
 
 function openLightbox(
-imageSource,
-imageAlt
+    imageSource,
+    imageAlt
 ) {
 
-if (!photoLightbox ||
-    !lightboxImage) {
+    if (
+        !photoLightbox ||
+        !lightboxImage
+    ) {
+        return;
+    }
 
-    return;
-}
+    lightboxImage.src =
+        imageSource;
 
+    lightboxImage.alt =
+        imageAlt ||
+        "Event photo";
 
-lightboxImage.src =
-    imageSource;
+    photoLightbox.classList.add(
+        "active"
+    );
 
-
-lightboxImage.alt =
-    imageAlt || "Event photo";
-
-
-photoLightbox.classList.add(
-    "active"
-);
-
-
-document.body.style.overflow =
-    "hidden";
-
+    document.body.style.overflow =
+        "hidden";
 
 }
+
 
 // =====================================
 // CLOSE LIGHTBOX
@@ -350,29 +413,26 @@ document.body.style.overflow =
 
 function closeLightbox() {
 
-if (!photoLightbox) {
-    return;
-}
+    if (!photoLightbox) {
+        return;
+    }
 
+    photoLightbox.classList.remove(
+        "active"
+    );
 
-photoLightbox.classList.remove(
-    "active"
-);
+    if (lightboxImage) {
 
+        lightboxImage.src =
+            "";
 
-if (lightboxImage) {
+    }
 
-    lightboxImage.src =
+    document.body.style.overflow =
         "";
 
 }
 
-
-document.body.style.overflow =
-    "";
-
-
-}
 
 // =====================================
 // LIGHTBOX EVENTS
@@ -380,23 +440,39 @@ document.body.style.overflow =
 
 if (lightboxClose) {
 
-lightboxClose.addEventListener(
-    "click",
-    closeLightbox
-);
-
+    lightboxClose.addEventListener(
+        "click",
+        closeLightbox
+    );
 
 }
 
 if (photoLightbox) {
 
-photoLightbox.addEventListener(
-    "click",
+    photoLightbox.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target ===
+                photoLightbox
+            ) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+}
+
+document.addEventListener(
+    "keydown",
     function (event) {
 
         if (
-            event.target ===
-            photoLightbox
+            event.key === "Escape"
         ) {
 
             closeLightbox();
@@ -407,50 +483,30 @@ photoLightbox.addEventListener(
 );
 
 
-}
-
-document.addEventListener(
-"keydown",
-function (event) {
-
-    if (
-        event.key === "Escape"
-    ) {
-
-        closeLightbox();
-
-    }
-
-}
-
-
-);
-
 // =====================================
 // VIEW MEDIA BUTTON
 // =====================================
 
 if (viewMediaButton) {
 
-viewMediaButton.addEventListener(
-    "click",
-    function () {
+    viewMediaButton.addEventListener(
+        "click",
+        function () {
 
-        if (!eventGallery) {
-            return;
+            if (!eventGallery) {
+                return;
+            }
+
+            eventGallery.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
         }
-
-
-        eventGallery.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    }
-);
-
+    );
 
 }
+
 
 // =====================================
 // DISPLAY EVENT
@@ -458,200 +514,183 @@ viewMediaButton.addEventListener(
 
 function displayEvent(event) {
 
-if (!event) {
+    if (!event) {
+
+        if (nameElement) {
+
+            nameElement.textContent =
+                "Event Not Found";
+
+        }
+
+        if (descriptionElement) {
+
+            descriptionElement.textContent =
+                "This event could not be found.";
+
+        }
+
+        if (viewMediaButton) {
+
+            viewMediaButton.style.display =
+                "none";
+
+        }
+
+        if (qrButton) {
+
+            qrButton.style.display =
+                "none";
+
+        }
+
+        if (qrImage) {
+
+            qrImage.style.display =
+                "none";
+
+        }
+
+        if (deleteEventButton) {
+
+            deleteEventButton.style.display =
+                "none";
+
+        }
+
+        if (eventGallery) {
+
+            eventGallery.style.display =
+                "none";
+
+        }
+
+        return;
+    }
+
+
+    // =================================
+    // EVENT NAME
+    // =================================
 
     if (nameElement) {
 
         nameElement.textContent =
-            "Event Not Found";
+            event.name ||
+            "Untitled Event";
 
     }
 
+
+    // =================================
+    // DATE
+    // =================================
+
+    let formattedDate = "";
+
+    if (event.date) {
+
+        const eventDate =
+            new Date(
+                event.date +
+                "T00:00:00"
+            );
+
+        if (
+            !isNaN(
+                eventDate.getTime()
+            )
+        ) {
+
+            formattedDate =
+                eventDate.toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+        }
+
+    }
+
+
+    // =================================
+    // DESCRIPTION
+    // =================================
 
     if (descriptionElement) {
 
+        let description =
+            event.description || "";
+
+        if (formattedDate) {
+
+            description +=
+                ` Date: ${formattedDate}`;
+
+        }
+
         descriptionElement.textContent =
-            "This event could not be found.";
+            description;
 
     }
 
 
-    if (viewMediaButton) {
+    // =================================
+    // LOAD MEDIA
+    // =================================
 
-        viewMediaButton.style.display =
-            "none";
-
-    }
+    loadEventMedia(event);
 
 
-    if (qrButton) {
+    // =================================
+    // QR CODE
+    // =================================
 
-        qrButton.style.display =
-            "none";
+    const eventURL =
+        window.location.href;
 
-    }
-
+    const qrURL =
+        "https://api.qrserver.com/v1/create-qr-code/" +
+        "?size=300x300&data=" +
+        encodeURIComponent(eventURL);
 
     if (qrImage) {
 
+        qrImage.src =
+            qrURL;
+
         qrImage.style.display =
-            "none";
+            "";
 
     }
 
 
-    if (deleteEventButton) {
+    // =================================
+    // QR BUTTON
+    // =================================
 
-        deleteEventButton.style.display =
-            "none";
+    if (qrButton) {
 
-    }
+        qrButton.href =
+            eventURL;
 
+        qrButton.target =
+            "_blank";
 
-    if (eventGallery) {
+        qrButton.rel =
+            "noopener noreferrer";
 
-        eventGallery.style.display =
-            "none";
-
-    }
-
-
-    return;
-}
-
-
-// =================================
-// EVENT NAME
-// =================================
-
-if (nameElement) {
-
-    nameElement.textContent =
-        event.name ||
-        "Untitled Event";
-
-}
-
-
-// =================================
-// DATE
-// =================================
-
-let formattedDate = "";
-
-
-if (event.date) {
-
-    const eventDate =
-        new Date(
-            event.date +
-            "T00:00:00"
-        );
-
-
-    if (
-        !isNaN(
-            eventDate.getTime()
-        )
-    ) {
-
-        formattedDate =
-            eventDate.toLocaleDateString(
-                "en-IN",
-                {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                }
-            );
+        qrButton.style.display =
+            "";
 
     }
 
 }
 
-
-// =================================
-// DESCRIPTION
-// =================================
-
-if (descriptionElement) {
-
-    let description =
-        event.description || "";
-
-
-    if (formattedDate) {
-
-        description +=
-            ` Date: ${formattedDate}`;
-
-    }
-
-
-    descriptionElement.textContent =
-        description;
-
-}
-
-
-// =================================
-// LOAD MEDIA
-// =================================
-
-loadEventMedia(event);
-
-
-// =================================
-// QR CODE
-// =================================
-
-const eventURL =
-    window.location.href;
-
-
-const qrURL =
-    "https://api.qrserver.com/v1/create-qr-code/" +
-    "?size=300x300&data=" +
-    encodeURIComponent(eventURL);
-
-
-if (qrImage) {
-
-    qrImage.src =
-        qrURL;
-
-
-    qrImage.style.display =
-        "";
-
-}
-
-
-// =================================
-// QR BUTTON
-// =================================
-
-if (qrButton) {
-
-    qrButton.href =
-        eventURL;
-
-
-    qrButton.target =
-        "_blank";
-
-
-    qrButton.rel =
-        "noopener noreferrer";
-
-
-    qrButton.style.display =
-        "";
-
-}
-
-
-}
 
 // =====================================
 // LOAD EVENT FROM FIRESTORE
@@ -659,76 +698,69 @@ if (qrButton) {
 
 async function loadEvent() {
 
-if (!eventId) {
-
-    displayEvent(null);
-
-    return;
-}
-
-
-try {
-
-    const documentSnapshot =
-        await db
-            .collection(
-                STORAGE_COLLECTION
-            )
-            .doc(eventId)
-            .get();
-
-
-    if (
-        !documentSnapshot.exists
-    ) {
+    if (!eventId) {
 
         displayEvent(null);
 
         return;
-
     }
 
+    try {
 
-    const event = {
+        const documentSnapshot =
+            await db
+                .collection(
+                    STORAGE_COLLECTION
+                )
+                .doc(eventId)
+                .get();
 
-        id:
-            documentSnapshot.id,
+        if (
+            !documentSnapshot.exists
+        ) {
 
-        ...documentSnapshot.data()
+            displayEvent(null);
 
-    };
+            return;
 
+        }
 
-    displayEvent(event);
+        const event = {
 
+            id:
+                documentSnapshot.id,
 
-} catch (error) {
+            ...documentSnapshot.data()
 
-    console.error(
-        "Could not load event:",
-        error
-    );
+        };
 
+        displayEvent(event);
 
-    if (nameElement) {
+    } catch (error) {
 
-        nameElement.textContent =
-            "Error Loading Event";
+        console.error(
+            "Could not load event:",
+            error
+        );
 
-    }
+        if (nameElement) {
 
+            nameElement.textContent =
+                "Error Loading Event";
 
-    if (descriptionElement) {
+        }
 
-        descriptionElement.textContent =
-            "Could not connect to the event database.";
+        if (descriptionElement) {
+
+            descriptionElement.textContent =
+                "Could not connect to the event database.";
+
+        }
 
     }
 
 }
 
-
-}
 
 // =====================================
 // DELETE EVENT
@@ -736,92 +768,80 @@ try {
 
 if (deleteEventButton) {
 
-deleteEventButton.addEventListener(
-    "click",
-    async function () {
+    deleteEventButton.addEventListener(
+        "click",
+        async function () {
 
-        if (!eventId) {
+            if (!eventId) {
 
-            alert(
-                "Event ID not found."
-            );
+                alert(
+                    "Event ID not found."
+                );
 
-            return;
+                return;
 
-        }
+            }
 
+            const eventName =
+                nameElement
+                    ? nameElement.textContent
+                    : "this event";
 
-        const eventName =
-            nameElement
-                ? nameElement.textContent
-                : "this event";
+            const confirmed =
+                window.confirm(
+                    `Are you sure you want to delete "${eventName}"?`
+                );
 
-
-        const confirmed =
-            window.confirm(
-                `Are you sure you want to delete "${eventName}"?`
-            );
-
-
-        if (!confirmed) {
-            return;
-        }
-
-
-        deleteEventButton.disabled =
-            true;
-
-
-        deleteEventButton.textContent =
-            "Deleting...";
-
-
-        try {
-
-            await db
-                .collection(
-                    STORAGE_COLLECTION
-                )
-                .doc(eventId)
-                .delete();
-
-
-            alert(
-                "Event deleted successfully."
-            );
-
-
-            window.location.href =
-                "../index.html#events";
-
-
-        } catch (error) {
-
-            console.error(
-                "Could not delete event:",
-                error
-            );
-
-
-            alert(
-                "Could not delete the event. Please try again."
-            );
-
+            if (!confirmed) {
+                return;
+            }
 
             deleteEventButton.disabled =
-                false;
-
+                true;
 
             deleteEventButton.textContent =
-                "🗑️ Delete Event";
+                "Deleting...";
+
+            try {
+
+                await db
+                    .collection(
+                        STORAGE_COLLECTION
+                    )
+                    .doc(eventId)
+                    .delete();
+
+                alert(
+                    "Event deleted successfully."
+                );
+
+                window.location.href =
+                    "../index.html#events";
+
+            } catch (error) {
+
+                console.error(
+                    "Could not delete event:",
+                    error
+                );
+
+                alert(
+                    "Could not delete the event. Please try again."
+                );
+
+                deleteEventButton.disabled =
+                    false;
+
+                deleteEventButton.textContent =
+                    "🗑️ Delete Event";
+
+            }
 
         }
-
-    }
-);
-
+    );
 
 }
+
 
 // =====================================
 // START
