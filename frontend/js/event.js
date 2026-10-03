@@ -25,7 +25,8 @@ const STORAGE_COLLECTION = "events";
 // This is NOT your password.
 
 const ADMIN_UID =
-    "s7XAHabgLfc92ktoM0kBmdLXfAD";
+    "s7XAHabgLfc92ktoM0kBmdLXfAD3";
+
 
 
 // =====================================

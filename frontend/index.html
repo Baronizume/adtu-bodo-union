@@ -1,436 +1,480 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
-    <title>ADTU Bodo Union | Event & Photo Hub</title>
+<title>ADTU Bodo Union | Event &amp; Photo Hub</title>
 
-    <link rel="stylesheet" href="./css/style.css">
+<!-- =========================
+     MAIN STYLESHEET
+========================== -->
+
+<link
+    rel="stylesheet"
+    href="./css/style.css">
 
 </head>
 
 <body>
 
-    <!-- =========================
-         NAVBAR
-    ========================== -->
+<!-- =========================
+     NAVBAR
+========================== -->
 
-    <header class="navbar">
+<header class="navbar">
 
-        <div class="nav-container">
+    <div class="nav-container">
 
-            <a href="#home" class="brand">
+        <!-- BRAND -->
 
-                <div class="brand-logo">
-                    ABU
-                </div>
+        <a
+            href="#home"
+            class="brand">
 
-                <div class="brand-text">
-
-                    <strong>
-                        ADTU BODO UNION
-                    </strong>
-
-                    <span>
-                        Event &amp; Photo Hub
-                    </span>
-
-                </div>
-
-            </a>
-
-
-            <button class="menu-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">
-                ☰
-            </button>
-
-
-            <nav id="navigation">
-
-                <a href="#home">
-                    Home
-                </a>
-
-                <a href="#events">
-                    Events
-                </a>
-
-                <a href="#photos">
-                    Photos
-                </a>
-
-                <a href="#add-event">
-                    Add Event
-                </a>
-
-            </nav>
-
-        </div>
-
-    </header>
-
-
-    <!-- =========================
-         MAIN
-    ========================== -->
-
-    <main>
-
-        <!-- HERO -->
-
-        <section class="hero" id="home">
-
-            <div class="hero-content">
-
-                <span class="hero-label">
-                    ADTU BODO UNION
-                </span>
-
-                <h1>
-                    Culture.
-                    <span>Community.</span>
-                    Memories.
-                </h1>
-
-                <p>
-                    Discover ADTU Bodo Union events and
-                    capture the moments that bring our
-                    community together.
-                </p>
-
-                <div class="hero-actions">
-
-                    <a href="#events" class="button button-primary">
-                        Explore Events
-                    </a>
-
-                    <a href="#calendar" class="button button-outline">
-                        View Calendar
-                    </a>
-
-                </div>
-
+            <div class="brand-logo">
+                ABU
             </div>
 
-
-            <div class="hero-visual">
-
-                <div class="visual-circle circle-purple"></div>
-
-                <div class="visual-circle circle-orange"></div>
-
-                <div class="camera-card">
-
-                    <span>
-                        📸
-                    </span>
-
-                    <strong>
-                        Capture
-                    </strong>
-
-                    <small>
-                        Your Moments
-                    </small>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             ADD EVENT
-        ========================== -->
-
-        <section class="add-event-section" id="add-event">
-
-            <div class="section-header">
-
-                <div>
-
-                    <span class="section-label">
-                        EVENT MANAGEMENT
-                    </span>
-
-                    <h2>
-                        Add Event
-                    </h2>
-
-                </div>
-
-                <p>
-                    Enter the event information manually.
-                </p>
-
-            </div>
-
-
-            <div class="event-form-card">
-
-                <form id="eventForm">
-
-                    <!-- EVENT NAME -->
-
-                    <div class="form-group">
-
-                        <label for="eventNameInput">
-                            Event Name
-                        </label>
-
-                        <input type="text" id="eventNameInput" placeholder="Enter event name" required>
-
-                    </div>
-
-
-                    <!-- EVENT DATE -->
-
-                    <div class="form-group">
-
-                        <label for="eventDateInput">
-                            Event Date
-                        </label>
-
-                        <input type="date" id="eventDateInput" required>
-
-                    </div>
-
-
-                    <!-- DESCRIPTION -->
-
-                    <div class="form-group">
-
-                        <label for="eventDescriptionInput">
-                            Description
-                        </label>
-
-                        <textarea id="eventDescriptionInput" rows="5" placeholder="Enter event description"
-                            required></textarea>
-
-                    </div>
-
-
-                    <!-- PHOTOS -->
-
-                    <div class="form-group">
-
-                        <label for="eventPhotosInput">
-                            Photos Link
-                        </label>
-
-                        <input type="url" id="eventPhotosInput" placeholder="https://drive.google.com/...">
-
-                    </div>
-
-
-                    <!-- VIDEOS -->
-
-                    <div class="form-group">
-
-                        <label for="eventVideosInput">
-                            Videos Link
-                        </label>
-
-                        <input type="url" id="eventVideosInput" placeholder="https://drive.google.com/...">
-
-                    </div>
-
-
-                    <div class="form-actions">
-
-                        <button type="submit" class="button button-primary">
-                            Add Event
-                        </button>
-
-                        <button type="button" id="clearEventsButton" class="button button-outline">
-                            Clear Saved Events
-                        </button>
-
-                    </div>
-
-
-                    <p id="eventFormMessage" class="form-message"></p>
-
-                </form>
-
-            </div>
-
-        </section>
-
-
-        <!-- =========================
-             EVENTS
-        ========================== -->
-
-        <section class="events-section" id="events">
-
-            <div class="section-header">
-
-                <div>
-
-                    <span class="section-label">
-                        EVENTS
-                    </span>
-
-                    <h2>
-                        Events
-                    </h2>
-
-                </div>
-
-                <p>
-                    Select a date from the calendar to view events.
-                </p>
-
-            </div>
-
-
-            <!-- FILTERS -->
-
-            <div class="event-filters">
-
-                <button type="button" class="filter-button active" data-filter="all">
-                    All
-                </button>
-
-                <button type="button" class="filter-button" data-filter="upcoming">
-                    Upcoming
-                </button>
-
-                <button type="button" class="filter-button" data-filter="today">
-                    Today
-                </button>
-
-                <button type="button" class="filter-button" data-filter="past">
-                    Past
-                </button>
-
-            </div>
-
-
-            <!-- CALENDAR -->
-
-            <div class="calendar-wrapper" id="calendar">
-
-                <div class="calendar-header">
-
-                    <button type="button" id="prevMonth" aria-label="Previous month">
-                        ←
-                    </button>
-
-                    <h3 id="calendarTitle"></h3>
-
-                    <button type="button" id="nextMonth" aria-label="Next month">
-                        →
-                    </button>
-
-                </div>
-
-
-                <div class="calendar-weekdays">
-
-                    <span>Sun</span>
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span>Thu</span>
-                    <span>Fri</span>
-                    <span>Sat</span>
-
-                </div>
-
-
-                <div class="calendar-days" id="calendarDays"></div>
-
-            </div>
-
-
-            <!-- SELECTED DATE -->
-
-            <div class="selected-date" id="selectedDate">
-                Select a date to view events.
-            </div>
-
-
-            <!-- EVENTS -->
-
-            <div id="events-container" class="events-grid"></div>
-
-        </section>
-
-
-        <!-- =========================
-             PHOTOS
-        ========================== -->
-
-        <section class="photo-section" id="photos">
-
-            <div class="photo-content">
-
-                <span class="section-label">
-                    EVENT PHOTOS
-                </span>
-
-                <h2>
-                    Be part of the memories.
-                </h2>
-
-                <p>
-                    During events, scan the event QR code
-                    to share your photos with the community.
-                </p>
-
-            </div>
-
-            <div class="photo-icon">
-                📷
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer>
-
-        <div class="footer-container">
-
-            <div>
+            <div class="brand-text">
 
                 <strong>
                     ADTU BODO UNION
                 </strong>
 
-                <p>
+                <span>
                     Event &amp; Photo Hub
-                </p>
+                </span>
 
             </div>
 
+        </a>
+
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            class="menu-button"
+            id="menuButton"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false">
+
+            ☰
+
+        </button>
+
+
+        <!-- NAVIGATION -->
+
+        <nav id="navigation">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#events">
+                Events
+            </a>
+
+            <a href="#photos">
+                Photos
+            </a>
+
+            <!-- ADMIN LOGIN -->
+
+            <a
+                href="./admin/login.html"
+                class="admin-nav-link">
+
+                🔐 Admin
+
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+
+<main>
+
+
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
+
+    <section
+        class="hero"
+        id="home">
+
+        <div class="hero-content">
+
+            <span class="hero-label">
+                ADTU BODO UNION
+            </span>
+
+
+            <h1>
+                Culture.
+                <span>
+                    Community.
+                </span>
+                Memories.
+            </h1>
+
+
             <p>
-                © <span id="year"></span>
-                ADTU Bodo Union
+                Discover ADTU Bodo Union events and capture
+                the moments that bring our community together.
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a
+                    href="#events"
+                    class="button button-primary">
+
+                    Explore Events
+
+                </a>
+
+
+                <a
+                    href="#calendar"
+                    class="button button-outline">
+
+                    View Calendar
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO VISUAL -->
+
+        <div class="hero-visual">
+
+            <div
+                class="visual-circle circle-purple">
+            </div>
+
+            <div
+                class="visual-circle circle-orange">
+            </div>
+
+
+            <div class="camera-card">
+
+                <span>
+                    📸
+                </span>
+
+                <strong>
+                    Capture
+                </strong>
+
+                <small>
+                    Your Moments
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         EVENTS SECTION
+    ========================== -->
+
+    <section
+        class="events-section"
+        id="events">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-label">
+                    EVENTS
+                </span>
+
+                <h2>
+                    Upcoming Events
+                </h2>
+
+            </div>
+
+
+            <p>
+                Select a date from the calendar
+                to view events.
             </p>
 
         </div>
 
-    </footer>
+
+        <!-- EVENT FILTERS -->
+
+        <div class="event-filters">
+
+            <button
+                type="button"
+                class="filter-button active"
+                data-filter="all">
+
+                All
+
+            </button>
 
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="upcoming">
 
-    <script src="./js/firebase.js"></script>
-    <script src="./js/app.js"></script>
+                Upcoming
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="today">
+
+                Today
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="past">
+
+                Past
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             CALENDAR
+        ========================== -->
+
+        <div
+            class="calendar-wrapper"
+            id="calendar">
+
+
+            <!-- CALENDAR HEADER -->
+
+            <div class="calendar-header">
+
+                <button
+                    type="button"
+                    id="prevMonth"
+                    aria-label="Previous month">
+
+                    ←
+
+                </button>
+
+
+                <h3 id="calendarTitle"></h3>
+
+
+                <button
+                    type="button"
+                    id="nextMonth"
+                    aria-label="Next month">
+
+                    →
+
+                </button>
+
+            </div>
+
+
+            <!-- WEEKDAYS -->
+
+            <div class="calendar-weekdays">
+
+                <span>
+                    Sun
+                </span>
+
+                <span>
+                    Mon
+                </span>
+
+                <span>
+                    Tue
+                </span>
+
+                <span>
+                    Wed
+                </span>
+
+                <span>
+                    Thu
+                </span>
+
+                <span>
+                    Fri
+                </span>
+
+                <span>
+                    Sat
+                </span>
+
+            </div>
+
+
+            <!-- CALENDAR DAYS -->
+
+            <div
+                class="calendar-days"
+                id="calendarDays">
+            </div>
+
+        </div>
+
+
+        <!-- SELECTED DATE -->
+
+        <div
+            class="selected-date"
+            id="selectedDate">
+
+            Select a date to view events.
+
+        </div>
+
+
+        <!-- CURRENT EVENT -->
+
+        <div
+            id="current-event-container"
+            class="current-event-container">
+        </div>
+
+
+        <!-- EVENTS GRID -->
+
+        <div
+            id="events-container"
+            class="events-grid">
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         EVENT PHOTOS SECTION
+    ========================== -->
+
+    <section
+        class="photo-section"
+        id="photos">
+
+
+        <div class="photo-content">
+
+            <span class="section-label">
+                EVENT PHOTOS
+            </span>
+
+
+            <h2>
+                Be part of the memories.
+            </h2>
+
+
+            <p>
+                During events, scan the event QR code
+                to share your photos with the community.
+            </p>
+
+        </div>
+
+
+        <div class="photo-icon">
+            📷
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div>
+
+            <strong>
+                ADTU BODO UNION
+            </strong>
+
+            <p>
+                Event &amp; Photo Hub
+            </p>
+
+        </div>
+
+
+        <p>
+            ©
+            <span id="year"></span>
+            ADTU Bodo Union
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="./js/firebase.js"></script>
+
+<script src="./js/app.js"></script>
 
 
 </body>
