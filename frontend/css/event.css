@@ -1,17 +1,309 @@
-/* ADMIN DELETE BUTTON */
+/* =====================================
+   ADTU BODO UNION
+   EVENT DETAILS PAGE CSS
+===================================== */
+
+
+/* =====================================
+   ADMIN DELETE BUTTON
+===================================== */
+
 .delete-event-button {
-    display: inline-block !important;
-    background: #dc2626 !important;
-    color: #ffffff !important;
-    border: none !important;
-    padding: 12px 20px !important;
-    border-radius: 8px !important;
-    cursor: pointer !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    margin-top: 15px !important;
+    display: none;
+    background: #dc2626;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 15px;
 }
 
 .delete-event-button:hover {
-    background: #b91c1c !important;
+    background: #b91c1c;
+}
+
+.delete-event-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =====================================
+   ADMIN UPLOAD SECTION
+===================================== */
+
+.admin-upload-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: #f8f9ff;
+    border: 1px solid #ddd;
+    border-radius: 14px;
+}
+
+.admin-upload-section h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.admin-upload-section p {
+    color: #666;
+}
+
+
+/* =====================================
+   MEDIA COUNTS
+===================================== */
+
+.media-upload-count {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.media-upload-count span:first-child {
+    color: #7b1fa2;
+}
+
+.media-upload-count span:last-child {
+    color: #00897b;
+}
+
+
+/* =====================================
+   UPLOAD CONTROLS
+===================================== */
+
+.upload-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.upload-controls input[type="file"] {
+    max-width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+    background: #ffffff;
+}
+
+
+/* =====================================
+   UPLOAD BUTTONS
+===================================== */
+
+.upload-controls .button {
+    border: none;
+    cursor: pointer;
+}
+
+#uploadPhotosButton {
+    background: #7b1fa2;
+}
+
+#uploadPhotosButton:hover {
+    background: #641782;
+}
+
+#uploadVideosButton {
+    background: #00897b;
+}
+
+#uploadVideosButton:hover {
+    background: #00695c;
+}
+
+#uploadPhotosButton:disabled,
+#uploadVideosButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =====================================
+   UPLOAD STATUS
+===================================== */
+
+#uploadStatus {
+    min-height: 24px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+#uploadStatus.success {
+    color: #2e7d32;
+}
+
+#uploadStatus.error {
+    color: #c62828;
+}
+
+
+/* =====================================
+   EVENT GALLERY
+===================================== */
+
+.event-gallery-section {
+    margin-top: 35px;
+}
+
+.event-gallery-section h2 {
+    margin-top: 30px;
+}
+
+
+/* =====================================
+   PHOTO GALLERY
+===================================== */
+
+.event-photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(180px, 1fr)
+    );
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.event-photo-gallery img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.event-photo-gallery img:hover {
+    transform: scale(1.03);
+}
+
+
+/* =====================================
+   VIDEO GALLERY
+===================================== */
+
+.event-video-gallery {
+    margin-top: 15px;
+}
+
+.event-video-gallery video {
+    width: 100%;
+    max-width: 900px;
+    display: block;
+    margin: 20px auto;
+    border-radius: 10px;
+    background: #000;
+}
+
+
+/* =====================================
+   EMPTY MEDIA MESSAGE
+===================================== */
+
+.media-empty {
+    padding: 25px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    color: #666;
+    text-align: center;
+}
+
+
+/* =====================================
+   LIGHTBOX
+===================================== */
+
+.photo-lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.photo-lightbox.active {
+    display: flex;
+}
+
+.photo-lightbox img {
+    max-width: 95%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: transparent;
+    color: #ffffff;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 700px) {
+
+    .admin-upload-section {
+        padding: 18px;
+    }
+
+    .media-upload-count {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .upload-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .upload-controls input[type="file"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .upload-controls .button {
+        width: 100%;
+    }
+
+    .event-photo-gallery {
+        grid-template-columns: repeat(
+            2,
+            minmax(0, 1fr)
+        );
+        gap: 10px;
+    }
+
+    .event-photo-gallery img {
+        height: 140px;
+    }
+
+    .delete-event-button {
+        width: 100%;
+    }
+
 }

@@ -96,6 +96,7 @@ function createEventId() {
             .toString(36)
             .substring(2, 8)
     );
+
 }
 
 
@@ -115,6 +116,7 @@ function escapeHTML(value) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+
 }
 
 
@@ -145,6 +147,7 @@ function formatDate(dateString) {
             year: "numeric"
         }
     );
+
 }
 
 
@@ -171,6 +174,7 @@ function getTodayString() {
         ).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
+
 }
 
 
@@ -192,6 +196,7 @@ function getDateStatus(eventDate) {
     }
 
     return "past";
+
 }
 
 
@@ -201,26 +206,43 @@ function getDateStatus(eventDate) {
 
 function loadEvents() {
 
+    if (typeof db === "undefined") {
+
+        console.error(
+            "Firebase Firestore database is not available."
+        );
+
+        showMessage(
+            "Firebase database is not available.",
+            "error"
+        );
+
+        return;
+    }
+
     db.collection(STORAGE_COLLECTION)
         .onSnapshot(
+
             function (snapshot) {
 
-                events = snapshot.docs.map(
-                    function (doc) {
+                events =
+                    snapshot.docs.map(
+                        function (doc) {
 
-                        return {
-                            id: doc.id,
-                            ...doc.data()
-                        };
+                            return {
+                                id: doc.id,
+                                ...doc.data()
+                            };
 
-                    }
-                );
+                        }
+                    );
 
                 renderCalendar();
 
                 renderEvents();
 
             },
+
             function (error) {
 
                 console.error(
@@ -235,6 +257,7 @@ function loadEvents() {
 
             }
         );
+
 }
 
 
@@ -262,9 +285,13 @@ function renderEvents() {
 
         filteredEvents =
             filteredEvents.filter(
-                event =>
-                    event.date === selectedDate
+                function (event) {
+
+                    return event.date === selectedDate;
+
+                }
             );
+
     }
 
 
@@ -276,10 +303,16 @@ function renderEvents() {
 
         filteredEvents =
             filteredEvents.filter(
-                event =>
-                    getDateStatus(event.date) ===
-                    currentFilter
+                function (event) {
+
+                    return (
+                        getDateStatus(event.date) ===
+                        currentFilter
+                    );
+
+                }
             );
+
     }
 
 
@@ -288,11 +321,14 @@ function renderEvents() {
     // =================================
 
     filteredEvents.sort(
-        (a, b) =>
-            String(a.date || "")
+        function (a, b) {
+
+            return String(a.date || "")
                 .localeCompare(
                     String(b.date || "")
-                )
+                );
+
+        }
     );
 
 
@@ -338,6 +374,21 @@ function renderEvents() {
                 getDateStatus(event.date);
 
 
+            /*
+                    IMPORTANT:
+                    event.html is located at:
+
+                    frontend/events/event.html
+
+                    Therefore from:
+
+                    frontend/index.html
+
+                    the correct path is:
+
+                    ./events/event.html
+                */
+
             card.innerHTML = `
 
                 <div class="event-card-icon">
@@ -363,19 +414,24 @@ function renderEvents() {
                 <div class="event-card-actions">
 
                     <a
-                        href="events/event.html?id=${encodeURIComponent(event.id)}"
+                        href="./events/event.html?id=${encodeURIComponent(event.id)}"
+
                         class="button button-primary"
                     >
-                        View Event
+                        👁️ View Event
                     </a>
 
                 </div>
             `;
 
-            eventsContainer.appendChild(card);
+
+            eventsContainer.appendChild(
+                card
+            );
 
         }
     );
+
 }
 
 
@@ -402,10 +458,6 @@ function renderCalendar() {
         currentCalendarDate.getMonth();
 
 
-    // =================================
-    // MONTH TITLE
-    // =================================
-
     calendarTitle.textContent =
         currentCalendarDate.toLocaleDateString(
             "en-IN",
@@ -416,10 +468,6 @@ function renderCalendar() {
         );
 
 
-    // =================================
-    // FIRST DAY
-    // =================================
-
     const firstDay =
         new Date(
             year,
@@ -427,10 +475,6 @@ function renderCalendar() {
             1
         ).getDay();
 
-
-    // =================================
-    // DAYS IN MONTH
-    // =================================
 
     const daysInMonth =
         new Date(
@@ -459,6 +503,7 @@ function renderCalendar() {
         calendarDays.appendChild(
             emptyDay
         );
+
     }
 
 
@@ -489,14 +534,13 @@ function renderCalendar() {
             day;
 
 
-        // =================================
-        // EVENT ON DATE
-        // =================================
-
         const dayEvents =
             events.filter(
-                event =>
-                    event.date === dateString
+                function (event) {
+
+                    return event.date === dateString;
+
+                }
             );
 
 
@@ -508,12 +552,9 @@ function renderCalendar() {
 
             dayButton.title =
                 `${dayEvents.length} event${dayEvents.length > 1 ? "s" : ""}`;
+
         }
 
-
-        // =================================
-        // TODAY
-        // =================================
 
         if (
             dateString ===
@@ -523,12 +564,9 @@ function renderCalendar() {
             dayButton.classList.add(
                 "today"
             );
+
         }
 
-
-        // =================================
-        // SELECTED
-        // =================================
 
         if (
             selectedDate ===
@@ -538,12 +576,9 @@ function renderCalendar() {
             dayButton.classList.add(
                 "selected"
             );
+
         }
 
-
-        // =================================
-        // CLICK DATE
-        // =================================
 
         dayButton.addEventListener(
             "click",
@@ -570,7 +605,9 @@ function renderCalendar() {
         calendarDays.appendChild(
             dayButton
         );
+
     }
+
 }
 
 
@@ -592,9 +629,9 @@ function updateSelectedDate() {
         return;
     }
 
-
     selectedDateElement.textContent =
         `Events on ${formatDate(selectedDate)}`;
+
 }
 
 
@@ -615,6 +652,7 @@ function updateFilterButtons() {
 
         }
     );
+
 }
 
 
@@ -674,6 +712,7 @@ if (prevMonthButton) {
 
         }
     );
+
 }
 
 
@@ -705,6 +744,7 @@ if (nextMonthButton) {
 
         }
     );
+
 }
 
 
@@ -722,19 +762,19 @@ if (eventForm) {
 
 
             const name =
-                eventNameInput.value.trim();
+                eventNameInput
+                    ? eventNameInput.value.trim()
+                    : "";
 
             const date =
-                eventDateInput.value;
+                eventDateInput
+                    ? eventDateInput.value
+                    : "";
 
             const description =
-                eventDescriptionInput.value.trim();
-
-            const photos =
-                eventPhotosInput.value.trim();
-
-            const videos =
-                eventVideosInput.value.trim();
+                eventDescriptionInput
+                    ? eventDescriptionInput.value.trim()
+                    : "";
 
 
             if (
@@ -754,27 +794,33 @@ if (eventForm) {
 
             const newEvent = {
 
-                name: name,
+                name:
+                    name,
 
-                date: date,
+                date:
+                    date,
 
-                description: description,
-
-                photos: photos,
-
-                videos: videos,
+                description:
+                    description,
 
                 createdAt:
                     firebase.firestore.FieldValue.serverTimestamp()
+
             };
 
 
             try {
 
                 await db
-                    .collection(STORAGE_COLLECTION)
-                    .doc(createEventId())
-                    .set(newEvent);
+                    .collection(
+                        STORAGE_COLLECTION
+                    )
+                    .doc(
+                        createEventId()
+                    )
+                    .set(
+                        newEvent
+                    );
 
 
                 showMessage(
@@ -811,6 +857,9 @@ if (eventForm) {
 
                 updateSelectedDate();
 
+                renderCalendar();
+
+                renderEvents();
 
             } catch (error) {
 
@@ -828,6 +877,7 @@ if (eventForm) {
 
         }
     );
+
 }
 
 
@@ -856,7 +906,9 @@ if (clearEventsButton) {
 
                 const snapshot =
                     await db
-                        .collection(STORAGE_COLLECTION)
+                        .collection(
+                            STORAGE_COLLECTION
+                        )
                         .get();
 
 
@@ -867,7 +919,9 @@ if (clearEventsButton) {
                 snapshot.forEach(
                     function (doc) {
 
-                        batch.delete(doc.ref);
+                        batch.delete(
+                            doc.ref
+                        );
 
                     }
                 );
@@ -893,7 +947,6 @@ if (clearEventsButton) {
                     "success"
                 );
 
-
             } catch (error) {
 
                 console.error(
@@ -910,6 +963,7 @@ if (clearEventsButton) {
 
         }
     );
+
 }
 
 
@@ -945,6 +999,7 @@ function showMessage(
         },
         4000
     );
+
 }
 
 
@@ -999,6 +1054,7 @@ if (
 
             }
         );
+
 }
 
 
