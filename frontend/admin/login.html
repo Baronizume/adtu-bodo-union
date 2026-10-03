@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>ADTU Bodo Union | Admin Login</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css">
+
+    <style>
+
+        .admin-login-page {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .admin-login-card {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        .admin-login-card h1 {
+            margin-bottom: 10px;
+        }
+
+        .admin-login-card p {
+            margin-bottom: 25px;
+            color: #666;
+        }
+
+        .admin-login-card label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .admin-login-card input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .admin-login-card button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .login-button {
+            background: #1f6feb;
+            color: white;
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-message {
+            margin-top: 15px;
+            text-align: center;
+            color: #c62828;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a
+            href="../index.html"
+            class="brand">
+
+            <div class="brand-logo">
+                ABU
+            </div>
+
+            <div class="brand-text">
+
+                <strong>
+                    ADTU BODO UNION
+                </strong>
+
+                <span>
+                    Event &amp; Photo Hub
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="admin-login-page">
+
+        <div class="admin-login-card">
+
+            <h1>
+                🔐 Admin Login
+            </h1>
+
+            <p>
+                Sign in to manage ADTU Bodo Union events.
+            </p>
+
+
+            <form id="adminLoginForm">
+
+                <label for="adminEmail">
+                    Email
+                </label>
+
+                <input
+                    id="adminEmail"
+                    type="email"
+                    placeholder="Admin email"
+                    autocomplete="username"
+                    required>
+
+
+                <label for="adminPassword">
+                    Password
+                </label>
+
+                <input
+                    id="adminPassword"
+                    type="password"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                    required>
+
+
+                <button
+                    id="loginButton"
+                    type="submit"
+                    class="login-button">
+
+                    🔐 Login
+
+                </button>
+
+            </form>
+
+
+            <div
+                id="loginMessage"
+                class="login-message">
+            </div>
+
+
+            <a
+                href="../index.html"
+                class="back-link">
+
+                ← Back to website
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <div class="footer-container">
+
+        <div>
+
+            <strong>
+                ADTU BODO UNION
+            </strong>
+
+            <p>
+                Event &amp; Photo Hub
+            </p>
+
+        </div>
+
+        <p>
+            ©
+            <span id="year"></span>
+            ADTU Bodo Union
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     FIREBASE
+========================== -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script src="../js/firebase.js"></script>
+
+
+<script>
+
+    const loginForm =
+        document.getElementById(
+            "adminLoginForm"
+        );
+
+    const emailInput =
+        document.getElementById(
+            "adminEmail"
+        );
+
+    const passwordInput =
+        document.getElementById(
+            "adminPassword"
+        );
+
+    const loginButton =
+        document.getElementById(
+            "loginButton"
+        );
+
+    const loginMessage =
+        document.getElementById(
+            "loginMessage"
+        );
+
+    const yearElement =
+        document.getElementById(
+            "year"
+        );
+
+
+    if (yearElement) {
+
+        yearElement.textContent =
+            new Date().getFullYear();
+
+    }
+
+
+    // =====================================
+    // LOGIN
+    // =====================================
+
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const email =
+                emailInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+
+            loginMessage.textContent =
+                "";
+
+
+            loginButton.disabled =
+                true;
+
+            loginButton.textContent =
+                "Logging in...";
+
+
+            try {
+
+                await auth.signInWithEmailAndPassword(
+                    email,
+                    password
+                );
+
+
+                window.location.href =
+                    "../index.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Admin login error:",
+                    error
+                );
+
+
+                loginMessage.textContent =
+                    "Invalid email or password.";
+
+
+                loginButton.disabled =
+                    false;
+
+                loginButton.textContent =
+                    "🔐 Login";
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+
+</html>

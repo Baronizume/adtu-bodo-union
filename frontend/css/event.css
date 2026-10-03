@@ -1,0 +1,17 @@
+/* ADMIN DELETE BUTTON */
+.delete-event-button {
+    display: inline-block !important;
+    background: #dc2626 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-top: 15px !important;
+}
+
+.delete-event-button:hover {
+    background: #b91c1c !important;
+}

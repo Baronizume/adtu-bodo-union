@@ -4,31 +4,28 @@ EVENT DETAILS PAGE
 --------------------------------
 Events are loaded from Cloud Firestore.
 
-GitHub Pages structure:
-
-adtu-bodo-union/
-├── frontend/
-│   ├── events/
-│   │   └── event.html
-│   ├── js/
-│   │   └── event.js
-│   └── ...
-│
-└── media/
-    └── rwnswndri-dance/
-        ├── photos/
-        │   ├── DSC_0049.JPG
-        │   ├── DSC_0050.JPG
-        │   ├── DSC_0057.JPG
-        │   ├── DSC_0058.JPG
-        │   ├── DSC_0059.JPG
-        │   └── DSC_0060.JPG
-        │
-        └── videos/
-            └── WhatsApp Video 2026-09-30 at10.14.53 PM (1) (1).mp4
+DELETE PROTECTION:
+Only the Firebase admin account can see
+and use the Delete Event button.
 */
 
+
+// =====================================
+// FIRESTORE COLLECTION
+// =====================================
+
 const STORAGE_COLLECTION = "events";
+
+
+// =====================================
+// ADMIN CONFIGURATION
+// =====================================
+
+// Firebase Authentication UID of your admin account.
+// This is NOT your password.
+
+const ADMIN_UID =
+    "s7XAHabgLfc92ktoM0kBmdLXfAD";
 
 
 // =====================================
@@ -76,6 +73,91 @@ const lightboxClose =
 
 
 // =====================================
+// ADMIN CHECK
+// =====================================
+
+function isAdmin() {
+
+    const user =
+        auth.currentUser;
+
+    return (
+        user !== null &&
+        user.uid === ADMIN_UID
+    );
+
+}
+
+
+// =====================================
+// UPDATE DELETE BUTTON
+// =====================================
+
+function updateDeleteButton() {
+
+    if (!deleteEventButton) {
+        console.error("Delete button not found in HTML.");
+        return;
+    }
+
+    const user = auth.currentUser;
+
+    console.log("Checking admin...");
+    console.log("Current UID:", user ? user.uid : "No user");
+    console.log("Admin UID:", ADMIN_UID);
+
+    if (user && user.uid === ADMIN_UID) {
+
+        console.log("ADMIN VERIFIED - SHOWING DELETE BUTTON");
+
+        deleteEventButton.style.display = "inline-block";
+
+    } else {
+
+        console.log("NOT ADMIN - HIDING DELETE BUTTON");
+
+        deleteEventButton.style.display = "none";
+
+    }
+
+}
+
+
+
+// =====================================
+// FIREBASE AUTH STATE
+// =====================================
+
+auth.onAuthStateChanged(
+    function (user) {
+
+        if (user) {
+
+            console.log(
+                "Firebase user signed in:",
+                user.email
+            );
+
+            console.log(
+                "Firebase UID:",
+                user.uid
+            );
+
+        } else {
+
+            console.log(
+                "No user signed in."
+            );
+
+        }
+
+        updateDeleteButton();
+
+    }
+);
+
+
+// =====================================
 // FOOTER YEAR
 // =====================================
 
@@ -119,10 +201,11 @@ const EVENT_MEDIA = {
 
         ],
 
-      videos: [
-        "rwnswndri-dance.mp4"
-    ]
+        videos: [
 
+            "rwnswndri-dance.mp4"
+
+        ]
 
     }
 
@@ -160,27 +243,10 @@ function getMediaFolder(event) {
 // CREATE GITHUB PAGES MEDIA URL
 // =====================================
 
-function getMediaUrl(
-    mediaFolder,
-    type,
-    fileName
-) {
-
-    /*
-        GitHub Pages URL:
-
-        https://baronizume.github.io/adtu-bodo-union/
-
-        Media:
-
-        /adtu-bodo-union/media/
-
-        Therefore we use the repository
-        root path directly.
-    */
+function getMediaUrl(mediaFolder, type, fileName) {
 
     return (
-        "/adtu-bodo-union/media/" +
+        "../../media/" +
         mediaFolder +
         "/" +
         type +
@@ -189,6 +255,7 @@ function getMediaUrl(
     );
 
 }
+
 
 
 // =====================================
@@ -290,9 +357,9 @@ function loadEventMedia(event) {
                         "pointer";
 
 
-                    // -----------------------------
+                    // =================================
                     // PHOTO CLICK
-                    // -----------------------------
+                    // =================================
 
                     image.addEventListener(
                         "click",
@@ -307,9 +374,9 @@ function loadEventMedia(event) {
                     );
 
 
-                    // -----------------------------
+                    // =================================
                     // PHOTO ERROR
-                    // -----------------------------
+                    // =================================
 
                     image.addEventListener(
                         "error",
@@ -438,9 +505,9 @@ function loadEventMedia(event) {
                     );
 
 
-                    // -----------------------------
+                    // =================================
                     // VIDEO ERROR
-                    // -----------------------------
+                    // =================================
 
                     video.addEventListener(
                         "error",
@@ -614,8 +681,13 @@ if (viewMediaButton) {
 
 
             eventGallery.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+
+                behavior:
+                    "smooth",
+
+                block:
+                    "start"
+
             });
 
         }
@@ -737,6 +809,7 @@ function displayEvent(event) {
                 eventDate.toLocaleDateString(
                     "en-IN",
                     {
+
                         day:
                             "numeric",
 
@@ -745,6 +818,7 @@ function displayEvent(event) {
 
                         year:
                             "numeric"
+
                     }
                 );
 
@@ -843,6 +917,13 @@ function displayEvent(event) {
 
     }
 
+
+    // =================================
+    // ADMIN DELETE BUTTON
+    // =================================
+
+    updateDeleteButton();
+
 }
 
 
@@ -936,6 +1017,27 @@ if (deleteEventButton) {
         "click",
         async function () {
 
+            // =================================
+            // SECURITY CHECK
+            // =================================
+
+            if (!isAdmin()) {
+
+                alert(
+                    "You are not authorized to delete events."
+                );
+
+                updateDeleteButton();
+
+                return;
+
+            }
+
+
+            // =================================
+            // EVENT ID CHECK
+            // =================================
+
             if (!eventId) {
 
                 alert(
@@ -947,11 +1049,19 @@ if (deleteEventButton) {
             }
 
 
+            // =================================
+            // EVENT NAME
+            // =================================
+
             const eventName =
                 nameElement
                     ? nameElement.textContent
                     : "this event";
 
+
+            // =================================
+            // CONFIRM DELETE
+            // =================================
 
             const confirmed =
                 window.confirm(
@@ -966,6 +1076,10 @@ if (deleteEventButton) {
             }
 
 
+            // =================================
+            // DELETE STATE
+            // =================================
+
             deleteEventButton.disabled =
                 true;
 
@@ -975,6 +1089,10 @@ if (deleteEventButton) {
 
 
             try {
+
+                // =================================
+                // DELETE FIRESTORE EVENT
+                // =================================
 
                 await db
                     .collection(
@@ -988,6 +1106,10 @@ if (deleteEventButton) {
                     "Event deleted successfully."
                 );
 
+
+                // =================================
+                // RETURN TO EVENTS
+                // =================================
 
                 window.location.href =
                     "../index.html#events";

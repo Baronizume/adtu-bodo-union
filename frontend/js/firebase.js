@@ -12,6 +12,18 @@ const firebaseConfig = {
     measurementId: "G-MR683YR6LL"
 };
 
+
+// =====================================
+// INITIALIZE FIREBASE
+// =====================================
+
 firebase.initializeApp(firebaseConfig);
 
+
+// =====================================
+// FIREBASE SERVICES
+// =====================================
+
 const db = firebase.firestore();
+
+const auth = firebase.auth();
