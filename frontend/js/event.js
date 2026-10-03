@@ -246,7 +246,7 @@ function getMediaFolder(event) {
 function getMediaUrl(mediaFolder, type, fileName) {
 
     return (
-        "../../media/" +
+        "../media/" +
         mediaFolder +
         "/" +
         type +
