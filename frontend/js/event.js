@@ -16,6 +16,11 @@ FEATURES:
 - Display uploaded videos
 - Photo lightbox
 - QR code
+- Fast parallel photo uploads
+- Resumable video uploads
+- Upload progress
+- Automatic gallery refresh
+- Automatic media counts
 
 FIRESTORE STRUCTURE:
 
@@ -41,6 +46,22 @@ const EVENTS_COLLECTION = "events";
 
 const ADMIN_UID =
     "s7XAHabgLfc92ktoM0kBmdLXfAD3";
+
+
+// Maximum file sizes
+
+const MAX_PHOTO_SIZE =
+    20 * 1024 * 1024; // 20 MB
+
+const MAX_VIDEO_SIZE =
+    500 * 1024 * 1024; // 500 MB
+
+
+// Number of files uploaded simultaneously
+
+const PHOTO_CONCURRENCY = 4;
+
+const VIDEO_CONCURRENCY = 2;
 
 
 // ==================================================
@@ -152,6 +173,7 @@ function isAdmin() {
         user &&
         user.uid === ADMIN_UID
     );
+
 }
 
 
@@ -503,9 +525,17 @@ async function loadAllMedia() {
     }
 
 
-    await loadPhotos();
+    /*
+    Load photos and videos at the same time.
 
-    await loadVideos();
+    This is faster than waiting for photos
+    before starting videos.
+    */
+
+    await Promise.all([
+        loadPhotos(),
+        loadVideos()
+    ]);
 
 }
 
@@ -532,7 +562,9 @@ async function loadPhotos() {
 
         const snapshot =
             await db
-                .collection("events")
+                .collection(
+                    EVENTS_COLLECTION
+                )
                 .doc(eventId)
                 .collection("photos")
                 .get();
@@ -690,7 +722,9 @@ async function loadVideos() {
 
         const snapshot =
             await db
-                .collection("events")
+                .collection(
+                    EVENTS_COLLECTION
+                )
                 .doc(eventId)
                 .collection("videos")
                 .get();
@@ -822,346 +856,6 @@ async function loadVideos() {
 
 
 // ==================================================
-// UPLOAD PHOTOS
-// ==================================================
-
-if (uploadPhotosButton) {
-
-    uploadPhotosButton.addEventListener(
-        "click",
-        async function () {
-
-            if (!isAdmin()) {
-
-                showUploadStatus(
-                    "You are not authorized.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            const files =
-                Array.from(
-                    eventPhotoInput.files
-                );
-
-
-            if (files.length === 0) {
-
-                showUploadStatus(
-                    "Please select one or more photos.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            uploadPhotosButton.disabled =
-                true;
-
-
-            uploadPhotosButton.textContent =
-                "Uploading...";
-
-
-            try {
-
-                let uploaded =
-                    0;
-
-
-                for (
-                    const file of files
-                ) {
-
-                    const safeName =
-                        createSafeFileName(
-                            file.name
-                        );
-
-
-                    const path =
-                        "events/" +
-                        eventId +
-                        "/photos/" +
-                        safeName;
-
-
-                    const storageRef =
-                        storage
-                            .ref()
-                            .child(path);
-
-
-                    await storageRef.put(
-                        file
-                    );
-
-
-                    const downloadURL =
-                        await storageRef
-                            .getDownloadURL();
-
-
-                    await db
-                        .collection("events")
-                        .doc(eventId)
-                        .collection("photos")
-                        .add({
-
-                            name:
-                                file.name,
-
-                            url:
-                                downloadURL,
-
-                            path:
-                                path,
-
-                            contentType:
-                                file.type,
-
-                            uploadedAt:
-                                firebase.firestore
-                                    .FieldValue
-                                    .serverTimestamp()
-
-                        });
-
-
-                    uploaded++;
-
-
-                    showUploadStatus(
-                        `Uploaded ${uploaded} of ${files.length} photo(s)...`,
-                        "loading"
-                    );
-
-                }
-
-
-                showUploadStatus(
-                    `✅ ${uploaded} photo(s) uploaded successfully.`,
-                    "success"
-                );
-
-
-                eventPhotoInput.value =
-                    "";
-
-
-                await loadPhotos();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Photo upload error:",
-                    error
-                );
-
-
-                showUploadStatus(
-                    "❌ Photo upload failed: " +
-                    (
-                        error.message ||
-                        "Unknown error"
-                    ),
-                    "error"
-                );
-
-            }
-
-
-            uploadPhotosButton.disabled =
-                false;
-
-
-            uploadPhotosButton.textContent =
-                "📷 Upload Photos";
-
-        }
-    );
-
-}
-
-
-// ==================================================
-// UPLOAD VIDEOS
-// ==================================================
-
-if (uploadVideosButton) {
-
-    uploadVideosButton.addEventListener(
-        "click",
-        async function () {
-
-            if (!isAdmin()) {
-
-                showUploadStatus(
-                    "You are not authorized.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            const files =
-                Array.from(
-                    eventVideoInput.files
-                );
-
-
-            if (files.length === 0) {
-
-                showUploadStatus(
-                    "Please select one or more videos.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-
-            uploadVideosButton.disabled =
-                true;
-
-
-            uploadVideosButton.textContent =
-                "Uploading...";
-
-
-            try {
-
-                let uploaded =
-                    0;
-
-
-                for (
-                    const file of files
-                ) {
-
-                    const safeName =
-                        createSafeFileName(
-                            file.name
-                        );
-
-
-                    const path =
-                        "events/" +
-                        eventId +
-                        "/videos/" +
-                        safeName;
-
-
-                    const storageRef =
-                        storage
-                            .ref()
-                            .child(path);
-
-
-                    await storageRef.put(
-                        file
-                    );
-
-
-                    const downloadURL =
-                        await storageRef
-                            .getDownloadURL();
-
-
-                    await db
-                        .collection("events")
-                        .doc(eventId)
-                        .collection("videos")
-                        .add({
-
-                            name:
-                                file.name,
-
-                            url:
-                                downloadURL,
-
-                            path:
-                                path,
-
-                            contentType:
-                                file.type,
-
-                            uploadedAt:
-                                firebase.firestore
-                                    .FieldValue
-                                    .serverTimestamp()
-
-                        });
-
-
-                    uploaded++;
-
-
-                    showUploadStatus(
-                        `Uploaded ${uploaded} of ${files.length} video(s)...`,
-                        "loading"
-                    );
-
-                }
-
-
-                showUploadStatus(
-                    `✅ ${uploaded} video(s) uploaded successfully.`,
-                    "success"
-                );
-
-
-                eventVideoInput.value =
-                    "";
-
-
-                await loadVideos();
-
-
-            } catch (error) {
-
-                console.error(
-                    "Video upload error:",
-                    error
-                );
-
-
-                showUploadStatus(
-                    "❌ Video upload failed: " +
-                    (
-                        error.message ||
-                        "Unknown error"
-                    ),
-                    "error"
-                );
-
-            }
-
-
-            uploadVideosButton.disabled =
-                false;
-
-
-            uploadVideosButton.textContent =
-                "🎥 Upload Videos";
-
-        }
-    );
-
-}
-
-
-// ==================================================
 // SAFE FILE NAME
 // ==================================================
 
@@ -1191,6 +885,42 @@ function createSafeFileName(
 
 
 // ==================================================
+// FORMAT FILE SIZE
+// ==================================================
+
+function formatFileSize(bytes) {
+
+    if (!bytes) {
+        return "0 MB";
+    }
+
+
+    const mb =
+        bytes /
+        (1024 * 1024);
+
+
+    if (mb < 1) {
+
+        return (
+            Math.round(
+                bytes / 1024
+            ) +
+            " KB"
+        );
+
+    }
+
+
+    return (
+        mb.toFixed(1) +
+        " MB"
+    );
+
+}
+
+
+// ==================================================
 // UPLOAD STATUS
 // ==================================================
 
@@ -1211,6 +941,673 @@ function showUploadStatus(
     uploadStatus.className =
         "status-message " +
         type;
+
+}
+
+
+// ==================================================
+// UPLOAD ONE FILE
+// ==================================================
+
+function uploadSingleFile(
+    file,
+    type,
+    onProgress
+) {
+
+    return new Promise(
+        function (
+            resolve,
+            reject
+        ) {
+
+            if (!eventId) {
+
+                reject(
+                    new Error(
+                        "Event ID is missing."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            const safeName =
+                createSafeFileName(
+                    file.name
+                );
+
+
+            const path =
+                "events/" +
+                eventId +
+                "/" +
+                type +
+                "/" +
+                safeName;
+
+
+            const storageRef =
+                storage
+                    .ref()
+                    .child(path);
+
+
+            /*
+            Firebase resumable upload.
+
+            This is especially useful for videos.
+            */
+
+            const uploadTask =
+                storageRef.put(
+                    file,
+                    {
+                        contentType:
+                            file.type
+                    }
+                );
+
+
+            uploadTask.on(
+                "state_changed",
+
+                function (snapshot) {
+
+                    const progress =
+                        snapshot.totalBytes > 0
+                            ? (
+                                snapshot.bytesTransferred /
+                                snapshot.totalBytes
+                            ) * 100
+                            : 0;
+
+
+                    if (onProgress) {
+
+                        onProgress(
+                            progress,
+                            snapshot.bytesTransferred,
+                            snapshot.totalBytes
+                        );
+
+                    }
+
+                },
+
+                function (error) {
+
+                    reject(error);
+
+                },
+
+                async function () {
+
+                    try {
+
+                        const downloadURL =
+                            await storageRef
+                                .getDownloadURL();
+
+
+                        const collectionName =
+                            type === "photos"
+                                ? "photos"
+                                : "videos";
+
+
+                        const docRef =
+                            await db
+                                .collection(
+                                    EVENTS_COLLECTION
+                                )
+                                .doc(eventId)
+                                .collection(
+                                    collectionName
+                                )
+                                .add({
+
+                                    name:
+                                        file.name,
+
+                                    url:
+                                        downloadURL,
+
+                                    path:
+                                        path,
+
+                                    contentType:
+                                        file.type,
+
+                                    size:
+                                        file.size,
+
+                                    uploadedAt:
+                                        firebase.firestore
+                                            .FieldValue
+                                            .serverTimestamp()
+
+                                });
+
+
+                        resolve({
+
+                            id:
+                                docRef.id,
+
+                            name:
+                                file.name,
+
+                            url:
+                                downloadURL,
+
+                            path:
+                                path
+
+                        });
+
+                    } catch (error) {
+
+                        reject(error);
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ==================================================
+// UPLOAD FILE QUEUE
+// ==================================================
+
+async function uploadFileQueue(
+    files,
+    type,
+    concurrency
+) {
+
+    const results =
+        new Array(
+            files.length
+        );
+
+
+    let nextIndex =
+        0;
+
+
+    let completed =
+        0;
+
+
+    let failed =
+        0;
+
+
+    async function worker() {
+
+        while (true) {
+
+            const index =
+                nextIndex++;
+
+
+            if (
+                index >=
+                files.length
+            ) {
+
+                return;
+
+            }
+
+
+            const file =
+                files[index];
+
+
+            try {
+
+                await uploadSingleFile(
+                    file,
+                    type,
+                    function (
+                        progress
+                    ) {
+
+                        const percent =
+                            Math.round(
+                                progress
+                            );
+
+
+                        showUploadStatus(
+                            `Uploading ${type === "photos" ? "photos" : "videos"}: ${completed}/${files.length} complete — ${file.name} (${percent}%)`,
+                            "loading"
+                        );
+
+                    }
+                );
+
+
+                results[index] =
+                    {
+                        success:
+                            true,
+
+                        file:
+                            file
+
+                    };
+
+
+                completed++;
+
+
+            } catch (error) {
+
+                console.error(
+                    "Upload failed:",
+                    file.name,
+                    error
+                );
+
+
+                results[index] =
+                    {
+                        success:
+                            false,
+
+                        file:
+                            file,
+
+                        error:
+                            error
+
+                    };
+
+
+                failed++;
+
+
+            }
+
+
+            showUploadStatus(
+                `Uploading ${type === "photos" ? "photos" : "videos"}: ${completed}/${files.length} complete${failed ? ` — ${failed} failed` : ""}`,
+                failed
+                    ? "error"
+                    : "loading"
+            );
+
+        }
+
+    }
+
+
+    const workers =
+        Math.min(
+            concurrency,
+            files.length
+        );
+
+
+    await Promise.all(
+        Array
+            .from(
+                {
+                    length:
+                        workers
+                }
+            )
+            .map(
+                function () {
+
+                    return worker();
+
+                }
+            )
+    );
+
+
+    return {
+        results:
+            results,
+
+        completed:
+            completed,
+
+        failed:
+            failed
+
+    };
+
+}
+
+
+// ==================================================
+// VALIDATE FILES
+// ==================================================
+
+function validateFiles(
+    files,
+    type
+) {
+
+    const maxSize =
+        type === "photos"
+            ? MAX_PHOTO_SIZE
+            : MAX_VIDEO_SIZE;
+
+
+    const invalidFiles =
+        [];
+
+
+    files.forEach(
+        function (file) {
+
+            if (
+                file.size >
+                maxSize
+            ) {
+
+                invalidFiles.push(
+                    `${file.name} (${formatFileSize(file.size)})`
+                );
+
+            }
+
+        }
+    );
+
+
+    return {
+
+        valid:
+            invalidFiles.length === 0,
+
+        invalidFiles:
+            invalidFiles,
+
+        maxSize:
+            maxSize
+
+    };
+
+}
+
+
+// ==================================================
+// MAIN MEDIA UPLOAD
+// ==================================================
+
+async function uploadMedia(
+    type
+) {
+
+    if (!isAdmin()) {
+
+        showUploadStatus(
+            "You are not authorized.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        type === "photos"
+            ? eventPhotoInput
+            : eventVideoInput;
+
+
+    const button =
+        type === "photos"
+            ? uploadPhotosButton
+            : uploadVideosButton;
+
+
+    if (!input || !button) {
+        return;
+    }
+
+
+    const files =
+        Array.from(
+            input.files || []
+        );
+
+
+    if (files.length === 0) {
+
+        showUploadStatus(
+            type === "photos"
+                ? "Please select one or more photos."
+                : "Please select one or more videos.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // ----------------------------------------------
+    // VALIDATE FILE SIZE
+    // ----------------------------------------------
+
+    const validation =
+        validateFiles(
+            files,
+            type
+        );
+
+
+    if (!validation.valid) {
+
+        showUploadStatus(
+            `❌ These files are too large: ${validation.invalidFiles.join(", ")}. Maximum: ${formatFileSize(validation.maxSize)}.`,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // ----------------------------------------------
+    // DISABLE CONTROLS
+    // ----------------------------------------------
+
+    button.disabled =
+        true;
+
+
+    input.disabled =
+        true;
+
+
+    if (type === "photos") {
+
+        if (uploadVideosButton) {
+            uploadVideosButton.disabled = true;
+        }
+
+    } else {
+
+        if (uploadPhotosButton) {
+            uploadPhotosButton.disabled = true;
+        }
+
+    }
+
+
+    const originalButtonText =
+        button.textContent;
+
+
+    button.textContent =
+        "Uploading...";
+
+
+    showUploadStatus(
+        `Starting ${files.length} ${type === "photos" ? "photo(s)" : "video(s)"}...`,
+        "loading"
+    );
+
+
+    try {
+
+        const concurrency =
+            type === "photos"
+                ? PHOTO_CONCURRENCY
+                : VIDEO_CONCURRENCY;
+
+
+        const result =
+            await uploadFileQueue(
+                files,
+                type,
+                concurrency
+            );
+
+
+        // ------------------------------------------
+        // REFRESH MEDIA
+        // ------------------------------------------
+
+        if (type === "photos") {
+
+            await loadPhotos();
+
+        } else {
+
+            await loadVideos();
+
+        }
+
+
+        // ------------------------------------------
+        // FINAL STATUS
+        // ------------------------------------------
+
+        if (
+            result.failed === 0
+        ) {
+
+            showUploadStatus(
+                `✅ ${result.completed} ${type === "photos" ? "photo(s)" : "video(s)"} uploaded successfully.`,
+                "success"
+            );
+
+        } else {
+
+            showUploadStatus(
+                `⚠️ ${result.completed} uploaded successfully, ${result.failed} failed.`,
+                "error"
+            );
+
+        }
+
+
+        input.value =
+            "";
+
+
+    } catch (error) {
+
+        console.error(
+            "Media upload error:",
+            error
+        );
+
+
+        showUploadStatus(
+            "❌ Upload failed: " +
+            (
+                error.message ||
+                "Unknown error"
+            ),
+            "error"
+        );
+
+    }
+
+
+    // ----------------------------------------------
+    // ENABLE CONTROLS
+    // ----------------------------------------------
+
+    button.disabled =
+        false;
+
+
+    input.disabled =
+        false;
+
+
+    if (uploadPhotosButton) {
+        uploadPhotosButton.disabled = false;
+    }
+
+
+    if (uploadVideosButton) {
+        uploadVideosButton.disabled = false;
+    }
+
+
+    button.textContent =
+        originalButtonText;
+
+}
+
+
+// ==================================================
+// PHOTO UPLOAD BUTTON
+// ==================================================
+
+if (uploadPhotosButton) {
+
+    uploadPhotosButton.addEventListener(
+        "click",
+        function () {
+
+            uploadMedia(
+                "photos"
+            );
+
+        }
+    );
+
+}
+
+
+// ==================================================
+// VIDEO UPLOAD BUTTON
+// ==================================================
+
+if (uploadVideosButton) {
+
+    uploadVideosButton.addEventListener(
+        "click",
+        function () {
+
+            uploadMedia(
+                "videos"
+            );
+
+        }
+    );
 
 }
 
@@ -1431,13 +1828,21 @@ async function deleteStorageFolder(
             await folderRef.listAll();
 
 
-        for (
-            const item of result.items
-        ) {
+        /*
+        Delete files in parallel instead of
+        deleting one by one.
+        */
 
-            await item.delete();
+        await Promise.all(
+            result.items.map(
+                function (item) {
 
-        }
+                    return item.delete();
+
+                }
+            )
+        );
+
 
     } catch (error) {
 
@@ -1462,19 +1867,29 @@ async function deleteSubcollection(
 
     const snapshot =
         await db
-            .collection("events")
+            .collection(
+                EVENTS_COLLECTION
+            )
             .doc(eventId)
-            .collection(collectionName)
+            .collection(
+                collectionName
+            )
             .get();
 
 
-    for (
-        const doc of snapshot.docs
-    ) {
+    /*
+    Delete documents in parallel.
+    */
 
-        await doc.ref.delete();
+    await Promise.all(
+        snapshot.docs.map(
+            function (doc) {
 
-    }
+                return doc.ref.delete();
+
+            }
+        )
+    );
 
 }
 
@@ -1637,6 +2052,10 @@ document.addEventListener(
 // ==================================================
 
 console.log(
+    "======================================"
+);
+
+console.log(
     "ADTU Bodo Union Event page starting..."
 );
 
@@ -1644,5 +2063,24 @@ console.log(
     "Event ID:",
     eventId
 );
+
+console.log(
+    "Firebase Storage upload enabled."
+);
+
+console.log(
+    "Photo concurrency:",
+    PHOTO_CONCURRENCY
+);
+
+console.log(
+    "Video concurrency:",
+    VIDEO_CONCURRENCY
+);
+
+console.log(
+    "======================================"
+);
+
 
 loadEvent();
