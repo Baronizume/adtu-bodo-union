@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -232,25 +233,6 @@
 
 
         /* ==================================================
-           QR CODE
-        ================================================== */
-
-        .event-qr-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid #eee;
-            text-align: center;
-        }
-
-        .event-qr {
-            width: 200px;
-            height: 200px;
-            margin: 15px auto;
-            display: block;
-        }
-
-
-        /* ==================================================
            BUTTON
         ================================================== */
 
@@ -388,7 +370,7 @@
 
 
     <!-- ==================================================
-         MAIN
+         MAIN CONTENT
     ================================================== -->
 
     <main>
@@ -441,7 +423,7 @@
 
 
                 <!-- ==================================================
-                     PHOTOS AND VIDEOS
+                     EVENT MEDIA
                 ================================================== -->
 
                 <div class="event-media-section">
@@ -454,6 +436,8 @@
                         Photos and videos from this event.
                     </p>
 
+
+                    <!-- MEDIA COUNTS -->
 
                     <div class="media-info">
 
@@ -518,6 +502,8 @@
                     </div>
 
 
+                    <!-- MEDIA STATUS -->
+
                     <p
                         id="mediaStatus"
                         class="status-message"
@@ -526,9 +512,6 @@
                     </p>
 
                 </div>
-
-
-                
 
             </div>
 
@@ -682,16 +665,6 @@
                 "mediaStatus"
             );
 
-        const eventQrImage =
-            document.getElementById(
-                "eventQrImage"
-            );
-
-        const qrButton =
-            document.getElementById(
-                "qrButton"
-            );
-
         const lightbox =
             document.getElementById(
                 "lightbox"
@@ -741,6 +714,7 @@
 
             let date;
 
+
             if (typeof dateValue === "string") {
 
                 date = new Date(
@@ -762,9 +736,11 @@
 
             }
 
+
             if (isNaN(date.getTime())) {
                 return String(dateValue);
             }
+
 
             return date.toLocaleDateString(
                 "en-IN",
@@ -787,9 +763,11 @@
                 return "";
             }
 
+
             if (typeof media === "string") {
                 return media;
             }
+
 
             return (
                 media.url ||
@@ -821,6 +799,7 @@
                     const parts =
                         cleanUrl.split("/");
 
+
                     return (
                         decodeURIComponent(
                             parts[parts.length - 1]
@@ -835,6 +814,7 @@
                 }
 
             }
+
 
             return (
                 media.name ||
@@ -856,9 +836,11 @@
                 data.title ||
                 "Untitled Event";
 
+
             eventDate.textContent =
                 "📅 " +
                 formatDate(data.date);
+
 
             eventDescription.textContent =
                 data.description ||
@@ -874,6 +856,7 @@
 
             photoGallery.innerHTML = "";
 
+
             if (
                 !Array.isArray(photos) ||
                 photos.length === 0
@@ -885,6 +868,7 @@
                 return;
             }
 
+
             photoEmpty.style.display =
                 "none";
 
@@ -895,22 +879,28 @@
                     const url =
                         getMediaUrl(photo);
 
+
                     if (!url) {
                         return;
                     }
 
 
                     const card =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
                     card.className =
                         "media-card";
 
 
                     const image =
-                        document.createElement("img");
+                        document.createElement(
+                            "img"
+                        );
 
-                    image.src = url;
+                    image.src =
+                        url;
 
                     image.alt =
                         getMediaName(
@@ -932,6 +922,7 @@
                             lightbox.classList.add(
                                 "active"
                             );
+
                         }
                     );
 
@@ -946,18 +937,24 @@
                             );
 
                             card.remove();
+
                         }
                     );
 
 
-                    card.appendChild(image);
+                    card.appendChild(
+                        image
+                    );
 
 
                     const name =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
                     name.className =
                         "media-name";
+
 
                     name.textContent =
                         getMediaName(
@@ -965,10 +962,15 @@
                             index
                         );
 
-                    card.appendChild(name);
+
+                    card.appendChild(
+                        name
+                    );
 
 
-                    photoGallery.appendChild(card);
+                    photoGallery.appendChild(
+                        card
+                    );
 
                 }
             );
@@ -983,6 +985,7 @@
 
             videoGallery.innerHTML = "";
 
+
             if (
                 !Array.isArray(videos) ||
                 videos.length === 0
@@ -994,6 +997,7 @@
                 return;
             }
 
+
             videoEmpty.style.display =
                 "none";
 
@@ -1004,22 +1008,29 @@
                     const url =
                         getMediaUrl(video);
 
+
                     if (!url) {
                         return;
                     }
 
 
                     const card =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
                     card.className =
                         "media-card";
 
 
                     const videoElement =
-                        document.createElement("video");
+                        document.createElement(
+                            "video"
+                        );
 
-                    videoElement.src = url;
+
+                    videoElement.src =
+                        url;
 
                     videoElement.controls =
                         true;
@@ -1037,10 +1048,13 @@
 
 
                     const name =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
                     name.className =
                         "media-name";
+
 
                     name.textContent =
                         getMediaName(
@@ -1048,10 +1062,15 @@
                             index
                         );
 
-                    card.appendChild(name);
+
+                    card.appendChild(
+                        name
+                    );
 
 
-                    videoGallery.appendChild(card);
+                    videoGallery.appendChild(
+                        card
+                    );
 
                 }
             );
@@ -1059,7 +1078,7 @@
 
 
         /* ==================================================
-           LOAD EVENT MEDIA FROM BACKEND
+           LOAD EVENT MEDIA
         ================================================== */
 
         async function loadEventMedia() {
@@ -1075,6 +1094,7 @@
             mediaStatus.textContent =
                 "Loading photos and videos...";
 
+
             mediaStatus.className =
                 "status-message";
 
@@ -1082,7 +1102,9 @@
             const apiUrl =
                 API_BASE_URL +
                 "/api/upload/event/" +
-                encodeURIComponent(eventId);
+                encodeURIComponent(
+                    eventId
+                );
 
 
             console.log(
@@ -1163,9 +1185,14 @@
                 videos.length;
 
 
-            displayPhotos(photos);
+            displayPhotos(
+                photos
+            );
 
-            displayVideos(videos);
+
+            displayVideos(
+                videos
+            );
 
 
             if (
@@ -1240,7 +1267,9 @@
                 );
 
 
-                displayEvent(data);
+                displayEvent(
+                    data
+                );
 
 
                 /*
@@ -1263,6 +1292,7 @@
                     photoCount.textContent =
                         "📷 Photos: 0";
 
+
                     videoCount.textContent =
                         "🎥 Videos: 0";
 
@@ -1275,12 +1305,10 @@
                     mediaStatus.textContent =
                         "Could not load event photos and videos. Check that the backend is running.";
 
+
                     mediaStatus.className =
                         "status-message error";
                 }
-
-
-                setupQrCode();
 
             } catch (error) {
 
@@ -1294,27 +1322,6 @@
                     "Could not load the event."
                 );
             }
-        }
-
-
-        /* ==================================================
-           QR CODE
-        ================================================== */
-
-        function setupQrCode() {
-
-            const eventUrl =
-                window.location.href;
-
-
-            qrButton.href =
-                eventUrl;
-
-
-            eventQrImage.src =
-                "https://api.qrserver.com/v1/create-qr-code/" +
-                "?size=300x300&data=" +
-                encodeURIComponent(eventUrl);
         }
 
 
@@ -1349,7 +1356,9 @@
             "keydown",
             function(event) {
 
-                if (event.key === "Escape") {
+                if (
+                    event.key === "Escape"
+                ) {
 
                     closeLightbox();
 
@@ -1408,13 +1417,14 @@
 
 
             /*
-             * textContent is safer than inserting
-             * the message directly into HTML.
+             * Use textContent for the error message
+             * instead of inserting it directly into HTML.
              */
 
             eventContainer
                 .querySelector("h1")
-                .textContent = message;
+                .textContent =
+                message;
         }
 
 
@@ -1458,4 +1468,4 @@
 </body>
 
 </html>
-
+```
