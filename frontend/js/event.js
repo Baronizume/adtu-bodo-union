@@ -9,12 +9,6 @@ MEDIA SYSTEM:
 - No Google Drive API
 - No Google OAuth
 - No Google Drive Picker
-
-Media location:
-frontend/media/rwnswndri/
-
-IMPORTANT:
-Add your image filenames inside LOCAL_PHOTOS below.
 ====================================================
 */
 
@@ -27,25 +21,25 @@ const EVENTS_COLLECTION = "events";
 
 const ADMIN_UID = "s7XAHabgLfc92ktoM0kBmdLXfAD3";
 
+const DEFAULT_MEDIA_FOLDER = "rwnswndri";
+
 
 // ==================================================
 // LOCAL MEDIA
 // ==================================================
-
-const DEFAULT_MEDIA_FOLDER = "rwnswndri";
-
-/*
-====================================================
-ADD YOUR JPG FILES HERE
-
-Example folder:
-
-frontend/media/rwnswndri/
-    photo1.jpg
-    photo2.jpg
-    photo3.jpg
-
-Then write:
+//
+// Folder:
+//
+// frontend/
+//   media/
+//     rwnswndri/
+//       photo1.jpg
+//       photo2.jpg
+//       photo3.jpg
+//       video1.mp4
+//
+// Add every filename here.
+// ==================================================
 
 const LOCAL_PHOTOS = [
     "photo1.jpg",
@@ -53,34 +47,9 @@ const LOCAL_PHOTOS = [
     "photo3.jpg"
 ];
 
-====================================================
-*/
-
-const LOCAL_PHOTOS = [
-    "photo1.jpg",
-    "photo2.jpg",
-    "photo3.jpg"
-];
-
-
-/*
-====================================================
-OPTIONAL VIDEOS
-
-If you have videos, add them here.
-
-Example:
-
 const LOCAL_VIDEOS = [
-    "video1.mp4",
-    "video2.mp4"
-];
-
-If you don't have videos, leave it empty.
-====================================================
-*/
-
-const LOCAL_VIDEOS = [
+    // "video1.mp4",
+    // "video2.mp4"
 ];
 
 
@@ -185,7 +154,6 @@ function isAdmin() {
         user &&
         user.uid === ADMIN_UID
     );
-
 }
 
 
@@ -204,7 +172,6 @@ function updateAdminControls() {
             admin
                 ? "inline-block"
                 : "none";
-
     }
 
     if (editEventButton) {
@@ -213,20 +180,18 @@ function updateAdminControls() {
             admin
                 ? "inline-block"
                 : "none";
-
     }
 
     /*
-    Local project media is used.
+    Google Drive / upload system
+    is completely disabled.
 
-    No upload through Google Drive
-    or Firebase Storage.
+    Hide old HTML section if it still exists.
     */
 
     if (adminUploadSection) {
 
-        adminUploadSection.style.display =
-            "none";
+        adminUploadSection.remove();
 
     }
 
@@ -298,30 +263,18 @@ function formatDate(dateString) {
 
 
 // ==================================================
-// GET MEDIA FOLDER
+// MEDIA FOLDER
 // ==================================================
 
 function getMediaFolder(event) {
 
-    /*
-    Optional Firestore field:
-
-        mediaFolder: "rwnswndri"
-
-    If it doesn't exist,
-    rwnswndri is used.
-    */
-
-    const folder =
-        event &&
-        event.mediaFolder;
-
     if (
-        typeof folder === "string" &&
-        folder.trim()
+        event &&
+        typeof event.mediaFolder === "string" &&
+        event.mediaFolder.trim()
     ) {
 
-        return folder
+        return event.mediaFolder
             .trim()
             .replace(/^\/+|\/+$/g, "");
 
@@ -333,7 +286,7 @@ function getMediaFolder(event) {
 
 
 // ==================================================
-// CREATE MEDIA URL
+// CREATE LOCAL MEDIA URL
 // ==================================================
 
 function createMediaURL(
@@ -341,19 +294,29 @@ function createMediaURL(
     filename
 ) {
 
-    return (
-        "../media/" +
-        encodeURIComponent(
-            mediaFolder
-        ) +
-        "/" +
+    const encodedFolder =
+        mediaFolder
+            .split("/")
+            .map(
+                part =>
+                    encodeURIComponent(part)
+            )
+            .join("/");
+
+    const encodedFilename =
         filename
             .split("/")
             .map(
                 part =>
                     encodeURIComponent(part)
             )
-            .join("/")
+            .join("/");
+
+    return (
+        "../media/" +
+        encodedFolder +
+        "/" +
+        encodedFilename
     );
 
 }
@@ -376,13 +339,6 @@ async function loadEvent() {
     }
 
     try {
-
-        /*
-        Firebase is used ONLY for event information.
-
-        Media is loaded directly from the
-        local project folder.
-        */
 
         if (
             typeof db === "undefined"
@@ -419,7 +375,7 @@ async function loadEvent() {
             currentEvent
         );
 
-        await loadLocalMedia(
+        loadLocalMedia(
             currentEvent
         );
 
@@ -443,9 +399,7 @@ async function loadEvent() {
 // DISPLAY EVENT
 // ==================================================
 
-function displayEvent(
-    event
-) {
+function displayEvent(event) {
 
     if (nameElement) {
 
@@ -496,9 +450,7 @@ function displayEvent(
     const qrURL =
         "https://api.qrserver.com/v1/create-qr-code/" +
         "?size=300x300&data=" +
-        encodeURIComponent(
-            eventURL
-        );
+        encodeURIComponent(eventURL);
 
     if (qrImage) {
 
@@ -521,74 +473,52 @@ function displayEvent(
 // LOAD LOCAL MEDIA
 // ==================================================
 
-async function loadLocalMedia(
-    event
-) {
+function loadLocalMedia(event) {
 
     const mediaFolder =
-        getMediaFolder(
-            event
-        );
+        getMediaFolder(event);
 
     console.log(
-        "Loading local media folder:",
+        "Loading local media:",
         mediaFolder
     );
 
 
-    // ================================================
+    // ==================================================
     // PHOTOS
-    // ================================================
+    // ==================================================
 
     const photos =
         LOCAL_PHOTOS
-            .map(
-                function (filename) {
-
-                    return {
-                        name: filename,
-                        type: "photo"
-                    };
-
-                }
-            )
             .filter(
-                function (file) {
-
-                    return (
-                        file.name &&
-                        isPhoto(file.name)
-                    );
-
-                }
+                filename =>
+                    filename &&
+                    isPhoto(filename)
+            )
+            .map(
+                filename => ({
+                    name: filename,
+                    type: "photo"
+                })
             );
 
 
-    // ================================================
+    // ==================================================
     // VIDEOS
-    // ================================================
+    // ==================================================
 
     const videos =
         LOCAL_VIDEOS
-            .map(
-                function (filename) {
-
-                    return {
-                        name: filename,
-                        type: "video"
-                    };
-
-                }
-            )
             .filter(
-                function (file) {
-
-                    return (
-                        file.name &&
-                        isVideo(file.name)
-                    );
-
-                }
+                filename =>
+                    filename &&
+                    isVideo(filename)
+            )
+            .map(
+                filename => ({
+                    name: filename,
+                    type: "video"
+                })
             );
 
 
@@ -609,9 +539,7 @@ async function loadLocalMedia(
 // CHECK PHOTO
 // ==================================================
 
-function isPhoto(
-    filename
-) {
+function isPhoto(filename) {
 
     const lower =
         filename.toLowerCase();
@@ -631,9 +559,7 @@ function isPhoto(
 // CHECK VIDEO
 // ==================================================
 
-function isVideo(
-    filename
-) {
+function isVideo(filename) {
 
     const lower =
         filename.toLowerCase();
@@ -649,7 +575,7 @@ function isVideo(
 
 
 // ==================================================
-// DISPLAY LOCAL PHOTOS
+// DISPLAY PHOTOS
 // ==================================================
 
 function displayLocalPhotos(
@@ -668,13 +594,11 @@ function displayLocalPhotos(
     photoGallery.innerHTML =
         "";
 
-    if (
-        photos.length === 0
-    ) {
+    if (photos.length === 0) {
 
         photoGallery.innerHTML = `
             <div class="media-empty">
-                No photos uploaded yet.
+                No photos available.
             </div>
         `;
 
@@ -701,13 +625,11 @@ function displayLocalPhotos(
                 file.name ||
                 "Event photo";
 
-
             const imageURL =
                 createMediaURL(
                     mediaFolder,
                     file.name
                 );
-
 
             image.src =
                 imageURL;
@@ -718,7 +640,7 @@ function displayLocalPhotos(
                 function () {
 
                     console.warn(
-                        "Could not load image:",
+                        "Could not load:",
                         imageURL
                     );
 
@@ -753,7 +675,7 @@ function displayLocalPhotos(
 
 
 // ==================================================
-// DISPLAY LOCAL VIDEOS
+// DISPLAY VIDEOS
 // ==================================================
 
 function displayLocalVideos(
@@ -772,13 +694,11 @@ function displayLocalVideos(
     videoGallery.innerHTML =
         "";
 
-    if (
-        videos.length === 0
-    ) {
+    if (videos.length === 0) {
 
         videoGallery.innerHTML = `
             <div class="media-empty">
-                No videos uploaded yet.
+                No videos available.
             </div>
         `;
 
@@ -857,9 +777,7 @@ function displayLocalVideos(
 // COUNTS
 // ==================================================
 
-function updatePhotoCount(
-    count
-) {
+function updatePhotoCount(count) {
 
     const elements =
         document.querySelectorAll(
@@ -879,9 +797,7 @@ function updatePhotoCount(
 }
 
 
-function updateVideoCount(
-    count
-) {
+function updateVideoCount(count) {
 
     const elements =
         document.querySelectorAll(
@@ -915,7 +831,7 @@ function showEmptyMedia() {
 
         photoGallery.innerHTML = `
             <div class="media-empty">
-                No photos uploaded yet.
+                No photos available.
             </div>
         `;
 
@@ -925,7 +841,7 @@ function showEmptyMedia() {
 
         videoGallery.innerHTML = `
             <div class="media-empty">
-                No videos uploaded yet.
+                No videos available.
             </div>
         `;
 
@@ -938,9 +854,7 @@ function showEmptyMedia() {
 // EVENT ERROR
 // ==================================================
 
-function showEventError(
-    message
-) {
+function showEventError(message) {
 
     if (nameElement) {
 
@@ -1076,11 +990,9 @@ if (deleteEventButton) {
                     .doc(eventId)
                     .delete();
 
-
                 alert(
                     "Event deleted successfully."
                 );
-
 
                 window.location.href =
                     "../index.html#events";
@@ -1100,7 +1012,6 @@ if (deleteEventButton) {
                         "Unknown error"
                     )
                 );
-
 
                 deleteEventButton.disabled =
                     false;
@@ -1232,19 +1143,19 @@ console.log(
 );
 
 console.log(
-    "Local JPG/media enabled"
+    "LOCAL MEDIA MODE"
 );
 
 console.log(
-    "Firebase Storage disabled"
+    "Firebase Storage: DISABLED"
 );
 
 console.log(
-    "Google Drive API disabled"
+    "Google Drive: DISABLED"
 );
 
 console.log(
-    "Google OAuth disabled"
+    "Google OAuth: DISABLED"
 );
 
 console.log(
