@@ -3,16 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>ADTU Bodo Union | Event</title>
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
 
     <style>
-        /* ================================
+        /* ==================================================
            EVENT PAGE
-        ================================= */
+        ================================================== */
 
         .event-details {
             max-width: 1100px;
@@ -67,9 +73,58 @@
             white-space: pre-line;
         }
 
-        /* ================================
+        /* ==================================================
+           ADMIN
+        ================================================== */
+
+        .event-actions {
+            display: none;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .button-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .button-primary:hover {
+            background: #1558b0;
+        }
+
+        .delete-event-button {
+            background: #c62828;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .delete-event-button:hover {
+            background: #a51f1f;
+        }
+
+        .delete-event-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* ==================================================
            MEDIA SECTION
-        ================================= */
+        ================================================== */
 
         .event-media-section {
             margin-top: 40px;
@@ -107,9 +162,9 @@
             color: #00897b;
         }
 
-        /* ================================
+        /* ==================================================
            GALLERY
-        ================================= */
+        ================================================== */
 
         .media-title {
             margin-top: 30px;
@@ -182,9 +237,9 @@
             color: #c62828;
         }
 
-        /* ================================
+        /* ==================================================
            LIGHTBOX
-        ================================= */
+        ================================================== */
 
         .lightbox {
             display: none;
@@ -218,28 +273,44 @@
             line-height: 1;
         }
 
-        /* ================================
-           NOT FOUND
-        ================================= */
+        /* ==================================================
+           QR CODE
+        ================================================== */
+
+        .event-qr-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .event-qr {
+            width: 200px;
+            height: 200px;
+            margin: 15px auto;
+            display: block;
+        }
+
+        /* ==================================================
+           ERROR
+        ================================================== */
 
         .not-found {
             text-align: center;
             padding: 60px 20px;
         }
 
-        /* ================================
+        /* ==================================================
            MOBILE
-        ================================= */
+        ================================================== */
 
         @media (max-width: 800px) {
-
             .media-gallery {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 600px) {
-
             .event-details {
                 padding: 25px 15px;
             }
@@ -250,6 +321,17 @@
 
             #eventName {
                 font-size: 28px;
+            }
+
+            .event-actions {
+                flex-direction: column;
+            }
+
+            .button,
+            .delete-event-button {
+                width: 100%;
+                box-sizing: border-box;
+                text-align: center;
             }
 
             .media-gallery {
@@ -270,9 +352,9 @@
 
 <body>
 
-    <!-- ================================
+    <!-- ==================================================
          NAVBAR
-    ================================= -->
+    ================================================== -->
 
     <header class="navbar">
 
@@ -319,9 +401,9 @@
     </header>
 
 
-    <!-- ================================
+    <!-- ==================================================
          MAIN
-    ================================= -->
+    ================================================== -->
 
     <main>
 
@@ -333,7 +415,6 @@
             >
                 ← Back to Events
             </a>
-
 
             <div
                 id="event-details-container"
@@ -354,7 +435,10 @@
                     Loading event...
                 </h1>
 
-                <p id="eventDate" class="event-date">
+                <p
+                    id="eventDate"
+                    class="event-date"
+                >
                     Loading date...
                 </p>
 
@@ -366,9 +450,37 @@
                 </p>
 
 
-                <!-- ==========================
-                     PHOTOS & VIDEOS
-                =========================== -->
+                <!-- ==================================================
+                     ADMIN BUTTONS
+                ================================================== -->
+
+                <div
+                    id="adminActions"
+                    class="event-actions"
+                >
+
+                    <button
+                        id="editEventButton"
+                        class="button button-primary"
+                        type="button"
+                    >
+                        ✏️ Edit Event
+                    </button>
+
+                    <button
+                        id="deleteEventButton"
+                        class="delete-event-button"
+                        type="button"
+                    >
+                        🗑️ Delete Event
+                    </button>
+
+                </div>
+
+
+                <!-- ==================================================
+                     PHOTOS AND VIDEOS
+                ================================================== -->
 
                 <div class="event-media-section">
 
@@ -379,7 +491,6 @@
                     <p>
                         Photos and videos from this event.
                     </p>
-
 
                     <div class="media-info">
 
@@ -411,11 +522,10 @@
                         class="media-gallery"
                     ></div>
 
-
                     <div
                         id="photoEmpty"
                         class="media-empty"
-                        style="display:none;"
+                        style="display: none;"
                     >
                         No photos uploaded for this event yet.
                     </div>
@@ -432,15 +542,13 @@
                         class="media-gallery"
                     ></div>
 
-
                     <div
                         id="videoEmpty"
                         class="media-empty"
-                        style="display:none;"
+                        style="display: none;"
                     >
                         No videos uploaded for this event yet.
                     </div>
-
 
                     <p
                         id="mediaStatus"
@@ -451,6 +559,41 @@
 
                 </div>
 
+
+                <!-- ==================================================
+                     QR CODE
+                ================================================== -->
+
+                <div class="event-qr-section">
+
+                    <h2>
+                        📱 Scan to View Event
+                    </h2>
+
+                    <img
+                        id="eventQrImage"
+                        src=""
+                        alt="QR Code to view event"
+                        class="event-qr"
+                    >
+
+                    <p>
+                        Scan this QR code to open this event
+                        and view its photos and videos.
+                    </p>
+
+                    <a
+                        id="qrButton"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="button button-primary"
+                    >
+                        Open Event
+                    </a>
+
+                </div>
+
             </div>
 
         </section>
@@ -458,9 +601,9 @@
     </main>
 
 
-    <!-- ================================
+    <!-- ==================================================
          LIGHTBOX
-    ================================= -->
+    ================================================== -->
 
     <div
         id="lightbox"
@@ -483,9 +626,9 @@
     </div>
 
 
-    <!-- ================================
+    <!-- ==================================================
          FOOTER
-    ================================= -->
+    ================================================== -->
 
     <footer>
 
@@ -514,9 +657,9 @@
     </footer>
 
 
-    <!-- ================================
+    <!-- ==================================================
          FIREBASE
-    ================================= -->
+    ================================================== -->
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -528,6 +671,36 @@
 
 
     <script>
+
+        /* ==================================================
+           CONFIGURATION
+        ================================================== */
+
+        /*
+         * If frontend and backend use the SAME server:
+         *
+         *     const API_BASE_URL = "";
+         *
+         * Then:
+         *
+         *     /api/upload/event/EVENT_ID
+         *
+         *
+         * If your backend runs separately:
+         *
+         *     const API_BASE_URL = "http://localhost:5000";
+         */
+
+        const API_BASE_URL = "";
+
+
+        /* ==================================================
+           ADMIN UID
+        ================================================== */
+
+        const ADMIN_UID =
+            "s7XAHabgLfc92ktoM0kBmdLXfAD3";
+
 
         /* ==================================================
            ELEMENTS
@@ -547,63 +720,61 @@
                 "event-details-container"
             );
 
-        const photoCount =
+        const adminActions =
+            document.getElementById("adminActions");
+
+        const editEventButton =
             document.getElementById(
-                "photoCount"
+                "editEventButton"
             );
+
+        const deleteEventButton =
+            document.getElementById(
+                "deleteEventButton"
+            );
+
+        const photoCount =
+            document.getElementById("photoCount");
 
         const videoCount =
-            document.getElementById(
-                "videoCount"
-            );
+            document.getElementById("videoCount");
 
         const photoGallery =
-            document.getElementById(
-                "photoGallery"
-            );
+            document.getElementById("photoGallery");
 
         const videoGallery =
-            document.getElementById(
-                "videoGallery"
-            );
+            document.getElementById("videoGallery");
 
         const photoEmpty =
-            document.getElementById(
-                "photoEmpty"
-            );
+            document.getElementById("photoEmpty");
 
         const videoEmpty =
-            document.getElementById(
-                "videoEmpty"
-            );
+            document.getElementById("videoEmpty");
 
         const mediaStatus =
-            document.getElementById(
-                "mediaStatus"
-            );
+            document.getElementById("mediaStatus");
+
+        const eventQrImage =
+            document.getElementById("eventQrImage");
+
+        const qrButton =
+            document.getElementById("qrButton");
 
         const lightbox =
-            document.getElementById(
-                "lightbox"
-            );
+            document.getElementById("lightbox");
 
         const lightboxImage =
-            document.getElementById(
-                "lightboxImage"
-            );
+            document.getElementById("lightboxImage");
 
         const lightboxClose =
-            document.getElementById(
-                "lightboxClose"
-            );
+            document.getElementById("lightboxClose");
 
 
         /* ==================================================
            YEAR
         ================================================== */
 
-        document.getElementById("year")
-            .textContent =
+        document.getElementById("year").textContent =
             new Date().getFullYear();
 
 
@@ -624,19 +795,37 @@
            FORMAT DATE
         ================================================== */
 
-        function formatDate(dateString) {
+        function formatDate(dateValue) {
 
-            if (!dateString) {
+            if (!dateValue) {
                 return "Date not available";
             }
 
-            const date =
-                new Date(
-                    dateString + "T00:00:00"
+            let date;
+
+            if (typeof dateValue === "string") {
+
+                date = new Date(
+                    dateValue.includes("T")
+                        ? dateValue
+                        : dateValue + "T00:00:00"
                 );
 
+            } else if (
+                dateValue &&
+                typeof dateValue.toDate === "function"
+            ) {
+
+                date = dateValue.toDate();
+
+            } else {
+
+                date = new Date(dateValue);
+
+            }
+
             if (isNaN(date.getTime())) {
-                return dateString;
+                return String(dateValue);
             }
 
             return date.toLocaleDateString(
@@ -660,16 +849,6 @@
                 return "";
             }
 
-            /*
-             Supports:
-
-             1. String URL
-             2. { url: "..." }
-             3. { downloadURL: "..." }
-             4. { fileUrl: "..." }
-             5. { src: "..." }
-            */
-
             if (typeof media === "string") {
                 return media;
             }
@@ -678,6 +857,7 @@
                 media.url ||
                 media.downloadURL ||
                 media.fileUrl ||
+                media.fileURL ||
                 media.src ||
                 ""
             );
@@ -688,19 +868,33 @@
            GET MEDIA NAME
         ================================================== */
 
-        function getMediaName(media, index) {
+        function getMediaName(
+            media,
+            index
+        ) {
 
             if (typeof media === "string") {
 
-                const parts =
-                    media.split("/");
+                try {
 
-                return (
-                    decodeURIComponent(
-                        parts[parts.length - 1]
-                    ) ||
-                    "Media " + (index + 1)
-                );
+                    const cleanUrl =
+                        media.split("?")[0];
+
+                    const parts =
+                        cleanUrl.split("/");
+
+                    return (
+                        decodeURIComponent(
+                            parts[parts.length - 1]
+                        ) ||
+                        "Media " + (index + 1)
+                    );
+
+                } catch (error) {
+
+                    return "Media " + (index + 1);
+
+                }
             }
 
             return (
@@ -725,9 +919,7 @@
 
             eventDate.textContent =
                 "📅 " +
-                formatDate(
-                    data.date
-                );
+                formatDate(data.date);
 
             eventDescription.textContent =
                 data.description ||
@@ -743,7 +935,10 @@
 
             photoGallery.innerHTML = "";
 
-            if (!photos.length) {
+            if (
+                !Array.isArray(photos) ||
+                photos.length === 0
+            ) {
 
                 photoEmpty.style.display =
                     "block";
@@ -753,7 +948,6 @@
 
             photoEmpty.style.display =
                 "none";
-
 
             photos.forEach(
                 function(photo, index) {
@@ -765,23 +959,16 @@
                         return;
                     }
 
-
                     const card =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     card.className =
                         "media-card";
 
-
                     const image =
-                        document.createElement(
-                            "img"
-                        );
+                        document.createElement("img");
 
-                    image.src =
-                        url;
+                    image.src = url;
 
                     image.alt =
                         getMediaName(
@@ -789,9 +976,7 @@
                             index
                         );
 
-                    image.loading =
-                        "lazy";
-
+                    image.loading = "lazy";
 
                     image.addEventListener(
                         "click",
@@ -803,33 +988,26 @@
                             lightbox.classList.add(
                                 "active"
                             );
-
                         }
                     );
 
-
-                    image.onerror =
+                    image.addEventListener(
+                        "error",
                         function() {
 
                             console.error(
-                                "Could not load photo:",
+                                "PHOTO LOAD FAILED:",
                                 url
                             );
 
                             card.remove();
-
-                        };
-
-
-                    card.appendChild(
-                        image
+                        }
                     );
 
+                    card.appendChild(image);
 
                     const name =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     name.className =
                         "media-name";
@@ -840,16 +1018,9 @@
                             index
                         );
 
+                    card.appendChild(name);
 
-                    card.appendChild(
-                        name
-                    );
-
-
-                    photoGallery.appendChild(
-                        card
-                    );
-
+                    photoGallery.appendChild(card);
                 }
             );
         }
@@ -863,7 +1034,10 @@
 
             videoGallery.innerHTML = "";
 
-            if (!videos.length) {
+            if (
+                !Array.isArray(videos) ||
+                videos.length === 0
+            ) {
 
                 videoEmpty.style.display =
                     "block";
@@ -873,7 +1047,6 @@
 
             videoEmpty.style.display =
                 "none";
-
 
             videos.forEach(
                 function(video, index) {
@@ -885,43 +1058,30 @@
                         return;
                     }
 
-
                     const card =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     card.className =
                         "media-card";
 
-
                     const videoElement =
-                        document.createElement(
-                            "video"
-                        );
+                        document.createElement("video");
 
-                    videoElement.src =
-                        url;
+                    videoElement.src = url;
 
-                    videoElement.controls =
-                        true;
+                    videoElement.controls = true;
 
                     videoElement.preload =
                         "metadata";
 
-                    videoElement.playsInline =
-                        true;
-
+                    videoElement.playsInline = true;
 
                     card.appendChild(
                         videoElement
                     );
 
-
                     const name =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     name.className =
                         "media-name";
@@ -932,116 +1092,93 @@
                             index
                         );
 
+                    card.appendChild(name);
 
-                    card.appendChild(
-                        name
-                    );
-
-
-                    videoGallery.appendChild(
-                        card
-                    );
-
+                    videoGallery.appendChild(card);
                 }
             );
         }
 
 
         /* ==================================================
-           LOAD EVENT MEDIA
+           LOAD EVENT MEDIA FROM BACKEND
         ================================================== */
 
-        async function loadEventMedia(data) {
+        async function loadEventMedia() {
 
-            let photos = [];
-            let videos = [];
+            if (!eventId) {
 
-
-            /*
-             Direct photo array
-            */
-
-            if (Array.isArray(data.photos)) {
-
-                photos =
-                    [...data.photos];
-
+                throw new Error(
+                    "Event ID is missing."
+                );
             }
 
+            mediaStatus.textContent =
+                "Loading photos and videos...";
 
-            /*
-             Direct video array
-            */
+            mediaStatus.className =
+                "status-message";
 
-            if (Array.isArray(data.videos)) {
+            const apiUrl =
+                API_BASE_URL +
+                "/api/upload/event/" +
+                encodeURIComponent(eventId);
 
-                videos =
-                    [...data.videos];
+            console.log(
+                "Loading event media from:",
+                apiUrl
+            );
 
-            }
-
-
-            /*
-             Alternative media array
-
-             Example:
-
-             media: [
-                 {
-                     type: "photo",
-                     url: "..."
-                 },
-                 {
-                     type: "video",
-                     url: "..."
-                 }
-             ]
-            */
-
-            if (Array.isArray(data.media)) {
-
-                data.media.forEach(
-                    function(item) {
-
-                        if (!item) {
-                            return;
+            const response =
+                await fetch(
+                    apiUrl,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Accept":
+                                "application/json"
                         }
-
-                        const type =
-                            (
-                                item.type ||
-                                item.kind ||
-                                ""
-                            ).toLowerCase();
-
-
-                        if (
-                            type === "photo" ||
-                            type === "image"
-                        ) {
-
-                            photos.push(item);
-
-                        }
-
-
-                        if (
-                            type === "video"
-                        ) {
-
-                            videos.push(item);
-
-                        }
-
                     }
                 );
 
+            if (!response.ok) {
+
+                throw new Error(
+                    "Media API returned HTTP " +
+                    response.status
+                );
             }
 
+            const mediaData =
+                await response.json();
 
-            /*
-             Update counters
-            */
+            console.log(
+                "EVENT MEDIA RESPONSE:",
+                mediaData
+            );
+
+            if (
+                !mediaData ||
+                mediaData.success !== true
+            ) {
+
+                throw new Error(
+                    mediaData &&
+                    mediaData.message
+                        ? mediaData.message
+                        : "Media API returned an invalid response."
+                );
+            }
+
+            const photos =
+                Array.isArray(mediaData.photos)
+                    ? mediaData.photos
+                    : [];
+
+            const videos =
+                Array.isArray(mediaData.videos)
+                    ? mediaData.videos
+                    : [];
 
             photoCount.textContent =
                 "📷 Photos: " +
@@ -1051,23 +1188,9 @@
                 "🎥 Videos: " +
                 videos.length;
 
+            displayPhotos(photos);
 
-            /*
-             Display media
-            */
-
-            displayPhotos(
-                photos
-            );
-
-            displayVideos(
-                videos
-            );
-
-
-            /*
-             Status
-            */
+            displayVideos(videos);
 
             if (
                 photos.length === 0 &&
@@ -1087,14 +1210,12 @@
 
                 mediaStatus.className =
                     "status-message success";
-
             }
-
         }
 
 
         /* ==================================================
-           LOAD EVENT
+           LOAD EVENT FROM FIREBASE
         ================================================== */
 
         async function loadEvent() {
@@ -1108,15 +1229,18 @@
                 return;
             }
 
-
             try {
+
+                /*
+                 * Load event information
+                 * from Firestore.
+                 */
 
                 const eventDoc =
                     await db
                         .collection("events")
                         .doc(eventId)
                         .get();
-
 
                 if (!eventDoc.exists) {
 
@@ -1127,69 +1251,291 @@
                     return;
                 }
 
-
                 const data =
                     eventDoc.data();
 
-
                 console.log(
-                    "Event data:",
+                    "EVENT DATA:",
                     data
                 );
 
+                displayEvent(data);
 
                 /*
-                 Display event information
-                */
+                 * IMPORTANT:
+                 *
+                 * Photos/videos come from
+                 * Node.js backend, NOT Firebase.
+                 */
 
-                displayEvent(
-                    data
-                );
+                try {
 
+                    await loadEventMedia();
 
-                /*
-                 Load photos and videos
-                */
+                } catch (mediaError) {
 
-                await loadEventMedia(
-                    data
-                );
+                    console.error(
+                        "MEDIA ERROR:",
+                        mediaError
+                    );
+
+                    photoCount.textContent =
+                        "📷 Photos: 0";
+
+                    videoCount.textContent =
+                        "🎥 Videos: 0";
+
+                    displayPhotos([]);
+
+                    displayVideos([]);
+
+                    mediaStatus.textContent =
+                        "Could not load event photos and videos. Check that the backend is running.";
+
+                    mediaStatus.className =
+                        "status-message error";
+                }
+
+                setupQrCode();
+
+                checkAdmin();
 
             } catch (error) {
 
                 console.error(
-                    "Event loading error:",
+                    "EVENT LOADING ERROR:",
                     error
                 );
 
                 showError(
                     "Could not load the event."
                 );
-
             }
         }
 
 
         /* ==================================================
-           LIGHTBOX CLOSE
+           QR CODE
+        ================================================== */
+
+        function setupQrCode() {
+
+            const eventUrl =
+                window.location.href;
+
+            qrButton.href =
+                eventUrl;
+
+            eventQrImage.src =
+                "https://api.qrserver.com/v1/create-qr-code/" +
+                "?size=300x300&data=" +
+                encodeURIComponent(eventUrl);
+        }
+
+
+        /* ==================================================
+           VERIFY ADMIN
+        ================================================== */
+
+        async function verifyAdmin(user) {
+
+            if (!user) {
+                return false;
+            }
+
+            /*
+             * Main admin UID.
+             */
+
+            if (user.uid === ADMIN_UID) {
+                return true;
+            }
+
+            /*
+             * Optional admins collection.
+             */
+
+            try {
+
+                const adminDoc =
+                    await db
+                        .collection("admins")
+                        .doc(user.uid)
+                        .get();
+
+                if (!adminDoc.exists) {
+                    return false;
+                }
+
+                const data =
+                    adminDoc.data();
+
+                return (
+                    !data.role ||
+                    data.role === "admin"
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "ADMIN VERIFICATION ERROR:",
+                    error
+                );
+
+                return false;
+            }
+        }
+
+
+        /* ==================================================
+           ADMIN UI
+        ================================================== */
+
+        function checkAdmin() {
+
+            if (
+                typeof auth === "undefined"
+            ) {
+
+                console.warn(
+                    "Firebase Auth is not available."
+                );
+
+                return;
+            }
+
+            auth.onAuthStateChanged(
+                async function(user) {
+
+                    if (!user) {
+
+                        adminActions.style.display =
+                            "none";
+
+                        return;
+                    }
+
+                    const admin =
+                        await verifyAdmin(user);
+
+                    if (!admin) {
+
+                        adminActions.style.display =
+                            "none";
+
+                        return;
+                    }
+
+                    adminActions.style.display =
+                        "flex";
+
+                    editEventButton.onclick =
+                        function() {
+
+                            window.location.href =
+                                "../admin/admin-dashboard.html";
+                        };
+
+                    deleteEventButton.onclick =
+                        function() {
+
+                            deleteEvent();
+                        };
+                }
+            );
+        }
+
+
+        /* ==================================================
+           DELETE EVENT
+        ================================================== */
+
+        async function deleteEvent() {
+
+            if (
+                typeof auth === "undefined"
+            ) {
+
+                alert(
+                    "Authentication is not available."
+                );
+
+                return;
+            }
+
+            const user =
+                auth.currentUser;
+
+            const admin =
+                await verifyAdmin(user);
+
+            if (!admin) {
+
+                alert(
+                    "You are not authorized."
+                );
+
+                return;
+            }
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this event?"
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+
+                deleteEventButton.disabled =
+                    true;
+
+                deleteEventButton.textContent =
+                    "Deleting...";
+
+                await db
+                    .collection("events")
+                    .doc(eventId)
+                    .delete();
+
+                alert(
+                    "Event deleted successfully."
+                );
+
+                window.location.href =
+                    "../index.html#events";
+
+            } catch (error) {
+
+                console.error(
+                    "DELETE EVENT ERROR:",
+                    error
+                );
+
+                alert(
+                    "Could not delete the event."
+                );
+
+                deleteEventButton.disabled =
+                    false;
+
+                deleteEventButton.textContent =
+                    "🗑️ Delete Event";
+            }
+        }
+
+
+        /* ==================================================
+           LIGHTBOX
         ================================================== */
 
         lightboxClose.onclick =
             function() {
 
-                lightbox.classList.remove(
-                    "active"
-                );
-
-                lightboxImage.src =
-                    "";
-
+                closeLightbox();
             };
-
-
-        /* ==================================================
-           LIGHTBOX BACKGROUND CLOSE
-        ================================================== */
 
         lightbox.onclick =
             function(event) {
@@ -1199,45 +1545,32 @@
                     lightbox
                 ) {
 
-                    lightbox.classList.remove(
-                        "active"
-                    );
-
-                    lightboxImage.src =
-                        "";
-
+                    closeLightbox();
                 }
-
             };
-
-
-        /* ==================================================
-           ESCAPE KEY
-        ================================================== */
 
         document.addEventListener(
             "keydown",
             function(event) {
 
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    lightbox.classList.remove(
-                        "active"
-                    );
-
-                    lightboxImage.src =
-                        "";
-
+                if (event.key === "Escape") {
+                    closeLightbox();
                 }
-
             }
         );
 
+        function closeLightbox() {
+
+            lightbox.classList.remove(
+                "active"
+            );
+
+            lightboxImage.src = "";
+        }
+
 
         /* ==================================================
-           ERROR
+           ERROR PAGE
         ================================================== */
 
         function showError(message) {
@@ -1248,16 +1581,14 @@
 
                     <div
                         style="
-                            font-size:50px;
-                            margin-bottom:15px;
+                            font-size: 50px;
+                            margin-bottom: 15px;
                         "
                     >
                         ⚠️
                     </div>
 
-                    <h1>
-                        ${message}
-                    </h1>
+                    <h1></h1>
 
                     <p>
                         The event may have been removed
@@ -1274,15 +1605,28 @@
                 </div>
 
             `;
+
+            /*
+             * textContent is safer than inserting
+             * the message directly into HTML.
+             */
+
+            eventContainer
+                .querySelector("h1")
+                .textContent = message;
         }
 
 
         /* ==================================================
-           START
+           START PAGE
         ================================================== */
 
         console.log(
-            "ADTU Bodo Union Event Page"
+            "================================"
+        );
+
+        console.log(
+            "ADTU BODO UNION EVENT PAGE"
         );
 
         console.log(
@@ -1290,6 +1634,16 @@
             eventId
         );
 
+        console.log(
+            "Backend API:",
+            API_BASE_URL +
+            "/api/upload/event/" +
+            eventId
+        );
+
+        console.log(
+            "================================"
+        );
 
         loadEvent();
 

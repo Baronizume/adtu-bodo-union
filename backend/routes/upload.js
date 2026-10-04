@@ -59,27 +59,32 @@ function safeEventId(eventId) {
 
 
 // =====================================================
-// GET EVENT DIRECTORY
+// EVENT DIRECTORY
 // =====================================================
 
 function getEventDirectory(eventId, type) {
 
-    const safeId = safeEventId(eventId);
+    const safeId =
+        safeEventId(eventId);
 
     const folder =
         type === "video"
             ? "videos"
             : "photos";
 
-    const directory = path.join(
-        mediaDirectory,
-        safeId,
-        folder
-    );
+    const directory =
+        path.join(
+            mediaDirectory,
+            safeId,
+            folder
+        );
 
-    fs.mkdirSync(directory, {
-        recursive: true
-    });
+    fs.mkdirSync(
+        directory,
+        {
+            recursive: true
+        }
+    );
 
     return directory;
 }
@@ -89,119 +94,142 @@ function getEventDirectory(eventId, type) {
 // MULTER STORAGE
 // =====================================================
 
-const storage = multer.diskStorage({
+const storage =
+    multer.diskStorage({
 
-    destination: function(req, file, callback) {
+        destination: function(
+            req,
+            file,
+            callback
+        ) {
 
-        try {
+            try {
 
-            const type =
-                String(
-                    req.body.type || ""
-                ).toLowerCase();
-
-            let actualType = type;
-
-            if (!actualType) {
-
-                actualType =
+                const type =
                     file.mimetype.startsWith("video/")
                         ? "video"
                         : "photo";
 
-            }
+                const directory =
+                    getEventDirectory(
+                        req.body.eventId,
+                        type
+                    );
 
-            const destination =
-                getEventDirectory(
-                    req.body.eventId,
-                    actualType
+                console.log(
+                    "=============================="
                 );
 
-            console.log("");
-            console.log("UPLOAD");
-            console.log("Event ID:", req.body.eventId);
-            console.log("File:", file.originalname);
-            console.log("Type:", actualType);
-            console.log("Destination:", destination);
+                console.log(
+                    "MEDIA UPLOAD"
+                );
 
-            callback(null, destination);
+                console.log(
+                    "Event ID:",
+                    req.body.eventId
+                );
 
-        } catch (error) {
+                console.log(
+                    "File:",
+                    file.originalname
+                );
 
-            callback(error);
+                console.log(
+                    "MIME:",
+                    file.mimetype
+                );
+
+                console.log(
+                    "Type:",
+                    type
+                );
+
+                console.log(
+                    "Directory:",
+                    directory
+                );
+
+                console.log(
+                    "=============================="
+                );
+
+
+                callback(
+                    null,
+                    directory
+                );
+
+            } catch (error) {
+
+                callback(
+                    error
+                );
+
+            }
+
+        },
+
+
+        filename: function(
+            req,
+            file,
+            callback
+        ) {
+
+            const extension =
+                path.extname(
+                    file.originalname
+                );
+
+
+            const originalName =
+                path.basename(
+                    file.originalname,
+                    extension
+                );
+
+
+            const safeName =
+                originalName
+                    .replace(
+                        /[^a-zA-Z0-9_-]/g,
+                        "_"
+                    )
+                    .replace(
+                        /_+/g,
+                        "_"
+                    );
+
+
+            const filename =
+                `${Date.now()}-${safeName}${extension}`;
+
+
+            callback(
+                null,
+                filename
+            );
 
         }
 
-    },
-
-
-    filename: function(req, file, callback) {
-
-        const extension =
-            path.extname(
-                file.originalname
-            );
-
-        const originalName =
-            path.basename(
-                file.originalname,
-                extension
-            );
-
-        const safeName =
-            originalName
-                .replace(
-                    /[^a-zA-Z0-9_-]/g,
-                    "_"
-                )
-                .replace(
-                    /_+/g,
-                    "_"
-                );
-
-        const filename =
-            `${Date.now()}-${safeName}${extension}`;
-
-        callback(
-            null,
-            filename
-        );
-
-    }
-
-});
+    });
 
 
 // =====================================================
 // FILE FILTER
 // =====================================================
 
-function fileFilter(req, file, callback) {
-
-    const type =
-        String(
-            req.body.type || ""
-        ).toLowerCase();
-
+function fileFilter(
+    req,
+    file,
+    callback
+) {
 
     if (
         allowedPhotos.includes(
             file.mimetype
         )
     ) {
-
-        if (
-            type &&
-            type !== "photo"
-        ) {
-
-            return callback(
-                new Error(
-                    "This file is an image."
-                )
-            );
-
-        }
 
         return callback(
             null,
@@ -217,19 +245,6 @@ function fileFilter(req, file, callback) {
         )
     ) {
 
-        if (
-            type &&
-            type !== "video"
-        ) {
-
-            return callback(
-                new Error(
-                    "This file is a video."
-                )
-            );
-
-        }
-
         return callback(
             null,
             true
@@ -238,10 +253,9 @@ function fileFilter(req, file, callback) {
     }
 
 
-    callback(
+    return callback(
         new Error(
-            "Unsupported file type: " +
-            file.mimetype
+            `Unsupported file type: ${file.mimetype}`
         )
     );
 
@@ -252,20 +266,21 @@ function fileFilter(req, file, callback) {
 // MULTER
 // =====================================================
 
-const upload = multer({
+const upload =
+    multer({
 
-    storage,
+        storage,
 
-    fileFilter,
+        fileFilter,
 
-    limits: {
+        limits: {
 
-        fileSize:
-            500 * 1024 * 1024
+            fileSize:
+                500 * 1024 * 1024
 
-    }
+        }
 
-});
+    });
 
 
 // =====================================================
@@ -279,7 +294,10 @@ function createFileResponse(
 ) {
 
     const safeId =
-        safeEventId(eventId);
+        safeEventId(
+            eventId
+        );
+
 
     const folder =
         type === "video"
@@ -321,9 +339,9 @@ function createFileResponse(
 // POST /api/upload/photos
 //
 // FormData:
+//
 // eventId
 // photos
-//
 // =====================================================
 
 router.post(
@@ -334,13 +352,18 @@ router.post(
         100
     ),
 
-    function(req, res) {
+    function(
+        req,
+        res
+    ) {
 
         try {
 
             if (!req.body.eventId) {
 
-                return res.status(400).json({
+                return res.status(
+                    400
+                ).json({
 
                     success: false,
 
@@ -358,7 +381,9 @@ router.post(
 
             if (!files.length) {
 
-                return res.status(400).json({
+                return res.status(
+                    400
+                ).json({
 
                     success: false,
 
@@ -372,12 +397,15 @@ router.post(
 
             const uploaded =
                 files.map(
-                    file =>
-                        createFileResponse(
+                    function(file) {
+
+                        return createFileResponse(
                             file,
                             req.body.eventId,
                             "photo"
-                        )
+                        );
+
+                    }
                 );
 
 
@@ -388,7 +416,8 @@ router.post(
                 message:
                     `${uploaded.length} photo(s) uploaded successfully.`,
 
-                files: uploaded
+                files:
+                    uploaded
 
             });
 
@@ -399,7 +428,10 @@ router.post(
                 error
             );
 
-            return res.status(500).json({
+
+            return res.status(
+                500
+            ).json({
 
                 success: false,
 
@@ -421,9 +453,9 @@ router.post(
 // POST /api/upload/videos
 //
 // FormData:
+//
 // eventId
 // videos
-//
 // =====================================================
 
 router.post(
@@ -434,13 +466,18 @@ router.post(
         20
     ),
 
-    function(req, res) {
+    function(
+        req,
+        res
+    ) {
 
         try {
 
             if (!req.body.eventId) {
 
-                return res.status(400).json({
+                return res.status(
+                    400
+                ).json({
 
                     success: false,
 
@@ -458,7 +495,9 @@ router.post(
 
             if (!files.length) {
 
-                return res.status(400).json({
+                return res.status(
+                    400
+                ).json({
 
                     success: false,
 
@@ -472,12 +511,15 @@ router.post(
 
             const uploaded =
                 files.map(
-                    file =>
-                        createFileResponse(
+                    function(file) {
+
+                        return createFileResponse(
                             file,
                             req.body.eventId,
                             "video"
-                        )
+                        );
+
+                    }
                 );
 
 
@@ -488,7 +530,8 @@ router.post(
                 message:
                     `${uploaded.length} video(s) uploaded successfully.`,
 
-                files: uploaded
+                files:
+                    uploaded
 
             });
 
@@ -499,7 +542,10 @@ router.post(
                 error
             );
 
-            return res.status(500).json({
+
+            return res.status(
+                500
+            ).json({
 
                 success: false,
 
@@ -519,13 +565,15 @@ router.post(
 // GET EVENT MEDIA
 //
 // GET /api/upload/event/:eventId
-//
 // =====================================================
 
 router.get(
     "/event/:eventId",
 
-    function(req, res) {
+    function(
+        req,
+        res
+    ) {
 
         try {
 
@@ -535,16 +583,24 @@ router.get(
                 );
 
 
-            const photosDirectory =
-                getEventDirectory(
-                    eventId,
-                    "photo"
+            const eventDirectory =
+                path.join(
+                    mediaDirectory,
+                    eventId
                 );
 
+
+            const photosDirectory =
+                path.join(
+                    eventDirectory,
+                    "photos"
+                );
+
+
             const videosDirectory =
-                getEventDirectory(
-                    eventId,
-                    "video"
+                path.join(
+                    eventDirectory,
+                    "videos"
                 );
 
 
@@ -613,9 +669,11 @@ router.get(
 
                             return {
 
-                                name: file,
+                                name:
+                                    file,
 
-                                type,
+                                type:
+                                    type,
 
                                 url:
                                     `/media/${encodeURIComponent(
@@ -653,16 +711,24 @@ router.get(
 
                 success: true,
 
-                eventId,
+                eventId:
 
-                photos,
+                    eventId,
 
-                videos,
+                photos:
+
+                    photos,
+
+                videos:
+
+                    videos,
 
                 photoCount:
+
                     photos.length,
 
                 videoCount:
+
                     videos.length
 
             });
@@ -674,7 +740,10 @@ router.get(
                 error
             );
 
-            return res.status(500).json({
+
+            return res.status(
+                500
+            ).json({
 
                 success: false,
 
@@ -691,198 +760,16 @@ router.get(
 
 
 // =====================================================
-// LIST ALL PHOTOS FOR EVENT
-// =====================================================
-
-router.get(
-    "/photos/:eventId",
-
-    function(req, res) {
-
-        try {
-
-            const eventId =
-                safeEventId(
-                    req.params.eventId
-                );
-
-            const directory =
-                getEventDirectory(
-                    eventId,
-                    "photo"
-                );
-
-
-            if (
-                !fs.existsSync(
-                    directory
-                )
-            ) {
-
-                return res.json([]);
-
-            }
-
-
-            const files =
-                fs.readdirSync(
-                    directory
-                );
-
-
-            const result =
-                files
-                    .filter(
-                        file =>
-                            [
-                                ".jpg",
-                                ".jpeg",
-                                ".png",
-                                ".webp",
-                                ".gif"
-                            ].includes(
-                                path.extname(
-                                    file
-                                ).toLowerCase()
-                            )
-                    )
-                    .map(
-                        file => ({
-
-                            name: file,
-
-                            type: "photo",
-
-                            url:
-                                `/media/${encodeURIComponent(
-                                    eventId
-                                )}/photos/${encodeURIComponent(
-                                    file
-                                )}`
-
-                        })
-                    );
-
-
-            return res.json(result);
-
-        } catch (error) {
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    "Could not read photos."
-
-            });
-
-        }
-
-    }
-);
-
-
-// =====================================================
-// LIST ALL VIDEOS FOR EVENT
-// =====================================================
-
-router.get(
-    "/videos/:eventId",
-
-    function(req, res) {
-
-        try {
-
-            const eventId =
-                safeEventId(
-                    req.params.eventId
-                );
-
-            const directory =
-                getEventDirectory(
-                    eventId,
-                    "video"
-                );
-
-
-            if (
-                !fs.existsSync(
-                    directory
-                )
-            ) {
-
-                return res.json([]);
-
-            }
-
-
-            const files =
-                fs.readdirSync(
-                    directory
-                );
-
-
-            const result =
-                files
-                    .filter(
-                        file =>
-                            [
-                                ".mp4",
-                                ".webm",
-                                ".mov",
-                                ".m4v"
-                            ].includes(
-                                path.extname(
-                                    file
-                                ).toLowerCase()
-                            )
-                    )
-                    .map(
-                        file => ({
-
-                            name: file,
-
-                            type: "video",
-
-                            url:
-                                `/media/${encodeURIComponent(
-                                    eventId
-                                )}/videos/${encodeURIComponent(
-                                    file
-                                )}`
-
-                        })
-                    );
-
-
-            return res.json(result);
-
-        } catch (error) {
-
-            return res.status(500).json({
-
-                success: false,
-
-                message:
-                    "Could not read videos."
-
-            });
-
-        }
-
-    }
-);
-
-
-// =====================================================
 // DELETE PHOTO
 // =====================================================
 
 router.delete(
     "/photos/:eventId/:filename",
 
-    function(req, res) {
+    function(
+        req,
+        res
+    ) {
 
         try {
 
@@ -890,6 +777,7 @@ router.delete(
                 safeEventId(
                     req.params.eventId
                 );
+
 
             const filename =
                 path.basename(
@@ -913,7 +801,9 @@ router.delete(
                 )
             ) {
 
-                return res.status(404).json({
+                return res.status(
+                    404
+                ).json({
 
                     success: false,
 
@@ -941,7 +831,15 @@ router.delete(
 
         } catch (error) {
 
-            return res.status(500).json({
+            console.error(
+                "DELETE PHOTO ERROR:",
+                error
+            );
+
+
+            return res.status(
+                500
+            ).json({
 
                 success: false,
 
@@ -963,7 +861,10 @@ router.delete(
 router.delete(
     "/videos/:eventId/:filename",
 
-    function(req, res) {
+    function(
+        req,
+        res
+    ) {
 
         try {
 
@@ -971,6 +872,7 @@ router.delete(
                 safeEventId(
                     req.params.eventId
                 );
+
 
             const filename =
                 path.basename(
@@ -994,7 +896,9 @@ router.delete(
                 )
             ) {
 
-                return res.status(404).json({
+                return res.status(
+                    404
+                ).json({
 
                     success: false,
 
@@ -1022,7 +926,15 @@ router.delete(
 
         } catch (error) {
 
-            return res.status(500).json({
+            console.error(
+                "DELETE VIDEO ERROR:",
+                error
+            );
+
+
+            return res.status(
+                500
+            ).json({
 
                 success: false,
 
@@ -1042,7 +954,12 @@ router.delete(
 // =====================================================
 
 router.use(
-    function(error, req, res, next) {
+    function(
+        error,
+        req,
+        res,
+        next
+    ) {
 
         console.error(
             "UPLOAD ERROR:",
@@ -1051,7 +968,8 @@ router.use(
 
 
         if (
-            error instanceof multer.MulterError
+            error instanceof
+            multer.MulterError
         ) {
 
             if (
@@ -1059,7 +977,9 @@ router.use(
                 "LIMIT_FILE_SIZE"
             ) {
 
-                return res.status(400).json({
+                return res.status(
+                    400
+                ).json({
 
                     success: false,
 
@@ -1071,7 +991,9 @@ router.use(
             }
 
 
-            return res.status(400).json({
+            return res.status(
+                400
+            ).json({
 
                 success: false,
 
@@ -1083,7 +1005,9 @@ router.use(
         }
 
 
-        return res.status(400).json({
+        return res.status(
+            400
+        ).json({
 
             success: false,
 
@@ -1097,4 +1021,5 @@ router.use(
 );
 
 
-module.exports = router;
+module.exports =
+    router;
