@@ -1286,541 +1286,556 @@
         }
 
 
-        // =====================================
-        // DRIVE MEDIA BOX
-        // =====================================
+       // =====================================
+// DRIVE MEDIA BOX
+// =====================================
 
-        function createDriveBox(
-            eventId,
-            data,
-            eventItem
-        ) {
+function createDriveBox(eventId, data, eventItem) {
 
-            const box =
-                document.createElement("div");
-
-            box.className =
-                "drive-box";
+    // Main container
+    const box = document.createElement("div");
+    box.className = "drive-box";
 
 
-            // TITLE
+    // =====================================
+    // TITLE
+    // =====================================
 
-            const title =
-                document.createElement("h4");
+    const title = document.createElement("h4");
 
-            title.textContent =
-                "📁 Google Drive Media";
-
-
-            // HELP TEXT
-
-            const help =
-                document.createElement("p");
-
-            help.className =
-                "drive-help";
-
-            help.textContent =
-                "Upload photos and videos directly to your Google Drive folders. No API or backend is required.";
+    title.textContent = "📁 Google Drive Media";
 
 
-            // GRID
+    // =====================================
+    // HELP TEXT
+    // =====================================
 
-            const grid =
-                document.createElement("div");
+    const help = document.createElement("p");
 
-            grid.className =
-                "drive-grid";
+    help.className = "drive-help";
 
-
-            // =================================
-            // PHOTOS
-            // =================================
-
-            const photosGroup =
-                document.createElement("div");
-
-            photosGroup.className =
-                "drive-group";
+    help.textContent =
+        "Add your Google Drive photo and video folder links. " +
+        "Users can open the folders to view the media. " +
+        "No API or backend upload is used.";
 
 
-            const photosLabel =
-                document.createElement("label");
+    // =====================================
+    // GRID
+    // =====================================
 
-            photosLabel.textContent =
-                "📷 Photos";
+    const grid = document.createElement("div");
 
-
-            const photosInput =
-                document.createElement("input");
-
-            photosInput.type =
-                "url";
-
-            photosInput.placeholder =
-                "Google Drive photos folder";
-
-            photosInput.value =
-                data.photosLink || "";
+    grid.className = "drive-grid";
 
 
-            const photosOpen =
-                document.createElement("a");
+    // =====================================
+    // PHOTO GROUP
+    // =====================================
 
-            photosOpen.className =
-                "drive-button";
+    const photosGroup = document.createElement("div");
 
-            photosOpen.textContent =
-                "📂 Open Photos";
+    photosGroup.className = "drive-group";
 
 
-            if (data.photosLink) {
+    const photosLabel = document.createElement("label");
 
-                photosOpen.href =
-                    data.photosLink;
+    photosLabel.textContent = "📷 Photos";
 
-                photosOpen.target =
-                    "_blank";
 
-            } else {
+    const photosInput = document.createElement("input");
 
-                photosOpen.classList.add(
-                    "disabled"
-                );
+    photosInput.type = "url";
+
+    photosInput.placeholder =
+        "Paste Google Drive photos folder link";
+
+    photosInput.value =
+        data.photosLink || "";
+
+
+    const photosOpen = document.createElement("a");
+
+    photosOpen.className = "drive-button";
+
+    photosOpen.textContent = "📂 Open Photos";
+
+    photosOpen.target = "_blank";
+
+    photosOpen.rel = "noopener noreferrer";
+
+
+    // Only use a real URL
+    if (isValidDriveLink(data.photosLink)) {
+
+        photosOpen.href =
+            data.photosLink;
+
+    } else {
+
+        photosOpen.classList.add("disabled");
+    }
+
+
+    // Photo count input
+
+    const photoCountValue =
+        document.createElement("input");
+
+    photoCountValue.type = "number";
+
+    photoCountValue.min = "0";
+
+    photoCountValue.value =
+        Number(data.photoCount) || 0;
+
+    photoCountValue.placeholder =
+        "Number of photos";
+
+    photoCountValue.style.marginTop =
+        "12px";
+
+
+    photosGroup.appendChild(photosLabel);
+
+    photosGroup.appendChild(photosInput);
+
+    photosGroup.appendChild(photosOpen);
+
+    photosGroup.appendChild(photoCountValue);
+
+
+    // =====================================
+    // VIDEO GROUP
+    // =====================================
+
+    const videosGroup = document.createElement("div");
+
+    videosGroup.className = "drive-group";
+
+
+    const videosLabel = document.createElement("label");
+
+    videosLabel.textContent = "🎥 Videos";
+
+
+    const videosInput = document.createElement("input");
+
+    videosInput.type = "url";
+
+    videosInput.placeholder =
+        "Paste Google Drive videos folder link";
+
+    videosInput.value =
+        data.videosLink || "";
+
+
+    const videosOpen = document.createElement("a");
+
+    videosOpen.className = "drive-button";
+
+    videosOpen.textContent = "📂 Open Videos";
+
+    videosOpen.target = "_blank";
+
+    videosOpen.rel = "noopener noreferrer";
+
+
+    // Only use a real URL
+    if (isValidDriveLink(data.videosLink)) {
+
+        videosOpen.href =
+            data.videosLink;
+
+    } else {
+
+        videosOpen.classList.add("disabled");
+    }
+
+
+    // Video count input
+
+    const videoCountValue =
+        document.createElement("input");
+
+    videoCountValue.type = "number";
+
+    videoCountValue.min = "0";
+
+    videoCountValue.value =
+        Number(data.videoCount) || 0;
+
+    videoCountValue.placeholder =
+        "Number of videos";
+
+    videoCountValue.style.marginTop =
+        "12px";
+
+
+    videosGroup.appendChild(videosLabel);
+
+    videosGroup.appendChild(videosInput);
+
+    videosGroup.appendChild(videosOpen);
+
+    videosGroup.appendChild(videoCountValue);
+
+
+    // Add both groups
+
+    grid.appendChild(photosGroup);
+
+    grid.appendChild(videosGroup);
+
+
+    // =====================================
+    // MEDIA COUNTS
+    // =====================================
+
+    const count = document.createElement("div");
+
+    count.className = "media-count";
+
+
+    const photoCountElement =
+        document.createElement("span");
+
+    photoCountElement.className =
+        "photo-count";
+
+    photoCountElement.textContent =
+        "📷 Photos: " +
+        (Number(data.photoCount) || 0);
+
+
+    const videoCountElement =
+        document.createElement("span");
+
+    videoCountElement.className =
+        "video-count";
+
+    videoCountElement.textContent =
+        "🎥 Videos: " +
+        (Number(data.videoCount) || 0);
+
+
+    count.appendChild(photoCountElement);
+
+    count.appendChild(videoCountElement);
+
+
+    // =====================================
+    // SAVE BUTTON
+    // =====================================
+
+    const saveButton =
+        document.createElement("button");
+
+    saveButton.type = "button";
+
+    saveButton.className =
+        "primary-button";
+
+    saveButton.style.marginTop =
+        "15px";
+
+    saveButton.textContent =
+        "💾 Save Media Information";
+
+
+    // =====================================
+    // STATUS
+    // =====================================
+
+    const status =
+        document.createElement("div");
+
+    status.className =
+        "drive-status";
+
+
+    // =====================================
+    // SAVE MEDIA INFORMATION
+    // =====================================
+
+    saveButton.addEventListener(
+        "click",
+        async function () {
+
+            const user =
+                auth.currentUser;
+
+
+            // Check admin
+            if (!await verifyAdmin(user)) {
+
+                status.textContent =
+                    "You are not authorized.";
+
+                status.className =
+                    "drive-status error";
+
+                return;
             }
 
 
-            photosGroup.appendChild(
-                photosLabel
-            );
+            const newPhotosLink =
+                photosInput.value.trim();
 
-            photosGroup.appendChild(
-                photosInput
-            );
-
-            photosGroup.appendChild(
-                photosOpen
-            );
+            const newVideosLink =
+                videosInput.value.trim();
 
 
-            // =================================
-            // VIDEOS
-            // =================================
-
-            const videosGroup =
-                document.createElement("div");
-
-            videosGroup.className =
-                "drive-group";
-
-
-            const videosLabel =
-                document.createElement("label");
-
-            videosLabel.textContent =
-                "🎥 Videos";
-
-
-            const videosInput =
-                document.createElement("input");
-
-            videosInput.type =
-                "url";
-
-            videosInput.placeholder =
-                "Google Drive videos folder";
-
-            videosInput.value =
-                data.videosLink || "";
-
-
-            const videosOpen =
-                document.createElement("a");
-
-            videosOpen.className =
-                "drive-button";
-
-            videosOpen.textContent =
-                "📂 Open Videos";
-
-
-            if (data.videosLink) {
-
-                videosOpen.href =
-                    data.videosLink;
-
-                videosOpen.target =
-                    "_blank";
-
-            } else {
-
-                videosOpen.classList.add(
-                    "disabled"
-                );
-            }
-
-
-            videosGroup.appendChild(
-                videosLabel
-            );
-
-            videosGroup.appendChild(
-                videosInput
-            );
-
-            videosGroup.appendChild(
-                videosOpen
-            );
-
-
-            grid.appendChild(
-                photosGroup
-            );
-
-            grid.appendChild(
-                videosGroup
-            );
-
-
-            // =================================
-            // LOCAL COUNT INPUTS
-            // =================================
-
-            const photoCountValue =
-                document.createElement("input");
-
-            photoCountValue.type =
-                "number";
-
-            photoCountValue.min =
-                "0";
-
-            photoCountValue.value =
-                Number(
-                    data.photoCount
-                ) || 0;
-
-            photoCountValue.style.marginTop =
-                "15px";
-
-            photoCountValue.placeholder =
-                "Photo count";
-
-
-            const videoCountValue =
-                document.createElement("input");
-
-            videoCountValue.type =
-                "number";
-
-            videoCountValue.min =
-                "0";
-
-            videoCountValue.value =
-                Number(
-                    data.videoCount
-                ) || 0;
-
-            videoCountValue.style.marginTop =
-                "15px";
-
-            videoCountValue.placeholder =
-                "Video count";
-
-
-            photosGroup.appendChild(
-                photoCountValue
-            );
-
-            videosGroup.appendChild(
-                videoCountValue
-            );
-
-
-            // =================================
-            // MEDIA COUNTS
-            // =================================
-
-            const count =
-                document.createElement("div");
-
-            count.className =
-                "media-count";
-
-
-            const photoCountElement =
-                document.createElement("span");
-
-            photoCountElement.className =
-                "photo-count";
-
-            photoCountElement.textContent =
-                "📷 Photos: " +
-                (
+            const newPhotoCount =
+                Math.max(
+                    0,
                     Number(
-                        data.photoCount
+                        photoCountValue.value
                     ) || 0
                 );
 
 
-            const videoCountElement =
-                document.createElement("span");
-
-            videoCountElement.className =
-                "video-count";
-
-            videoCountElement.textContent =
-                "🎥 Videos: " +
-                (
+            const newVideoCount =
+                Math.max(
+                    0,
                     Number(
-                        data.videoCount
+                        videoCountValue.value
                     ) || 0
                 );
 
 
-            count.appendChild(
-                photoCountElement
-            );
+            // =================================
+            // VALIDATE PHOTO LINK
+            // =================================
 
-            count.appendChild(
-                videoCountElement
-            );
+            if (
+                newPhotosLink &&
+                !isValidDriveLink(newPhotosLink)
+            ) {
+
+                status.textContent =
+                    "❌ Please enter a valid Google Drive photos link.";
+
+                status.className =
+                    "drive-status error";
+
+                return;
+            }
 
 
             // =================================
-            // SAVE MEDIA BUTTON
+            // VALIDATE VIDEO LINK
             // =================================
 
-            const saveButton =
-                document.createElement("button");
+            if (
+                newVideosLink &&
+                !isValidDriveLink(newVideosLink)
+            ) {
 
-            saveButton.type =
-                "button";
+                status.textContent =
+                    "❌ Please enter a valid Google Drive videos link.";
 
-            saveButton.className =
-                "primary-button";
+                status.className =
+                    "drive-status error";
 
-            saveButton.style.marginTop =
-                "15px";
+                return;
+            }
+
+
+            saveButton.disabled = true;
 
             saveButton.textContent =
-                "💾 Save Media Links & Counts";
+                "Saving...";
 
 
-            // STATUS
+            try {
 
-            const status =
-                document.createElement("div");
+                // =================================
+                // SAVE TO FIRESTORE
+                // =================================
 
-            status.className =
-                "drive-status";
+                await db
+                    .collection("events")
+                    .doc(eventId)
+                    .update({
 
+                        photosLink:
+                            newPhotosLink,
 
-            // =================================
-            // SAVE DRIVE LINKS
-            // =================================
+                        videosLink:
+                            newVideosLink,
 
-            saveButton.addEventListener(
-                "click",
-                async function () {
+                        photoCount:
+                            newPhotoCount,
 
-                    const user =
-                        auth.currentUser;
+                        videoCount:
+                            newVideoCount,
 
-                    if (!await verifyAdmin(user)) {
+                        updatedAt:
+                            firebase.firestore
+                                .FieldValue
+                                .serverTimestamp()
 
-                        status.textContent =
-                            "You are not authorized.";
-
-                        status.className =
-                            "drive-status error";
-
-                        return;
-                    }
-
-
-                    saveButton.disabled =
-                        true;
-
-                    saveButton.textContent =
-                        "Saving...";
+                    });
 
 
-                    try {
+                // =================================
+                // UPDATE PHOTO BUTTON
+                // =================================
 
-                        const newPhotosLink =
-                            photosInput.value.trim();
+                if (newPhotosLink) {
 
-                        const newVideosLink =
-                            videosInput.value.trim();
+                    photosOpen.href =
+                        newPhotosLink;
 
-                        const newPhotoCount =
-                            Math.max(
-                                0,
-                                Number(
-                                    photoCountValue.value
-                                ) || 0
-                            );
+                    photosOpen.classList.remove(
+                        "disabled"
+                    );
 
-                        const newVideoCount =
-                            Math.max(
-                                0,
-                                Number(
-                                    videoCountValue.value
-                                ) || 0
-                            );
+                } else {
 
+                    photosOpen.removeAttribute(
+                        "href"
+                    );
 
-                        await db
-                            .collection("events")
-                            .doc(eventId)
-                            .update({
-
-                                photosLink:
-                                    newPhotosLink,
-
-                                videosLink:
-                                    newVideosLink,
-
-                                photoCount:
-                                    newPhotoCount,
-
-                                videoCount:
-                                    newVideoCount,
-
-                                updatedAt:
-                                    firebase.firestore
-                                        .FieldValue
-                                        .serverTimestamp()
-                            });
-
-
-                        status.textContent =
-                            "✅ Media information saved.";
-
-                        status.className =
-                            "drive-status success";
-
-
-                        // Update photos button
-
-                        if (newPhotosLink) {
-
-                            photosOpen.href =
-                                newPhotosLink;
-
-                            photosOpen.target =
-                                "_blank";
-
-                            photosOpen.classList.remove(
-                                "disabled"
-                            );
-
-                        } else {
-
-                            photosOpen.removeAttribute(
-                                "href"
-                            );
-
-                            photosOpen.classList.add(
-                                "disabled"
-                            );
-                        }
-
-
-                        // Update videos button
-
-                        if (newVideosLink) {
-
-                            videosOpen.href =
-                                newVideosLink;
-
-                            videosOpen.target =
-                                "_blank";
-
-                            videosOpen.classList.remove(
-                                "disabled"
-                            );
-
-                        } else {
-
-                            videosOpen.removeAttribute(
-                                "href"
-                            );
-
-                            videosOpen.classList.add(
-                                "disabled"
-                            );
-                        }
-
-
-                        // Update counts
-
-                        photoCountElement.textContent =
-                            "📷 Photos: " +
-                            newPhotoCount;
-
-                        videoCountElement.textContent =
-                            "🎥 Videos: " +
-                            newVideoCount;
-
-
-                    } catch (error) {
-
-                        console.error(
-                            "Media save error:",
-                            error
-                        );
-
-                        status.textContent =
-                            "❌ Could not save media information.";
-
-                        status.className =
-                            "drive-status error";
-                    }
-
-
-                    saveButton.disabled =
-                        false;
-
-                    saveButton.textContent =
-                        "💾 Save Media Links & Counts";
+                    photosOpen.classList.add(
+                        "disabled"
+                    );
                 }
-            );
 
 
-            // =================================
-            // APPEND DRIVE BOX
-            // =================================
+                // =================================
+                // UPDATE VIDEO BUTTON
+                // =================================
 
-            box.appendChild(
-                title
-            );
+                if (newVideosLink) {
 
-            box.appendChild(
-                help
-            );
+                    videosOpen.href =
+                        newVideosLink;
 
-            box.appendChild(
-                grid
-            );
+                    videosOpen.classList.remove(
+                        "disabled"
+                    );
 
-            box.appendChild(
-                count
-            );
+                } else {
 
-            box.appendChild(
-                saveButton
-            );
+                    videosOpen.removeAttribute(
+                        "href"
+                    );
 
-            box.appendChild(
-                status
-            );
+                    videosOpen.classList.add(
+                        "disabled"
+                    );
+                }
 
-            eventItem.appendChild(
-                box
-            );
+
+                // =================================
+                // UPDATE COUNTS
+                // =================================
+
+                photoCountElement.textContent =
+                    "📷 Photos: " +
+                    newPhotoCount;
+
+
+                videoCountElement.textContent =
+                    "🎥 Videos: " +
+                    newVideoCount;
+
+
+                // =================================
+                // SUCCESS
+                // =================================
+
+                status.textContent =
+                    "✅ Media information saved successfully.";
+
+                status.className =
+                    "drive-status success";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Media save error:",
+                    error
+                );
+
+
+                status.textContent =
+                    "❌ Could not save media information.";
+
+
+                status.className =
+                    "drive-status error";
+            }
+
+
+            saveButton.disabled = false;
+
+            saveButton.textContent =
+                "💾 Save Media Information";
         }
+    );
+
+
+    // =====================================
+    // APPEND EVERYTHING
+    // =====================================
+
+    box.appendChild(title);
+
+    box.appendChild(help);
+
+    box.appendChild(grid);
+
+    box.appendChild(count);
+
+    box.appendChild(saveButton);
+
+    box.appendChild(status);
+
+    eventItem.appendChild(box);
+}
+
+
+// =====================================
+// GOOGLE DRIVE LINK VALIDATION
+// =====================================
+
+function isValidDriveLink(value) {
+
+    if (!value) {
+        return false;
+    }
+
+
+    try {
+
+        const url =
+            new URL(value);
+
+
+        if (
+            url.protocol !== "https:" &&
+            url.protocol !== "http:"
+        ) {
+
+            return false;
+        }
+
+
+        return (
+            url.hostname === "drive.google.com" ||
+            url.hostname === "docs.google.com"
+        );
+
+
+    } catch (error) {
+
+        return false;
+    }
+}
 
 
         // =====================================
