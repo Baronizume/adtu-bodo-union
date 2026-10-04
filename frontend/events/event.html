@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ADTU Bodo Union | Event</title>
@@ -66,55 +65,6 @@
             line-height: 1.8;
             color: #444;
             white-space: pre-line;
-        }
-
-        /* ================================
-           ADMIN BUTTONS
-        ================================= */
-
-        .event-actions {
-            display: none;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 25px;
-        }
-
-        .button {
-            display: inline-block;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 18px;
-            text-decoration: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .button-primary {
-            background: #2563eb;
-            color: #fff;
-        }
-
-        .button-primary:hover {
-            background: #1558b0;
-        }
-
-        .delete-event-button {
-            background: #c62828;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 18px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .delete-event-button:hover {
-            background: #a51f1f;
-        }
-
-        .delete-event-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
         }
 
         /* ================================
@@ -269,24 +219,6 @@
         }
 
         /* ================================
-           QR
-        ================================= */
-
-        .event-qr-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid #eee;
-            text-align: center;
-        }
-
-        .event-qr {
-            width: 200px;
-            height: 200px;
-            margin: 15px auto;
-            display: block;
-        }
-
-        /* ================================
            NOT FOUND
         ================================= */
 
@@ -318,17 +250,6 @@
 
             #eventName {
                 font-size: 28px;
-            }
-
-            .event-actions {
-                flex-direction: column;
-            }
-
-            .button,
-            .delete-event-button {
-                width: 100%;
-                box-sizing: border-box;
-                text-align: center;
             }
 
             .media-gallery {
@@ -445,32 +366,6 @@
                 </p>
 
 
-                <!-- ADMIN -->
-
-                <div
-                    id="adminActions"
-                    class="event-actions"
-                >
-
-                    <button
-                        id="editEventButton"
-                        class="button button-primary"
-                        type="button"
-                    >
-                        ✏️ Edit Event
-                    </button>
-
-                    <button
-                        id="deleteEventButton"
-                        class="delete-event-button"
-                        type="button"
-                    >
-                        🗑️ Delete Event
-                    </button>
-
-                </div>
-
-
                 <!-- ==========================
                      PHOTOS & VIDEOS
                 =========================== -->
@@ -556,41 +451,6 @@
 
                 </div>
 
-
-                <!-- ==========================
-                     QR CODE
-                =========================== -->
-
-                <div class="event-qr-section">
-
-                    <h2>
-                        📱 Scan to View Event
-                    </h2>
-
-                    <img
-                        id="eventQrImage"
-                        src=""
-                        alt="QR Code to view event"
-                        class="event-qr"
-                    >
-
-                    <p>
-                        Scan this QR code to open this event
-                        and view its photos and videos.
-                    </p>
-
-                    <a
-                        id="qrButton"
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="button button-primary"
-                    >
-                        Open Event
-                    </a>
-
-                </div>
-
             </div>
 
         </section>
@@ -670,14 +530,6 @@
     <script>
 
         /* ==================================================
-           ADMIN UID
-        ================================================== */
-
-        const ADMIN_UID =
-            "s7XAHabgLfc92ktoM0kBmdLXfAD3";
-
-
-        /* ==================================================
            ELEMENTS
         ================================================== */
 
@@ -693,19 +545,6 @@
         const eventContainer =
             document.getElementById(
                 "event-details-container"
-            );
-
-        const adminActions =
-            document.getElementById("adminActions");
-
-        const editEventButton =
-            document.getElementById(
-                "editEventButton"
-            );
-
-        const deleteEventButton =
-            document.getElementById(
-                "deleteEventButton"
             );
 
         const photoCount =
@@ -741,16 +580,6 @@
         const mediaStatus =
             document.getElementById(
                 "mediaStatus"
-            );
-
-        const eventQrImage =
-            document.getElementById(
-                "eventQrImage"
-            );
-
-        const qrButton =
-            document.getElementById(
-                "qrButton"
             );
 
         const lightbox =
@@ -1124,52 +953,38 @@
 
         async function loadEventMedia(data) {
 
-            /*
-             The event document should contain:
-
-             photos: [
-                 "https://...",
-                 "https://..."
-             ]
-
-             videos: [
-                 "https://..."
-             ]
-
-             OR:
-
-             photos: [
-                 { url: "https://..." }
-             ]
-
-             videos: [
-                 { url: "https://..." }
-             ]
-            */
-
-
             let photos = [];
             let videos = [];
 
 
+            /*
+             Direct photo array
+            */
+
             if (Array.isArray(data.photos)) {
 
                 photos =
-                    data.photos;
-
-            }
-
-
-            if (Array.isArray(data.videos)) {
-
-                videos =
-                    data.videos;
+                    [...data.photos];
 
             }
 
 
             /*
-             Some projects use media instead:
+             Direct video array
+            */
+
+            if (Array.isArray(data.videos)) {
+
+                videos =
+                    [...data.videos];
+
+            }
+
+
+            /*
+             Alternative media array
+
+             Example:
 
              media: [
                  {
@@ -1183,12 +998,14 @@
              ]
             */
 
-            if (
-                Array.isArray(data.media)
-            ) {
+            if (Array.isArray(data.media)) {
 
                 data.media.forEach(
                     function(item) {
+
+                        if (!item) {
+                            return;
+                        }
 
                         const type =
                             (
@@ -1203,19 +1020,16 @@
                             type === "image"
                         ) {
 
-                            photos.push(
-                                item
-                            );
+                            photos.push(item);
 
                         }
+
 
                         if (
                             type === "video"
                         ) {
 
-                            videos.push(
-                                item
-                            );
+                            videos.push(item);
 
                         }
 
@@ -1224,6 +1038,10 @@
 
             }
 
+
+            /*
+             Update counters
+            */
 
             photoCount.textContent =
                 "📷 Photos: " +
@@ -1234,6 +1052,10 @@
                 videos.length;
 
 
+            /*
+             Display media
+            */
+
             displayPhotos(
                 photos
             );
@@ -1242,6 +1064,10 @@
                 videos
             );
 
+
+            /*
+             Status
+            */
 
             if (
                 photos.length === 0 &&
@@ -1312,20 +1138,22 @@
                 );
 
 
+                /*
+                 Display event information
+                */
+
                 displayEvent(
                     data
                 );
 
 
+                /*
+                 Load photos and videos
+                */
+
                 await loadEventMedia(
                     data
                 );
-
-
-                setupQrCode();
-
-                checkAdmin();
-
 
             } catch (error) {
 
@@ -1343,227 +1171,7 @@
 
 
         /* ==================================================
-           QR CODE
-        ================================================== */
-
-        function setupQrCode() {
-
-            const eventUrl =
-                window.location.href;
-
-
-            qrButton.href =
-                eventUrl;
-
-
-            eventQrImage.src =
-                "https://api.qrserver.com/v1/create-qr-code/" +
-                "?size=300x300&data=" +
-                encodeURIComponent(
-                    eventUrl
-                );
-        }
-
-
-        /* ==================================================
-           ADMIN CHECK
-        ================================================== */
-
-        async function verifyAdmin(user) {
-
-            if (!user) {
-                return false;
-            }
-
-
-            if (
-                user.uid === ADMIN_UID
-            ) {
-                return true;
-            }
-
-
-            try {
-
-                const adminDoc =
-                    await db
-                        .collection("admins")
-                        .doc(user.uid)
-                        .get();
-
-
-                if (!adminDoc.exists) {
-                    return false;
-                }
-
-
-                const data =
-                    adminDoc.data();
-
-
-                return (
-                    !data.role ||
-                    data.role === "admin"
-                );
-
-            } catch (error) {
-
-                console.error(
-                    "Admin verification error:",
-                    error
-                );
-
-                return false;
-            }
-        }
-
-
-        function checkAdmin() {
-
-            if (
-                typeof auth === "undefined"
-            ) {
-                return;
-            }
-
-
-            auth.onAuthStateChanged(
-                async function(user) {
-
-                    if (!user) {
-
-                        adminActions.style.display =
-                            "none";
-
-                        return;
-                    }
-
-
-                    const admin =
-                        await verifyAdmin(
-                            user
-                        );
-
-
-                    if (!admin) {
-
-                        adminActions.style.display =
-                            "none";
-
-                        return;
-                    }
-
-
-                    adminActions.style.display =
-                        "flex";
-
-
-                    editEventButton.onclick =
-                        function() {
-
-                            window.location.href =
-                                "../admin/admin-dashboard.html";
-
-                        };
-
-
-                    deleteEventButton.onclick =
-                        function() {
-
-                            deleteEvent();
-
-                        };
-
-                }
-            );
-        }
-
-
-        /* ==================================================
-           DELETE EVENT
-        ================================================== */
-
-        async function deleteEvent() {
-
-            const user =
-                auth.currentUser;
-
-
-            const admin =
-                await verifyAdmin(
-                    user
-                );
-
-
-            if (!admin) {
-
-                alert(
-                    "You are not authorized."
-                );
-
-                return;
-            }
-
-
-            if (
-                !confirm(
-                    "Are you sure you want to delete this event?"
-                )
-            ) {
-
-                return;
-            }
-
-
-            try {
-
-                deleteEventButton.disabled =
-                    true;
-
-                deleteEventButton.textContent =
-                    "Deleting...";
-
-
-                await db
-                    .collection("events")
-                    .doc(eventId)
-                    .delete();
-
-
-                alert(
-                    "Event deleted successfully."
-                );
-
-
-                window.location.href =
-                    "../index.html#events";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Delete event error:",
-                    error
-                );
-
-
-                alert(
-                    "Could not delete the event."
-                );
-
-
-                deleteEventButton.disabled =
-                    false;
-
-                deleteEventButton.textContent =
-                    "🗑️ Delete Event";
-
-            }
-        }
-
-
-        /* ==================================================
-           LIGHTBOX
+           LIGHTBOX CLOSE
         ================================================== */
 
         lightboxClose.onclick =
@@ -1578,6 +1186,10 @@
 
             };
 
+
+        /* ==================================================
+           LIGHTBOX BACKGROUND CLOSE
+        ================================================== */
 
         lightbox.onclick =
             function(event) {
@@ -1598,6 +1210,10 @@
 
             };
 
+
+        /* ==================================================
+           ESCAPE KEY
+        ================================================== */
 
         document.addEventListener(
             "keydown",

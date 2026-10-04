@@ -710,170 +710,83 @@
 </header>
 
 
-<!-- =========================================
-     MAIN
-========================================= -->
+<main>
 
-<main class="admin-page">
+    <section class="dashboard-section">
+        <h1>Admin Dashboard</h1>
+        <!-- your existing dashboard content -->
+    </section>
 
 
-    <!-- =====================================
-         ADMIN HEADER
-    ====================================== -->
+    <!-- =================================
+         UPLOAD EVENT PHOTOS & VIDEOS
+    ================================== -->
 
-    <section class="admin-header">
+    <section class="upload-section">
 
-        <div>
+        <h2>📷🎥 Upload Event Media</h2>
 
-            <h1>
-                🔐 Admin Dashboard
-            </h1>
+        <div class="upload-group">
 
-            <p
-                id="adminUser"
-                class="admin-user"
+            <label for="eventId">
+                Event
+            </label>
+
+            <select id="eventId">
+                <option value="">
+                    Select an event
+                </option>
+            </select>
+
+        </div>
+
+
+        <div class="upload-group">
+
+            <label for="photoFiles">
+                📷 Select Photos
+            </label>
+
+            <input
+                type="file"
+                id="photoFiles"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                multiple
             >
-                Checking admin access...
-            </p>
+
+        </div>
+
+
+        <div class="upload-group">
+
+            <label for="videoFiles">
+                🎥 Select Videos
+            </label>
+
+            <input
+                type="file"
+                id="videoFiles"
+                accept="video/mp4,video/webm,video/quicktime,video/x-m4v"
+                multiple
+            >
 
         </div>
 
 
         <button
-            id="logoutButton"
-            class="logout-button"
+            id="uploadMediaButton"
             type="button"
         >
-
-            🚪 Logout
-
+            Upload Photos &amp; Videos
         </button>
 
-    </section>
 
-
-    <!-- =====================================
-         ADD EVENT
-    ====================================== -->
-
-    <section class="admin-card">
-
-        <h2>
-            ➕ Add Event
-        </h2>
-
-        <p>
-            Create a new ADTU Bodo Union event.
-        </p>
-
-
-        <form id="eventForm">
-
-
-            <div class="form-group">
-
-                <label for="eventName">
-                    Event Name
-                </label>
-
-                <input
-                    id="eventName"
-                    type="text"
-                    placeholder="Enter event name"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="eventDate">
-                    Event Date
-                </label>
-
-                <input
-                    id="eventDate"
-                    type="date"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="eventDescription">
-                    Description
-                </label>
-
-                <textarea
-                    id="eventDescription"
-                    placeholder="Enter event description"
-                ></textarea>
-
-            </div>
-
-
-            <button
-                id="saveEventButton"
-                type="submit"
-                class="primary-button"
-            >
-
-                ➕ Add Event
-
-            </button>
-
-
-            <button
-                id="clearFormButton"
-                type="button"
-                class="secondary-button"
-            >
-
-                Clear
-
-            </button>
-
-
-            <div
-                id="formMessage"
-                class="media-status"
-            ></div>
-
-
-        </form>
+        <p id="uploadStatus"></p>
 
     </section>
-
-
-    <!-- =====================================
-         MANAGE EVENTS
-    ====================================== -->
-
-    <section class="admin-card">
-
-        <h2>
-            📋 Manage Events
-        </h2>
-
-
-        <div
-            id="eventList"
-            class="event-list"
-        >
-
-            <p class="loading">
-                Loading events...
-            </p>
-
-        </div>
-
-    </section>
-
 
 </main>
+
 
 
 <!-- =========================================
@@ -1874,7 +1787,8 @@ function setupMediaUpload(
 
             await updateMediaCount(
                 "photo",
-                photoCount
+                photoCount,
+                eventId
             );
 
 
@@ -1941,13 +1855,15 @@ function setupMediaUpload(
 
     updateMediaCount(
         "photo",
-        photoCount
+        photoCount,
+        eventID
     );
 
 
     updateMediaCount(
         "video",
-        videoCount
+        videoCount,
+        eventID
     );
 
 }
@@ -2208,31 +2124,21 @@ async function uploadFiles(
 
 async function updateMediaCount(
     type,
-    element
+    element,
+    eventID
 ) {
 
     try {
 
-        // =========================================
-        // CORRECT LIST ENDPOINT
-        // =========================================
-
-        const endpoint =
-            type === "photo"
-                ? "/api/upload/photos"
-                : "/api/upload/videos";
-
-
         const response =
             await fetch(
                 API_URL +
-                endpoint
+                "/api/upload/event/" +
+                encodeURIComponent(eventID)
             );
 
 
-        if (
-            !response.ok
-        ) {
+        if (!response.ok) {
 
             console.error(
                 "Media count request failed:",
@@ -2244,17 +2150,15 @@ async function updateMediaCount(
         }
 
 
-        const files =
+        const data =
             await response.json();
 
 
-        if (
-            !Array.isArray(files)
-        ) {
+        if (!data.success) {
 
             console.error(
-                "Invalid media list response:",
-                files
+                "Invalid media response:",
+                data
             );
 
             return;
@@ -2262,12 +2166,19 @@ async function updateMediaCount(
         }
 
 
-        element.textContent =
-            type === "photo"
-                ? "📷 Photos: " +
-                  files.length
-                : "🎥 Videos: " +
-                  files.length;
+        if (type === "photo") {
+
+            element.textContent =
+                "📷 Photos: " +
+                data.photoCount;
+
+        } else {
+
+            element.textContent =
+                "🎥 Videos: " +
+                data.videoCount;
+
+        }
 
 
     } catch (error) {
@@ -2282,182 +2193,11 @@ async function updateMediaCount(
 }
 
 
-// =================================================
-// EDIT EVENT
-// =================================================
-
-function editEvent(
-    id,
-    data
-) {
-
-    eventName.value =
-        data.name || "";
-
-
-    eventDate.value =
-        data.date || "";
-
-
-    eventDescription.value =
-        data.description || "";
-
-
-    eventForm.setAttribute(
-        "data-edit-id",
-        id
-    );
-
-
-    saveEventButton.textContent =
-        "💾 Update Event";
-
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-}
-
-
-// =================================================
-// DELETE EVENT
-// =================================================
-
-async function deleteEvent(
-    id,
-    name
-) {
-
-    const user =
-        auth.currentUser;
-
-
-    if (
-        !await verifyAdmin(user)
-    ) {
-
-        alert(
-            "You are not authorized."
-        );
-
-        return;
-
-    }
-
-
-    const confirmed =
-        window.confirm(
-
-            'Are you sure you want to delete "' +
-            (
-                name ||
-                "this event"
-            ) +
-            '"?'
-
-        );
-
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    try {
-
-        await db
-            .collection(
-                EVENTS_COLLECTION
-            )
-            .doc(id)
-            .delete();
-
-
-        await loadEvents();
-
-
-        alert(
-            "Event deleted successfully."
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Delete event error:",
-            error
-        );
-
-
-        alert(
-            "Could not delete the event."
-        );
-
-    }
-
-}
-
-
-// =================================================
-// FORMAT DATE
-// =================================================
-
-function formatDate(
-    dateString
-) {
-
-    if (!dateString) {
-
-        return "Date not available";
-
-    }
-
-
-    const date =
-        new Date(
-            dateString +
-            "T00:00:00"
-        );
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return dateString;
-
-    }
-
-
-    return date.toLocaleDateString(
-        "en-IN",
-        {
-
-            day:
-                "numeric",
-
-            month:
-                "long",
-
-            year:
-                "numeric"
-
-        }
-    );
-
-}
-
 </script>
 
+<script src="../js/firebase.js"></script>
+
+<script src="../js/admin-upload.js"></script>
 
 </body>
 
