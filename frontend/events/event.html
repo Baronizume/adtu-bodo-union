@@ -176,9 +176,8 @@
             </div>
 
 
-
             <!-- =========================
-                 ADMIN UPLOAD
+                ADMIN GOOGLE DRIVE
             ========================== -->
 
             <div
@@ -188,77 +187,49 @@
             >
 
                 <h2>
-                    📤 Upload Event Media
+                    📁 Google Drive Media
                 </h2>
 
                 <p>
-                    Upload photos and videos for this event.
+                    Open the Google Drive folders for this event
+                    and upload photos or videos there.
                 </p>
 
-
-                <!-- COUNTS -->
-
-                <div class="media-upload-count">
-
-                    <span id="photoUploadCount">
-                        📷 Photos: 0
-                    </span>
-
-                    <span id="videoUploadCount">
-                        🎥 Videos: 0
-                    </span>
-
-                </div>
-
-
-
-                <!-- PHOTO UPLOAD -->
+                <!-- PHOTOS -->
 
                 <div class="upload-controls">
 
-                    <input
-                        id="eventPhotoInput"
-                        type="file"
-                        accept="image/*"
-                        multiple
-                    >
-
-                    <button
-                        id="uploadPhotosButton"
-                        type="button"
+                    <a
+                        id="adminPhotosDriveButton"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         class="button button-primary"
                     >
-                        📷 Upload Photos
-                    </button>
+                        📷 Open Photos Folder
+                    </a>
 
                 </div>
 
 
-
-                <!-- VIDEO UPLOAD -->
+                <!-- VIDEOS -->
 
                 <div class="upload-controls">
 
-                    <input
-                        id="eventVideoInput"
-                        type="file"
-                        accept="video/*"
-                        multiple
-                    >
-
-                    <button
-                        id="uploadVideosButton"
-                        type="button"
+                    <a
+                        id="adminVideosDriveButton"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         class="button button-primary"
                     >
-                        🎥 Upload Videos
-                    </button>
+                        🎥 Open Videos Folder
+                    </a>
 
                 </div>
 
 
-
-                <!-- UPLOAD STATUS -->
+                <!-- STATUS -->
 
                 <p
                     id="uploadStatus"
@@ -266,6 +237,7 @@
                 ></p>
 
             </div>
+
 
 
 
@@ -469,7 +441,6 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <script src="../js/firebase.js"></script>
 
