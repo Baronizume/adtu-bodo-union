@@ -12,27 +12,260 @@
 
     <title>ADTU Bodo Union | Event</title>
 
-    <!-- Main CSS -->
     <link
         rel="stylesheet"
         href="../css/style.css"
     >
 
-    <!-- Event CSS -->
-    <link
-        rel="stylesheet"
-        href="../css/event.css"
-    >
+    <style>
+
+        .event-details {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .event-details-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        }
+
+        .event-detail-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .section-label {
+            display: inline-block;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        #eventName {
+            margin: 0 0 15px;
+            font-size: 36px;
+        }
+
+        .event-date {
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .event-detail-description {
+            line-height: 1.8;
+            color: #444;
+            white-space: pre-line;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .button-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .button-primary:hover {
+            background: #1558b0;
+        }
+
+        .delete-event-button {
+            background: #c62828;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: 600;
+            display: none;
+        }
+
+        .admin-upload-section,
+        .event-media-section {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .admin-upload-section {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+        }
+
+        .event-media-section {
+            background: #f8f9ff;
+            border: 1px solid #e0e4f5;
+        }
+
+        .admin-upload-section h2,
+        .event-media-section h2 {
+            margin-top: 0;
+        }
+
+        .drive-link-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .drive-link-box p {
+            line-height: 1.6;
+        }
+
+        .drive-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .drive-button {
+            background: #188038;
+            color: white;
+        }
+
+        .drive-button:hover {
+            background: #126b2d;
+        }
+
+        .upload-button {
+            background: #7b1fa2;
+            color: white;
+        }
+
+        .upload-button:hover {
+            background: #641681;
+        }
+
+        .media-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .media-count {
+            padding: 12px 18px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-weight: 700;
+        }
+
+        .photo-count {
+            color: #7b1fa2;
+        }
+
+        .video-count {
+            color: #00897b;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            min-height: 20px;
+        }
+
+        .success {
+            color: #2e7d32;
+        }
+
+        .error {
+            color: #c62828;
+        }
+
+        .loading {
+            color: #666;
+        }
+
+        .event-qr-section {
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .event-qr {
+            width: 180px;
+            height: 180px;
+            margin: 15px auto;
+            display: block;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        @media (max-width: 700px) {
+
+            .event-details {
+                padding: 25px 15px;
+            }
+
+            .event-details-card {
+                padding: 22px;
+            }
+
+            #eventName {
+                font-size: 28px;
+            }
+
+            .event-actions,
+            .drive-buttons {
+                flex-direction: column;
+            }
+
+            .button,
+            .delete-event-button {
+                width: 100%;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            .media-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
-
-<!-- =========================
-     NAVBAR
-========================== -->
 
 <header class="navbar">
 
@@ -84,16 +317,9 @@
 
 
 
-<!-- =========================
-     MAIN
-========================== -->
-
 <main>
 
     <section class="event-details">
-
-
-        <!-- BACK BUTTON -->
 
         <a
             href="../index.html#events"
@@ -103,37 +329,32 @@
         </a>
 
 
-
-        <!-- =========================
-             EVENT CARD
-        ========================== -->
-
         <div
             id="event-details-container"
             class="event-details-card"
         >
 
-
-            <!-- EVENT ICON -->
-
             <div class="event-detail-icon">
                 📅
             </div>
-
 
             <span class="section-label">
                 EVENT
             </span>
 
 
-            <!-- EVENT NAME -->
-
             <h1 id="eventName">
                 Loading event...
             </h1>
 
 
-            <!-- EVENT DESCRIPTION -->
+            <p
+                id="eventDate"
+                class="event-date"
+            >
+                Loading date...
+            </p>
+
 
             <p
                 id="eventDescription"
@@ -144,26 +365,22 @@
 
 
 
-            <!-- =========================
-                 EVENT ACTIONS
-            ========================== -->
+            <!-- ADMIN ACTIONS -->
 
-            <div class="event-actions">
-
-
-                <!-- EDIT EVENT -->
+            <div
+                id="adminActions"
+                class="event-actions"
+                style="display:none;"
+            >
 
                 <button
                     id="editEventButton"
                     class="button button-primary"
                     type="button"
-                    style="display:none;"
                 >
                     ✏️ Edit Event
                 </button>
 
-
-                <!-- DELETE EVENT -->
 
                 <button
                     id="deleteEventButton"
@@ -176,9 +393,8 @@
             </div>
 
 
-            <!-- =========================
-                ADMIN GOOGLE DRIVE
-            ========================== -->
+
+            <!-- ADMIN DRIVE SECTION -->
 
             <div
                 id="adminUploadSection"
@@ -187,63 +403,59 @@
             >
 
                 <h2>
-                    📁 Google Drive Media
+                    🔐 Admin Media
                 </h2>
 
                 <p>
-                    Open the Google Drive folders for this event
-                    and upload photos or videos there.
+                    Upload photos and videos directly to this
+                    event's Google Drive folder.
                 </p>
 
-                <!-- PHOTOS -->
 
-                <div class="upload-controls">
+                <div class="drive-link-box">
 
-                    <a
-                        id="adminPhotosDriveButton"
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="button button-primary"
-                    >
-                        📷 Open Photos Folder
-                    </a>
+                    <strong>
+                        📁 Event Google Drive
+                    </strong>
+
+                    <div class="drive-buttons">
+
+                        <a
+                            id="adminDriveButton"
+                            href="#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="button drive-button"
+                        >
+                            📂 Open Folder
+                        </a>
+
+
+                        <a
+                            id="adminUploadButton"
+                            href="#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="button upload-button"
+                        >
+                            📤 Upload Photos/Videos
+                        </a>
+
+                    </div>
+
+
+                    <p
+                        id="adminMediaStatus"
+                        class="status-message"
+                    ></p>
 
                 </div>
-
-
-                <!-- VIDEOS -->
-
-                <div class="upload-controls">
-
-                    <a
-                        id="adminVideosDriveButton"
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="button button-primary"
-                    >
-                        🎥 Open Videos Folder
-                    </a>
-
-                </div>
-
-
-                <!-- STATUS -->
-
-                <p
-                    id="uploadStatus"
-                    class="status-message"
-                ></p>
 
             </div>
 
 
 
-
-            <!-- =========================
-                 EVENT MEDIA
-            ========================== -->
+            <!-- USER MEDIA -->
 
             <div class="event-media-section">
 
@@ -252,20 +464,65 @@
                 </h2>
 
                 <p>
-                    View all photos and videos from this event
-                    in one place.
+                    View the photos and videos from this event.
                 </p>
 
 
-                <div class="event-media-buttons">
+                <div class="drive-link-box">
 
-                    <button
-                        id="viewMediaButton"
-                        type="button"
-                        class="button button-primary"
+                    <strong>
+                        📁 Event Photos &amp; Videos
+                    </strong>
+
+                    <p>
+                        All photos and videos uploaded for this
+                        event are available in the Google Drive
+                        folder.
+                    </p>
+
+
+                    <div class="drive-buttons">
+
+                        <a
+                            id="viewMediaButton"
+                            href="#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="button drive-button"
+                        >
+                            📷🎥 View Photos &amp; Videos
+                        </a>
+
+                    </div>
+
+
+                    <div
+                        id="mediaInfo"
+                        class="media-info"
                     >
-                        📷🎥 View Photos &amp; Videos
-                    </button>
+
+                        <span
+                            id="photoCount"
+                            class="media-count photo-count"
+                        >
+                            📷 Photos: 0
+                        </span>
+
+
+                        <span
+                            id="videoCount"
+                            class="media-count video-count"
+                        >
+                            🎥 Videos: 0
+                        </span>
+
+                    </div>
+
+
+                    <p
+                        id="mediaStatus"
+                        class="status-message"
+                    ></p>
 
                 </div>
 
@@ -273,69 +530,19 @@
 
 
 
-            <!-- =========================
-                 MEDIA GALLERY
-            ========================== -->
-
-            <div
-                id="eventGallery"
-                class="event-gallery-section"
-            >
-
-
-                <!-- PHOTOS -->
-
-                <h2>
-                    📸 Photos
-                </h2>
-
-                <p class="event-gallery-description">
-                    Photos from this event.
-                </p>
-
-
-                <div
-                    id="photoGallery"
-                    class="event-photo-gallery"
-                ></div>
-
-
-
-                <!-- VIDEOS -->
-
-                <h2>
-                    🎥 Videos
-                </h2>
-
-                <p class="event-gallery-description">
-                    Videos from this event.
-                </p>
-
-
-                <div
-                    id="videoGallery"
-                    class="event-video-gallery"
-                ></div>
-
-            </div>
-
-
-
-            <!-- =========================
-                 QR CODE
-            ========================== -->
+            <!-- QR CODE -->
 
             <div class="event-qr-section">
 
                 <h2>
-                    Scan to View Event Media
+                    Scan to View Event
                 </h2>
 
 
                 <img
                     id="eventQrImage"
                     src=""
-                    alt="QR Code to view event photos and videos"
+                    alt="QR Code to view event"
                     class="event-qr"
                 >
 
@@ -358,7 +565,6 @@
 
             </div>
 
-
         </div>
 
     </section>
@@ -366,39 +572,6 @@
 </main>
 
 
-
-<!-- =========================
-     PHOTO LIGHTBOX
-========================== -->
-
-<div
-    id="photoLightbox"
-    class="photo-lightbox"
->
-
-    <button
-        id="lightboxClose"
-        class="lightbox-close"
-        type="button"
-        aria-label="Close photo"
-    >
-        &times;
-    </button>
-
-
-    <img
-        id="lightboxImage"
-        src=""
-        alt="Full size event photo"
-    >
-
-</div>
-
-
-
-<!-- =========================
-     FOOTER
-========================== -->
 
 <footer>
 
@@ -431,9 +604,7 @@
 
 
 
-<!-- =========================
-     FIREBASE
-========================== -->
+<!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -441,19 +612,530 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-
 <script src="../js/firebase.js"></script>
 
-<!-- Google APIs -->
-<script src="https://apis.google.com/js/api.js"></script>
-<script src="https://accounts.google.com/gsi/client"></script>
 
-<!-- =========================
-     EVENT JAVASCRIPT
-========================== -->
 
-<script src="../js/event.js"></script>
+<script>
 
+document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+
+const eventName =
+    document.getElementById("eventName");
+
+const eventDate =
+    document.getElementById("eventDate");
+
+const eventDescription =
+    document.getElementById("eventDescription");
+
+const eventContainer =
+    document.getElementById("event-details-container");
+
+const viewMediaButton =
+    document.getElementById("viewMediaButton");
+
+const photoCount =
+    document.getElementById("photoCount");
+
+const videoCount =
+    document.getElementById("videoCount");
+
+const mediaStatus =
+    document.getElementById("mediaStatus");
+
+const adminUploadSection =
+    document.getElementById("adminUploadSection");
+
+const adminActions =
+    document.getElementById("adminActions");
+
+const adminDriveButton =
+    document.getElementById("adminDriveButton");
+
+const adminUploadButton =
+    document.getElementById("adminUploadButton");
+
+const editEventButton =
+    document.getElementById("editEventButton");
+
+const deleteEventButton =
+    document.getElementById("deleteEventButton");
+
+const eventQrImage =
+    document.getElementById("eventQrImage");
+
+const qrButton =
+    document.getElementById("qrButton");
+
+
+
+/* =========================
+   GET EVENT ID
+========================= */
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const eventId =
+    params.get("id");
+
+
+
+/* =========================
+   CHECK ADMIN
+========================= */
+
+async function verifyAdmin(user) {
+
+    if (!user) {
+        return false;
+    }
+
+    try {
+
+        const adminDoc =
+            await db
+                .collection("admins")
+                .doc(user.uid)
+                .get();
+
+        if (!adminDoc.exists) {
+            return false;
+        }
+
+        const data =
+            adminDoc.data();
+
+        return (
+            !data.role ||
+            data.role === "admin"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        return false;
+    }
+}
+
+
+
+/* =========================
+   LOAD EVENT
+========================= */
+
+async function loadEvent() {
+
+    if (!eventId) {
+
+        showError(
+            "No event was selected."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const doc =
+            await db
+                .collection("events")
+                .doc(eventId)
+                .get();
+
+
+        if (!doc.exists) {
+
+            showError(
+                "Event not found."
+            );
+
+            return;
+        }
+
+
+        const data =
+            doc.data();
+
+
+        displayEvent(
+            data
+        );
+
+
+        setupMedia(
+            data
+        );
+
+
+        setupQrCode();
+
+
+        checkAdmin(
+            data
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Could not load the event."
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   DISPLAY EVENT
+========================= */
+
+function displayEvent(data) {
+
+    eventName.textContent =
+        data.name || "Untitled Event";
+
+
+    eventDate.textContent =
+        "📅 " +
+        formatDate(data.date);
+
+
+    eventDescription.textContent =
+        data.description ||
+        "No description available.";
+
+}
+
+
+
+/* =========================
+   MEDIA
+========================= */
+
+function setupMedia(data) {
+
+    const folder =
+        data.driveFolderUrl || "";
+
+
+    const photos =
+        Number(data.photoCount) || 0;
+
+
+    const videos =
+        Number(data.videoCount) || 0;
+
+
+    photoCount.textContent =
+        "📷 Photos: " + photos;
+
+
+    videoCount.textContent =
+        "🎥 Videos: " + videos;
+
+
+    if (!folder) {
+
+        viewMediaButton.removeAttribute(
+            "href"
+        );
+
+        viewMediaButton.style.opacity =
+            "0.5";
+
+        viewMediaButton.style.pointerEvents =
+            "none";
+
+        mediaStatus.textContent =
+            "Media folder has not been added yet.";
+
+        mediaStatus.className =
+            "status-message error";
+
+        return;
+    }
+
+
+    viewMediaButton.href =
+        folder;
+
+
+    mediaStatus.textContent =
+        "Photos and videos are available in the event folder.";
+
+    mediaStatus.className =
+        "status-message success";
+
+}
+
+
+
+/* =========================
+   ADMIN
+========================= */
+
+async function checkAdmin(data) {
+
+    auth.onAuthStateChanged(
+        async function(user) {
+
+            if (!user) {
+                return;
+            }
+
+
+            const admin =
+                await verifyAdmin(user);
+
+
+            if (!admin) {
+                return;
+            }
+
+
+            adminActions.style.display =
+                "flex";
+
+
+            adminUploadSection.style.display =
+                "block";
+
+
+            const folder =
+                data.driveFolderUrl || "";
+
+
+            if (folder) {
+
+                adminDriveButton.href =
+                    folder;
+
+                adminUploadButton.href =
+                    folder;
+
+            }
+
+
+            editEventButton.onclick =
+                function() {
+
+                    window.location.href =
+                        "../admin/admin-dashboard.html";
+
+                };
+
+
+            deleteEventButton.style.display =
+                "inline-block";
+
+
+            deleteEventButton.onclick =
+                function() {
+
+                    deleteEvent();
+
+                };
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   DELETE EVENT
+========================= */
+
+async function deleteEvent() {
+
+    const user =
+        auth.currentUser;
+
+
+    if (!await verifyAdmin(user)) {
+
+        alert(
+            "You are not authorized."
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this event?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await db
+            .collection("events")
+            .doc(eventId)
+            .delete();
+
+
+        alert(
+            "Event deleted successfully."
+        );
+
+
+        window.location.href =
+            "../index.html#events";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Could not delete the event."
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   QR CODE
+========================= */
+
+function setupQrCode() {
+
+    const eventUrl =
+        window.location.href;
+
+
+    qrButton.href =
+        eventUrl;
+
+
+    const qrData =
+        encodeURIComponent(
+            eventUrl
+        );
+
+
+    eventQrImage.src =
+        "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+        qrData;
+
+}
+
+
+
+/* =========================
+   DATE
+========================= */
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+
+        return "Date not available";
+
+    }
+
+
+    const date =
+        new Date(
+            dateString + "T00:00:00"
+        );
+
+
+    if (
+        isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return dateString;
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+
+/* =========================
+   ERROR
+========================= */
+
+function showError(message) {
+
+    eventContainer.innerHTML = `
+
+        <div class="not-found">
+
+            <div
+                style="
+                    font-size:50px;
+                    margin-bottom:15px;
+                "
+            >
+                ⚠️
+            </div>
+
+            <h1>
+                ${message}
+            </h1>
+
+            <p>
+                The event may have been removed
+                or the link may be incorrect.
+            </p>
+
+            <a
+                href="../index.html#events"
+                class="button button-primary"
+            >
+                ← Back to Events
+            </a>
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* =========================
+   START
+========================= */
+
+loadEvent();
+
+</script>
 
 </body>
 
