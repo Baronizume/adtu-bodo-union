@@ -11,9 +11,7 @@ const app = express();
 // =====================================================
 
 const PORT = process.env.PORT || 5000;
-
-const NODE_ENV =
-    process.env.NODE_ENV || "development";
+const NODE_ENV = process.env.NODE_ENV || "development";
 
 // =====================================================
 // PATHS
@@ -45,19 +43,13 @@ const videosPath = path.join(
 // CREATE DIRECTORIES
 // =====================================================
 
-fs.mkdirSync(
-    photosPath,
-    {
-        recursive: true
-    }
-);
+fs.mkdirSync(photosPath, {
+    recursive: true
+});
 
-fs.mkdirSync(
-    videosPath,
-    {
-        recursive: true
-    }
-);
+fs.mkdirSync(videosPath, {
+    recursive: true
+});
 
 // =====================================================
 // MIDDLEWARE
@@ -98,7 +90,7 @@ app.use(
 // =====================================================
 
 app.use(
-    (req, res, next) => {
+    function (req, res, next) {
 
         console.log(
             `${new Date().toISOString()} ${req.method} ${req.originalUrl}`
@@ -117,7 +109,7 @@ app.use(
 );
 
 // =====================================================
-// SERVE UPLOADED MEDIA
+// SERVE UPLOADS
 // =====================================================
 
 app.use(
@@ -131,11 +123,25 @@ app.use(
 );
 
 // =====================================================
-// MULTER FILE NAME
+// SAFE EVENT ID
+// =====================================================
+
+function createSafeEventId(eventId) {
+
+    return String(eventId || "unknown")
+        .replace(
+            /[^a-zA-Z0-9-_]/g,
+            "_"
+        );
+}
+
+// =====================================================
+// SAFE FILE NAME
 // =====================================================
 
 function createSafeFilename(
-    originalName
+    originalName,
+    eventId
 ) {
 
     const extension =
@@ -160,7 +166,14 @@ function createSafeFilename(
                 100
             );
 
+    const safeEventId =
+        createSafeEventId(
+            eventId
+        );
+
     return (
+        safeEventId +
+        "-" +
         Date.now() +
         "-" +
         Math.round(
@@ -173,79 +186,7 @@ function createSafeFilename(
 }
 
 // =====================================================
-// PHOTO STORAGE
-// =====================================================
-
-const photoStorage =
-    multer.diskStorage({
-
-        destination:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    photosPath
-                );
-            },
-
-        filename:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    createSafeFilename(
-                        file.originalname
-                    )
-                );
-            }
-    });
-
-// =====================================================
-// VIDEO STORAGE
-// =====================================================
-
-const videoStorage =
-    multer.diskStorage({
-
-        destination:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    videosPath
-                );
-            },
-
-        filename:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    createSafeFilename(
-                        file.originalname
-                    )
-                );
-            }
-    });
-
-// =====================================================
-// FILE FILTERS
+// PHOTO FILTER
 // =====================================================
 
 function photoFileFilter(
@@ -283,6 +224,9 @@ function photoFileFilter(
     }
 }
 
+// =====================================================
+// VIDEO FILTER
+// =====================================================
 
 function videoFileFilter(
     req,
@@ -320,7 +264,77 @@ function videoFileFilter(
 }
 
 // =====================================================
-// MULTER CONFIGURATION
+// PHOTO STORAGE
+// =====================================================
+
+const photoStorage =
+    multer.diskStorage({
+
+        destination: function (
+            req,
+            file,
+            callback
+        ) {
+
+            callback(
+                null,
+                photosPath
+            );
+        },
+
+        filename: function (
+            req,
+            file,
+            callback
+        ) {
+
+            callback(
+                null,
+                createSafeFilename(
+                    file.originalname,
+                    req.body.eventId
+                )
+            );
+        }
+    });
+
+// =====================================================
+// VIDEO STORAGE
+// =====================================================
+
+const videoStorage =
+    multer.diskStorage({
+
+        destination: function (
+            req,
+            file,
+            callback
+        ) {
+
+            callback(
+                null,
+                videosPath
+            );
+        },
+
+        filename: function (
+            req,
+            file,
+            callback
+        ) {
+
+            callback(
+                null,
+                createSafeFilename(
+                    file.originalname,
+                    req.body.eventId
+                )
+            );
+        }
+    });
+
+// =====================================================
+// MULTER
 // =====================================================
 
 const uploadPhotos =
@@ -336,12 +350,10 @@ const uploadPhotos =
 
             files: 50,
 
-            // 25 MB per photo
             fileSize:
                 25 * 1024 * 1024
         }
     });
-
 
 const uploadVideos =
     multer({
@@ -356,19 +368,18 @@ const uploadVideos =
 
             files: 10,
 
-            // 500 MB per video
             fileSize:
                 500 * 1024 * 1024
         }
     });
 
 // =====================================================
-// HEALTH CHECK
+// HEALTH
 // =====================================================
 
 app.get(
     "/health",
-    (req, res) => {
+    function (req, res) {
 
         res.status(200).json({
 
@@ -379,6 +390,9 @@ app.get(
 
             environment:
                 NODE_ENV,
+
+            port:
+                PORT,
 
             timestamp:
                 new Date().toISOString()
@@ -392,7 +406,7 @@ app.get(
 
 app.get(
     "/api",
-    (req, res) => {
+    function (req, res) {
 
         res.json({
 
@@ -411,42 +425,6 @@ app.get(
 );
 
 // =====================================================
-// ADMIN LOGIN PAGE
-// =====================================================
-
-app.get(
-    "/admin/login",
-    (req, res) => {
-
-        res.sendFile(
-            path.join(
-                frontendPath,
-                "admin",
-                "login.html"
-            )
-        );
-    }
-);
-
-// =====================================================
-// ADMIN DASHBOARD
-// =====================================================
-
-app.get(
-    "/admin/dashboard",
-    (req, res) => {
-
-        res.sendFile(
-            path.join(
-                frontendPath,
-                "admin",
-                "admin-dashboard.html"
-            )
-        );
-    }
-);
-
-// =====================================================
 // PHOTO UPLOAD
 // =====================================================
 
@@ -458,43 +436,35 @@ app.post(
         50
     ),
 
-    async function (
-        req,
-        res
-    ) {
+    function (req, res) {
 
         try {
-
-            // -----------------------------------------
-            // EVENT ID
-            // -----------------------------------------
 
             const eventId =
                 req.body.eventId;
 
             if (!eventId) {
 
-                // Remove files if event ID missing
                 if (req.files) {
 
-                    for (
-                        const file of req.files
-                    ) {
+                    req.files.forEach(
+                        function (file) {
 
-                        try {
+                            try {
 
-                            fs.unlinkSync(
-                                file.path
-                            );
+                                fs.unlinkSync(
+                                    file.path
+                                );
 
-                        } catch (error) {
+                            } catch (error) {
 
-                            console.error(
-                                "Could not remove file:",
-                                error
-                            );
+                                console.error(
+                                    "Could not remove file:",
+                                    error
+                                );
+                            }
                         }
-                    }
+                    );
                 }
 
                 return res.status(400).json({
@@ -505,10 +475,6 @@ app.post(
                         "Event ID is required."
                 });
             }
-
-            // -----------------------------------------
-            // FILES
-            // -----------------------------------------
 
             const files =
                 req.files || [];
@@ -525,10 +491,6 @@ app.post(
                         "No photos uploaded."
                 });
             }
-
-            // -----------------------------------------
-            // RESPONSE FILE DATA
-            // -----------------------------------------
 
             const uploadedFiles =
                 files.map(
@@ -568,13 +530,13 @@ app.post(
                 success: true,
 
                 message:
-                    "Photos uploaded successfully.",
+                    `${files.length} photo(s) uploaded successfully.`,
 
                 eventId:
                     eventId,
 
                 count:
-                    uploadedFiles.length,
+                    files.length,
 
                 files:
                     uploadedFiles
@@ -611,16 +573,9 @@ app.post(
         10
     ),
 
-    async function (
-        req,
-        res
-    ) {
+    function (req, res) {
 
         try {
-
-            // -----------------------------------------
-            // EVENT ID
-            // -----------------------------------------
 
             const eventId =
                 req.body.eventId;
@@ -629,24 +584,24 @@ app.post(
 
                 if (req.files) {
 
-                    for (
-                        const file of req.files
-                    ) {
+                    req.files.forEach(
+                        function (file) {
 
-                        try {
+                            try {
 
-                            fs.unlinkSync(
-                                file.path
-                            );
+                                fs.unlinkSync(
+                                    file.path
+                                );
 
-                        } catch (error) {
+                            } catch (error) {
 
-                            console.error(
-                                "Could not remove file:",
-                                error
-                            );
+                                console.error(
+                                    "Could not remove file:",
+                                    error
+                                );
+                            }
                         }
-                    }
+                    );
                 }
 
                 return res.status(400).json({
@@ -657,10 +612,6 @@ app.post(
                         "Event ID is required."
                 });
             }
-
-            // -----------------------------------------
-            // FILES
-            // -----------------------------------------
 
             const files =
                 req.files || [];
@@ -677,10 +628,6 @@ app.post(
                         "No videos uploaded."
                 });
             }
-
-            // -----------------------------------------
-            // RESPONSE FILE DATA
-            // -----------------------------------------
 
             const uploadedFiles =
                 files.map(
@@ -720,13 +667,13 @@ app.post(
                 success: true,
 
                 message:
-                    "Videos uploaded successfully.",
+                    `${files.length} video(s) uploaded successfully.`,
 
                 eventId:
                     eventId,
 
                 count:
-                    uploadedFiles.length,
+                    files.length,
 
                 files:
                     uploadedFiles
@@ -752,15 +699,145 @@ app.post(
 );
 
 // =====================================================
-// MEDIA LIST
+// EVENT MEDIA
+// =====================================================
+
+app.get(
+    "/api/upload/event/:eventId",
+    function (req, res) {
+
+        try {
+
+            const eventId =
+                req.params.eventId;
+
+            if (!eventId) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Event ID is required."
+                });
+            }
+
+            const safeEventId =
+                createSafeEventId(
+                    eventId
+                );
+
+            // -----------------------------------------
+            // PHOTOS
+            // -----------------------------------------
+
+            const allPhotos =
+                fs.readdirSync(
+                    photosPath
+                );
+
+            const eventPhotos =
+                allPhotos.filter(
+                    function (filename) {
+
+                        return filename.startsWith(
+                            safeEventId + "-"
+                        );
+                    }
+                );
+
+            // -----------------------------------------
+            // VIDEOS
+            // -----------------------------------------
+
+            const allVideos =
+                fs.readdirSync(
+                    videosPath
+                );
+
+            const eventVideos =
+                allVideos.filter(
+                    function (filename) {
+
+                        return filename.startsWith(
+                            safeEventId + "-"
+                        );
+                    }
+                );
+
+            return res.status(200).json({
+
+                success: true,
+
+                eventId:
+                    eventId,
+
+                photoCount:
+                    eventPhotos.length,
+
+                videoCount:
+                    eventVideos.length,
+
+                photos:
+                    eventPhotos.map(
+                        function (filename) {
+
+                            return {
+
+                                filename:
+                                    filename,
+
+                                url:
+                                    `/uploads/photos/${encodeURIComponent(
+                                        filename
+                                    )}`
+                            };
+                        }
+                    ),
+
+                videos:
+                    eventVideos.map(
+                        function (filename) {
+
+                            return {
+
+                                filename:
+                                    filename,
+
+                                url:
+                                    `/uploads/videos/${encodeURIComponent(
+                                        filename
+                                    )}`
+                            };
+                        }
+                    )
+            });
+
+        } catch (error) {
+
+            console.error(
+                "EVENT MEDIA ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Could not load event media."
+            });
+        }
+    }
+);
+
+// =====================================================
+// ALL MEDIA
 // =====================================================
 
 app.get(
     "/api/media/:type",
-    function (
-        req,
-        res
-    ) {
+    function (req, res) {
 
         try {
 
@@ -800,9 +877,7 @@ app.get(
                         directory
                     )
                     .map(
-                        function (
-                            filename
-                        ) {
+                        function (filename) {
 
                             return {
 
@@ -852,10 +927,7 @@ app.get(
 
 app.get(
     "/",
-    function (
-        req,
-        res
-    ) {
+    function (req, res) {
 
         res.sendFile(
             path.join(
@@ -867,7 +939,43 @@ app.get(
 );
 
 // =====================================================
-// MULTER / UPLOAD ERROR HANDLER
+// ADMIN LOGIN
+// =====================================================
+
+app.get(
+    "/admin/login",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                frontendPath,
+                "admin",
+                "login.html"
+            )
+        );
+    }
+);
+
+// =====================================================
+// ADMIN DASHBOARD
+// =====================================================
+
+app.get(
+    "/admin/dashboard",
+    function (req, res) {
+
+        res.sendFile(
+            path.join(
+                frontendPath,
+                "admin",
+                "admin-dashboard.html"
+            )
+        );
+    }
+);
+
+// =====================================================
+// MULTER ERROR HANDLER
 // =====================================================
 
 app.use(
@@ -948,14 +1056,11 @@ app.use(
 );
 
 // =====================================================
-// 404 HANDLER
+// 404
 // =====================================================
 
 app.use(
-    function (
-        req,
-        res
-    ) {
+    function (req, res) {
 
         if (
             req.originalUrl.startsWith(
@@ -979,7 +1084,7 @@ app.use(
 );
 
 // =====================================================
-// GLOBAL ERROR HANDLER
+// GLOBAL ERROR
 // =====================================================
 
 app.use(
@@ -1016,7 +1121,7 @@ app.use(
 );
 
 // =====================================================
-// START SERVER
+// START
 // =====================================================
 
 app.listen(
