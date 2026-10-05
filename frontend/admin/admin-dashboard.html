@@ -1009,7 +1009,7 @@
         if (!user) {
 
             window.location.href =
-                "../login/login.html";
+                "/admin/login";
 
             return false;
         }
@@ -1032,8 +1032,8 @@
 
                 await auth.signOut();
 
-                window.location.href =
-                    "../login/login.html";
+                    window.location.href =
+                        "/admin/login";
 
                 return false;
             }
@@ -1060,10 +1060,8 @@
 
                 await auth.signOut();
 
-                window.location.href =
-                    "../login/login.html";
-
-                return false;
+                window.location.href = 
+                    "/admin/login";
             }
 
 
@@ -1116,7 +1114,6 @@
     /* ==================================================
        LOGOUT
     ================================================== */
-
     logoutButton.addEventListener(
         "click",
         async function () {
@@ -1125,8 +1122,8 @@
 
                 await auth.signOut();
 
-                window.location.href =
-                    "../login/login.html";
+                // Redirect to the correct admin login route
+                window.location.replace("/admin/login");
 
             }
             catch (error) {

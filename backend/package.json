@@ -1,13 +1,19 @@
 {
   "name": "adtu-bodo-union-backend",
   "version": "1.0.0",
-  "description": "ADTU Bodo Union event and photo backend",
+  "description": "ADTU Bodo Union event and media backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": [],
+  "keywords": [
+    "adtu",
+    "bodo",
+    "union",
+    "events",
+    "media"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",

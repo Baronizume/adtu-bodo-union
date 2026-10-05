@@ -1,9 +1,8 @@
 // =====================================================
 // ADTU BODO UNION
 // ADMIN DASHBOARD
-// FIREBASE + LOCAL BACKEND UPLOAD
+// FIREBASE + RENDER BACKEND
 // =====================================================
-
 
 // =====================================================
 // CONFIGURATION
@@ -11,7 +10,10 @@
 
 const EVENTS_COLLECTION = "events";
 
-const API_URL = "http://localhost:5000";
+// IMPORTANT:
+// This is your PUBLIC Render backend URL.
+// Do NOT use localhost here.
+const API_URL = "https://adtu-bodo-union.onrender.com";
 
 
 // =====================================================
@@ -57,10 +59,8 @@ const yearElement =
 // =====================================================
 
 if (yearElement) {
-
     yearElement.textContent =
         new Date().getFullYear();
-
 }
 
 
@@ -82,21 +82,17 @@ async function verifyAdmin(user) {
                 .doc(user.uid)
                 .get();
 
-
         if (!adminDoc.exists) {
             return false;
         }
 
-
         const data =
             adminDoc.data();
-
 
         return (
             !data.role ||
             data.role === "admin"
         );
-
 
     } catch (error) {
 
@@ -106,9 +102,7 @@ async function verifyAdmin(user) {
         );
 
         return false;
-
     }
-
 }
 
 
@@ -126,13 +120,10 @@ auth.onAuthStateChanged(
             );
 
             return;
-
         }
-
 
         const admin =
             await verifyAdmin(user);
-
 
         if (!admin) {
 
@@ -143,9 +134,7 @@ auth.onAuthStateChanged(
             );
 
             return;
-
         }
-
 
         if (adminUser) {
 
@@ -155,12 +144,9 @@ auth.onAuthStateChanged(
                     user.email ||
                     "Administrator"
                 );
-
         }
 
-
         loadEvents();
-
     }
 );
 
@@ -185,17 +171,13 @@ if (logoutButton) {
                     "Logout error:",
                     error
                 );
-
             }
-
 
             window.location.replace(
                 "login.html"
             );
-
         }
     );
-
 }
 
 
@@ -212,15 +194,12 @@ function showMessage(
         return;
     }
 
-
     formMessage.textContent =
         message;
-
 
     formMessage.className =
         "status-message " +
         type;
-
 }
 
 
@@ -234,28 +213,19 @@ function clearForm() {
         return;
     }
 
-
     eventForm.reset();
-
 
     eventForm.removeAttribute(
         "data-edit-id"
     );
 
-
     if (saveEventButton) {
 
         saveEventButton.textContent =
             "➕ Add Event";
-
     }
 
-
-    showMessage(
-        "",
-        ""
-    );
-
+    showMessage("", "");
 }
 
 
@@ -265,7 +235,6 @@ if (clearFormButton) {
         "click",
         clearForm
     );
-
 }
 
 
@@ -281,14 +250,10 @@ if (eventForm) {
 
             e.preventDefault();
 
-
             const user =
                 auth.currentUser;
 
-
-            if (
-                !await verifyAdmin(user)
-            ) {
+            if (!await verifyAdmin(user)) {
 
                 showMessage(
                     "❌ You are not authorized.",
@@ -296,25 +261,16 @@ if (eventForm) {
                 );
 
                 return;
-
             }
-
 
             const name =
                 eventName.value.trim();
 
-
             const date =
                 eventDate.value;
 
-
             const description =
                 eventDescription.value.trim();
-
-
-            // -----------------------------------------
-            // REQUIRED FIELDS
-            // -----------------------------------------
 
             if (!name || !date) {
 
@@ -324,23 +280,12 @@ if (eventForm) {
                 );
 
                 return;
-
             }
-
-
-            // -----------------------------------------
-            // EDIT ID
-            // -----------------------------------------
 
             const editId =
                 eventForm.getAttribute(
                     "data-edit-id"
                 );
-
-
-            // -----------------------------------------
-            // EVENT DATA
-            // -----------------------------------------
 
             const data = {
 
@@ -357,25 +302,17 @@ if (eventForm) {
                     firebase.firestore
                         .FieldValue
                         .serverTimestamp()
-
             };
-
 
             saveEventButton.disabled =
                 true;
-
 
             saveEventButton.textContent =
                 editId
                     ? "Updating..."
                     : "Adding...";
 
-
             try {
-
-                // =====================================
-                // UPDATE EVENT
-                // =====================================
 
                 if (editId) {
 
@@ -384,52 +321,35 @@ if (eventForm) {
                             EVENTS_COLLECTION
                         )
                         .doc(editId)
-                        .update(
-                            data
-                        );
-
+                        .update(data);
 
                     showMessage(
                         "✅ Event updated successfully.",
                         "success"
                     );
 
-                }
-
-
-                // =====================================
-                // ADD EVENT
-                // =====================================
-
-                else {
+                } else {
 
                     data.createdAt =
                         firebase.firestore
                             .FieldValue
                             .serverTimestamp();
 
-
                     await db
                         .collection(
                             EVENTS_COLLECTION
                         )
-                        .add(
-                            data
-                        );
-
+                        .add(data);
 
                     showMessage(
                         "✅ Event added successfully.",
                         "success"
                     );
-
                 }
-
 
                 clearForm();
 
                 await loadEvents();
-
 
             } catch (error) {
 
@@ -437,7 +357,6 @@ if (eventForm) {
                     "Save event error:",
                     error
                 );
-
 
                 showMessage(
                     "❌ Could not save the event: " +
@@ -447,20 +366,15 @@ if (eventForm) {
                     ),
                     "error"
                 );
-
             }
-
 
             saveEventButton.disabled =
                 false;
 
-
             saveEventButton.textContent =
                 "➕ Add Event";
-
         }
     );
-
 }
 
 
@@ -474,10 +388,8 @@ async function loadEvents() {
         return;
     }
 
-
     eventList.innerHTML =
         '<p class="loading">Loading events...</p>';
-
 
     try {
 
@@ -492,10 +404,8 @@ async function loadEvents() {
                 )
                 .get();
 
-
         eventList.innerHTML =
             "";
-
 
         if (snapshot.empty) {
 
@@ -503,9 +413,7 @@ async function loadEvents() {
                 "<p>No events found.</p>";
 
             return;
-
         }
-
 
         snapshot.forEach(
             function (doc) {
@@ -514,10 +422,8 @@ async function loadEvents() {
                     doc.id,
                     doc.data()
                 );
-
             }
         );
-
 
     } catch (error) {
 
@@ -526,12 +432,9 @@ async function loadEvents() {
             error
         );
 
-
         eventList.innerHTML =
             '<p class="error">Could not load events.</p>';
-
     }
-
 }
 
 
@@ -545,10 +448,7 @@ function createEventItem(
 ) {
 
     const item =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     item.className =
         "event-item";
@@ -559,10 +459,7 @@ function createEventItem(
     // =================================================
 
     const title =
-        document.createElement(
-            "h3"
-        );
-
+        document.createElement("h3");
 
     title.textContent =
         data.name ||
@@ -574,20 +471,14 @@ function createEventItem(
     // =================================================
 
     const date =
-        document.createElement(
-            "p"
-        );
-
+        document.createElement("p");
 
     date.className =
         "event-date";
 
-
     date.textContent =
         "📅 " +
-        formatDate(
-            data.date
-        );
+        formatDate(data.date);
 
 
     // =================================================
@@ -595,14 +486,10 @@ function createEventItem(
     // =================================================
 
     const description =
-        document.createElement(
-            "p"
-        );
-
+        document.createElement("p");
 
     description.className =
         "event-description";
-
 
     description.textContent =
         data.description ||
@@ -614,10 +501,7 @@ function createEventItem(
     // =================================================
 
     const actions =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     actions.className =
         "event-actions";
@@ -628,53 +512,40 @@ function createEventItem(
     // =================================================
 
     const viewButton =
-        document.createElement(
-            "a"
-        );
-
+        document.createElement("a");
 
     viewButton.className =
         "view-button";
 
-
     viewButton.textContent =
         "👁️ View Event";
-
 
     viewButton.href =
         "../events/event.html?id=" +
         encodeURIComponent(id);
 
-
     viewButton.target =
         "_blank";
-
 
     viewButton.rel =
         "noopener noreferrer";
 
 
     // =================================================
-    // EDIT EVENT
+    // EDIT
     // =================================================
 
     const editButton =
-        document.createElement(
-            "button"
-        );
-
+        document.createElement("button");
 
     editButton.type =
         "button";
 
-
     editButton.className =
         "edit-button";
 
-
     editButton.textContent =
         "✏️ Edit";
-
 
     editButton.addEventListener(
         "click",
@@ -684,32 +555,25 @@ function createEventItem(
                 id,
                 data
             );
-
         }
     );
 
 
     // =================================================
-    // DELETE EVENT
+    // DELETE
     // =================================================
 
     const deleteButton =
-        document.createElement(
-            "button"
-        );
-
+        document.createElement("button");
 
     deleteButton.type =
         "button";
 
-
     deleteButton.className =
         "delete-button";
 
-
     deleteButton.textContent =
         "🗑️ Delete";
-
 
     deleteButton.addEventListener(
         "click",
@@ -719,44 +583,18 @@ function createEventItem(
                 id,
                 data.name
             );
-
         }
     );
 
 
-    actions.appendChild(
-        viewButton
-    );
+    actions.appendChild(viewButton);
+    actions.appendChild(editButton);
+    actions.appendChild(deleteButton);
 
-
-    actions.appendChild(
-        editButton
-    );
-
-
-    actions.appendChild(
-        deleteButton
-    );
-
-
-    item.appendChild(
-        title
-    );
-
-
-    item.appendChild(
-        date
-    );
-
-
-    item.appendChild(
-        description
-    );
-
-
-    item.appendChild(
-        actions
-    );
+    item.appendChild(title);
+    item.appendChild(date);
+    item.appendChild(description);
+    item.appendChild(actions);
 
 
     // =================================================
@@ -770,10 +608,7 @@ function createEventItem(
     );
 
 
-    eventList.appendChild(
-        item
-    );
-
+    eventList.appendChild(item);
 }
 
 
@@ -788,10 +623,7 @@ function createMediaUploadBox(
 ) {
 
     const box =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     box.className =
         "drive-box";
@@ -802,31 +634,20 @@ function createMediaUploadBox(
     // =================================================
 
     const title =
-        document.createElement(
-            "h4"
-        );
-
+        document.createElement("h4");
 
     title.textContent =
         "📁 Event Photos & Videos";
 
 
-    // =================================================
-    // HELP TEXT
-    // =================================================
-
     const help =
-        document.createElement(
-            "p"
-        );
-
+        document.createElement("p");
 
     help.className =
         "drive-help";
 
-
     help.textContent =
-        "Select photos or videos from your computer using File Explorer.";
+        "Select photos or videos from your phone or computer.";
 
 
     // =================================================
@@ -834,112 +655,70 @@ function createMediaUploadBox(
     // =================================================
 
     const photoSection =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     photoSection.style.marginTop =
         "20px";
 
 
     const photoTitle =
-        document.createElement(
-            "h4"
-        );
-
+        document.createElement("h4");
 
     photoTitle.textContent =
         "📷 Event Photos";
 
 
     const photoHelp =
-        document.createElement(
-            "p"
-        );
-
+        document.createElement("p");
 
     photoHelp.className =
         "drive-help";
-
 
     photoHelp.textContent =
         "Select JPG, JPEG, PNG, WEBP or GIF photos.";
 
 
     const photoInput =
-        document.createElement(
-            "input"
-        );
-
+        document.createElement("input");
 
     photoInput.type =
         "file";
 
-
     photoInput.accept =
-        ".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif";
-
+        "image/jpeg,image/png,image/webp,image/gif";
 
     photoInput.multiple =
         true;
 
 
     const photoButton =
-        document.createElement(
-            "button"
-        );
-
+        document.createElement("button");
 
     photoButton.type =
         "button";
 
-
     photoButton.className =
         "primary-button";
 
-
     photoButton.style.marginTop =
         "10px";
-
 
     photoButton.textContent =
         "📤 Upload Photos";
 
 
     const photoStatus =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     photoStatus.className =
         "drive-status";
 
 
-    photoSection.appendChild(
-        photoTitle
-    );
-
-
-    photoSection.appendChild(
-        photoHelp
-    );
-
-
-    photoSection.appendChild(
-        photoInput
-    );
-
-
-    photoSection.appendChild(
-        photoButton
-    );
-
-
-    photoSection.appendChild(
-        photoStatus
-    );
+    photoSection.appendChild(photoTitle);
+    photoSection.appendChild(photoHelp);
+    photoSection.appendChild(photoInput);
+    photoSection.appendChild(photoButton);
+    photoSection.appendChild(photoStatus);
 
 
     // =================================================
@@ -947,112 +726,70 @@ function createMediaUploadBox(
     // =================================================
 
     const videoSection =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     videoSection.style.marginTop =
         "30px";
 
 
     const videoTitle =
-        document.createElement(
-            "h4"
-        );
-
+        document.createElement("h4");
 
     videoTitle.textContent =
         "🎥 Event Videos";
 
 
     const videoHelp =
-        document.createElement(
-            "p"
-        );
-
+        document.createElement("p");
 
     videoHelp.className =
         "drive-help";
-
 
     videoHelp.textContent =
         "Select MP4, WEBM, MOV or M4V videos.";
 
 
     const videoInput =
-        document.createElement(
-            "input"
-        );
-
+        document.createElement("input");
 
     videoInput.type =
         "file";
 
-
     videoInput.accept =
-        ".mp4,.webm,.mov,.m4v,video/mp4,video/webm,video/quicktime,video/x-m4v";
-
+        "video/mp4,video/webm,video/quicktime,video/x-m4v";
 
     videoInput.multiple =
         true;
 
 
     const videoButton =
-        document.createElement(
-            "button"
-        );
-
+        document.createElement("button");
 
     videoButton.type =
         "button";
 
-
     videoButton.className =
         "primary-button";
 
-
     videoButton.style.marginTop =
         "10px";
-
 
     videoButton.textContent =
         "📤 Upload Videos";
 
 
     const videoStatus =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     videoStatus.className =
         "drive-status";
 
 
-    videoSection.appendChild(
-        videoTitle
-    );
-
-
-    videoSection.appendChild(
-        videoHelp
-    );
-
-
-    videoSection.appendChild(
-        videoInput
-    );
-
-
-    videoSection.appendChild(
-        videoButton
-    );
-
-
-    videoSection.appendChild(
-        videoStatus
-    );
+    videoSection.appendChild(videoTitle);
+    videoSection.appendChild(videoHelp);
+    videoSection.appendChild(videoInput);
+    videoSection.appendChild(videoButton);
+    videoSection.appendChild(videoStatus);
 
 
     // =================================================
@@ -1060,95 +797,53 @@ function createMediaUploadBox(
     // =================================================
 
     const counts =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     counts.className =
         "media-count";
 
 
     const photoCount =
-        document.createElement(
-            "span"
-        );
-
+        document.createElement("span");
 
     photoCount.className =
         "photo-count";
 
-
     photoCount.textContent =
         "📷 Photos: " +
         (
-            Number(
-                data.photoCount
-            ) || 0
+            Number(data.photoCount) || 0
         );
 
 
     const videoCount =
-        document.createElement(
-            "span"
-        );
-
+        document.createElement("span");
 
     videoCount.className =
         "video-count";
 
-
     videoCount.textContent =
         "🎥 Videos: " +
         (
-            Number(
-                data.videoCount
-            ) || 0
+            Number(data.videoCount) || 0
         );
 
 
-    counts.appendChild(
-        photoCount
-    );
-
-
-    counts.appendChild(
-        videoCount
-    );
+    counts.appendChild(photoCount);
+    counts.appendChild(videoCount);
 
 
     // =================================================
-    // ADD EVERYTHING
+    // ADD BOX
     // =================================================
 
-    box.appendChild(
-        title
-    );
+    box.appendChild(title);
+    box.appendChild(help);
+    box.appendChild(photoSection);
+    box.appendChild(videoSection);
+    box.appendChild(counts);
 
-
-    box.appendChild(
-        help
-    );
-
-
-    box.appendChild(
-        photoSection
-    );
-
-
-    box.appendChild(
-        videoSection
-    );
-
-
-    box.appendChild(
-        counts
-    );
-
-
-    eventItem.appendChild(
-        box
-    );
+    eventItem.appendChild(box);
 
 
     // =================================================
@@ -1162,11 +857,7 @@ function createMediaUploadBox(
             const files =
                 photoInput.files;
 
-
-            if (
-                !files ||
-                files.length === 0
-            ) {
+            if (!files || files.length === 0) {
 
                 photoStatus.textContent =
                     "⚠️ Please select photos first.";
@@ -1175,21 +866,17 @@ function createMediaUploadBox(
                     "drive-status error";
 
                 return;
-
             }
 
 
             photoButton.disabled =
                 true;
 
-
             photoButton.textContent =
-                "Uploading Photos...";
-
+                "⏳ Uploading Photos...";
 
             photoStatus.textContent =
                 "Uploading photos...";
-
 
             photoStatus.className =
                 "drive-status loading";
@@ -1197,7 +884,8 @@ function createMediaUploadBox(
 
             const result =
                 await uploadPhotos(
-                    files
+                    files,
+                    eventId
                 );
 
 
@@ -1209,10 +897,7 @@ function createMediaUploadBox(
                 photoStatus.className =
                     "drive-status success";
 
-
-                photoInput.value =
-                    "";
-
+                photoInput.value = "";
 
                 photoCount.textContent =
                     "📷 Photos: " +
@@ -1225,17 +910,14 @@ function createMediaUploadBox(
 
                 photoStatus.className =
                     "drive-status error";
-
             }
 
 
             photoButton.disabled =
                 false;
 
-
             photoButton.textContent =
                 "📤 Upload Photos";
-
         }
     );
 
@@ -1251,11 +933,7 @@ function createMediaUploadBox(
             const files =
                 videoInput.files;
 
-
-            if (
-                !files ||
-                files.length === 0
-            ) {
+            if (!files || files.length === 0) {
 
                 videoStatus.textContent =
                     "⚠️ Please select videos first.";
@@ -1264,21 +942,17 @@ function createMediaUploadBox(
                     "drive-status error";
 
                 return;
-
             }
 
 
             videoButton.disabled =
                 true;
 
-
             videoButton.textContent =
-                "Uploading Videos...";
-
+                "⏳ Uploading Videos...";
 
             videoStatus.textContent =
                 "Uploading videos...";
-
 
             videoStatus.className =
                 "drive-status loading";
@@ -1286,7 +960,8 @@ function createMediaUploadBox(
 
             const result =
                 await uploadVideos(
-                    files
+                    files,
+                    eventId
                 );
 
 
@@ -1298,10 +973,7 @@ function createMediaUploadBox(
                 videoStatus.className =
                     "drive-status success";
 
-
-                videoInput.value =
-                    "";
-
+                videoInput.value = "";
 
                 videoCount.textContent =
                     "🎥 Videos: " +
@@ -1314,35 +986,63 @@ function createMediaUploadBox(
 
                 videoStatus.className =
                     "drive-status error";
-
             }
 
 
             videoButton.disabled =
                 false;
 
-
             videoButton.textContent =
                 "📤 Upload Videos";
-
         }
     );
-
 }
 
 
 // =====================================================
-// UPLOAD PHOTOS
+// UPLOAD PHOTOS TO RENDER
 // =====================================================
 
 async function uploadPhotos(
-    files
+    files,
+    eventId
 ) {
+
+    const user =
+        auth.currentUser;
+
+
+    // Verify Firebase login
+    if (!user) {
+
+        alert(
+            "Please login first."
+        );
+
+        return null;
+    }
+
+
+    // Verify admin
+    const admin =
+        await verifyAdmin(user);
+
+
+    if (!admin) {
+
+        alert(
+            "You are not authorized."
+        );
+
+        return null;
+    }
+
 
     const formData =
         new FormData();
 
 
+    // Add files
     for (
         const file of files
     ) {
@@ -1351,11 +1051,34 @@ async function uploadPhotos(
             "photos",
             file
         );
-
     }
 
 
+    // IMPORTANT:
+    // Render backend requires eventId
+    formData.append(
+        "eventId",
+        eventId
+    );
+
+
     try {
+
+        console.log(
+            "Uploading photos to:",
+            `${API_URL}/api/upload/photos`
+        );
+
+        console.log(
+            "Event ID:",
+            eventId
+        );
+
+        console.log(
+            "Number of photos:",
+            files.length
+        );
+
 
         const response =
             await fetch(
@@ -1370,19 +1093,37 @@ async function uploadPhotos(
             );
 
 
-        const data =
-            await response.json();
+        const text =
+            await response.text();
 
 
-        if (
-            !response.ok
-        ) {
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(text);
+
+        } catch (error) {
+
+            console.error(
+                "Invalid server response:",
+                text
+            );
+
+            throw new Error(
+                "Render server returned an invalid response."
+            );
+        }
+
+
+        if (!response.ok) {
 
             throw new Error(
                 data.message ||
                 "Photo upload failed."
             );
-
         }
 
 
@@ -1403,20 +1144,53 @@ async function uploadPhotos(
         );
 
 
+        alert(
+            "Photo upload failed: " +
+            error.message
+        );
+
+
         return null;
-
     }
-
 }
 
 
 // =====================================================
-// UPLOAD VIDEOS
+// UPLOAD VIDEOS TO RENDER
 // =====================================================
 
 async function uploadVideos(
-    files
+    files,
+    eventId
 ) {
+
+    const user =
+        auth.currentUser;
+
+
+    if (!user) {
+
+        alert(
+            "Please login first."
+        );
+
+        return null;
+    }
+
+
+    const admin =
+        await verifyAdmin(user);
+
+
+    if (!admin) {
+
+        alert(
+            "You are not authorized."
+        );
+
+        return null;
+    }
+
 
     const formData =
         new FormData();
@@ -1430,11 +1204,34 @@ async function uploadVideos(
             "videos",
             file
         );
-
     }
 
 
+    // IMPORTANT:
+    // Send event ID to Render
+    formData.append(
+        "eventId",
+        eventId
+    );
+
+
     try {
+
+        console.log(
+            "Uploading videos to:",
+            `${API_URL}/api/upload/videos`
+        );
+
+        console.log(
+            "Event ID:",
+            eventId
+        );
+
+        console.log(
+            "Number of videos:",
+            files.length
+        );
+
 
         const response =
             await fetch(
@@ -1449,19 +1246,37 @@ async function uploadVideos(
             );
 
 
-        const data =
-            await response.json();
+        const text =
+            await response.text();
 
 
-        if (
-            !response.ok
-        ) {
+        let data;
+
+
+        try {
+
+            data =
+                JSON.parse(text);
+
+        } catch (error) {
+
+            console.error(
+                "Invalid server response:",
+                text
+            );
+
+            throw new Error(
+                "Render server returned an invalid response."
+            );
+        }
+
+
+        if (!response.ok) {
 
             throw new Error(
                 data.message ||
                 "Video upload failed."
             );
-
         }
 
 
@@ -1482,10 +1297,14 @@ async function uploadVideos(
         );
 
 
+        alert(
+            "Video upload failed: " +
+            error.message
+        );
+
+
         return null;
-
     }
-
 }
 
 
@@ -1502,37 +1321,26 @@ function editEvent(
         data.name ||
         "";
 
-
     eventDate.value =
         data.date ||
         "";
 
-
     eventDescription.value =
         data.description ||
         "";
-
 
     eventForm.setAttribute(
         "data-edit-id",
         id
     );
 
-
     saveEventButton.textContent =
         "💾 Update Event";
 
-
     window.scrollTo({
-
-        top:
-            0,
-
-        behavior:
-            "smooth"
-
+        top: 0,
+        behavior: "smooth"
     });
-
 }
 
 
@@ -1550,9 +1358,7 @@ async function deleteEvent(
 
 
     if (
-        !await verifyAdmin(
-            user
-        )
+        !await verifyAdmin(user)
     ) {
 
         alert(
@@ -1560,7 +1366,6 @@ async function deleteEvent(
         );
 
         return;
-
     }
 
 
@@ -1613,9 +1418,7 @@ async function deleteEvent(
                 "Unknown error"
             )
         );
-
     }
-
 }
 
 
@@ -1628,9 +1431,7 @@ function formatDate(
 ) {
 
     if (!dateString) {
-
         return "Date not available";
-
     }
 
 
@@ -1648,14 +1449,12 @@ function formatDate(
     ) {
 
         return dateString;
-
     }
 
 
     return date.toLocaleDateString(
         "en-IN",
         {
-
             day:
                 "numeric",
 
@@ -1664,10 +1463,8 @@ function formatDate(
 
             year:
                 "numeric"
-
         }
     );
-
 }
 
 
@@ -1688,7 +1485,7 @@ console.log(
 );
 
 console.log(
-    "Local backend uploads enabled"
+    "Render backend enabled"
 );
 
 console.log(
@@ -1696,7 +1493,7 @@ console.log(
 );
 
 console.log(
-    "Upload API:",
+    "Render API:",
     API_URL
 );
 

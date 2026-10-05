@@ -19,10 +19,6 @@
 
     <style>
 
-        /* ==================================================
-           EVENT PAGE
-        ================================================== */
-
         .event-details {
             max-width: 1100px;
             margin: 0 auto;
@@ -76,11 +72,6 @@
             white-space: pre-line;
         }
 
-
-        /* ==================================================
-           MEDIA SECTION
-        ================================================== */
-
         .event-media-section {
             margin-top: 40px;
             padding: 28px;
@@ -116,11 +107,6 @@
         .video-count {
             color: #00897b;
         }
-
-
-        /* ==================================================
-           GALLERY
-        ================================================== */
 
         .media-title {
             margin-top: 30px;
@@ -193,11 +179,6 @@
             color: #c62828;
         }
 
-
-        /* ==================================================
-           LIGHTBOX
-        ================================================== */
-
         .lightbox {
             display: none;
             position: fixed;
@@ -230,11 +211,6 @@
             line-height: 1;
         }
 
-
-        /* ==================================================
-           BUTTON
-        ================================================== */
-
         .button {
             display: inline-block;
             border: none;
@@ -254,20 +230,10 @@
             background: #1558b0;
         }
 
-
-        /* ==================================================
-           ERROR
-        ================================================== */
-
         .not-found {
             text-align: center;
             padding: 60px 20px;
         }
-
-
-        /* ==================================================
-           MOBILE
-        ================================================== */
 
         @media (max-width: 800px) {
 
@@ -276,7 +242,6 @@
             }
 
         }
-
 
         @media (max-width: 600px) {
 
@@ -314,10 +279,7 @@
 
 <body>
 
-
-    <!-- ==================================================
-         NAVBAR
-    ================================================== -->
+    <!-- NAVBAR -->
 
     <header class="navbar">
 
@@ -346,7 +308,6 @@
 
             </a>
 
-
             <nav>
 
                 <a href="../index.html">
@@ -368,9 +329,7 @@
     </header>
 
 
-    <!-- ==================================================
-         MAIN CONTENT
-    ================================================== -->
+    <!-- MAIN -->
 
     <main>
 
@@ -383,16 +342,10 @@
                 ← Back to Events
             </a>
 
-
             <div
                 id="event-details-container"
                 class="event-details-card"
             >
-
-
-                <!-- ==================================================
-                     EVENT INFORMATION
-                ================================================== -->
 
                 <div class="event-detail-icon">
                     📅
@@ -421,9 +374,7 @@
                 </p>
 
 
-                <!-- ==================================================
-                     EVENT MEDIA
-                ================================================== -->
+                <!-- MEDIA -->
 
                 <div class="event-media-section">
 
@@ -434,9 +385,6 @@
                     <p>
                         Photos and videos from this event.
                     </p>
-
-
-                    <!-- MEDIA COUNTS -->
 
                     <div class="media-info">
 
@@ -457,10 +405,6 @@
                     </div>
 
 
-                    <!-- ==================================================
-                         PHOTOS
-                    ================================================== -->
-
                     <h3 class="media-title">
                         📷 Event Photos
                     </h3>
@@ -478,10 +422,6 @@
                         No photos uploaded for this event yet.
                     </div>
 
-
-                    <!-- ==================================================
-                         VIDEOS
-                    ================================================== -->
 
                     <h3 class="media-title">
                         🎥 Event Videos
@@ -501,8 +441,6 @@
                     </div>
 
 
-                    <!-- MEDIA STATUS -->
-
                     <p
                         id="mediaStatus"
                         class="status-message"
@@ -519,9 +457,7 @@
     </main>
 
 
-    <!-- ==================================================
-         LIGHTBOX
-    ================================================== -->
+    <!-- LIGHTBOX -->
 
     <div
         id="lightbox"
@@ -544,9 +480,7 @@
     </div>
 
 
-    <!-- ==================================================
-         FOOTER
-    ================================================== -->
+    <!-- FOOTER -->
 
     <footer>
 
@@ -579,9 +513,7 @@
     </footer>
 
 
-    <!-- ==================================================
-         FIREBASE
-    ================================================== -->
+    <!-- FIREBASE -->
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -592,26 +524,17 @@
 
     <script>
 
-        /* ==================================================
-           CONFIGURATION
-        ================================================== */
+        // =================================================
+        // RENDER BACKEND
+        // =================================================
 
-        /*
-         * If frontend and backend use the SAME server:
-         *
-         *     const API_BASE_URL = "";
-         *
-         * If your backend runs separately:
-         *
-         *     const API_BASE_URL = "http://localhost:5000";
-         */
-
-        const API_BASE_URL = "";
+        const API_BASE_URL =
+            "https://adtu-bodo-union.onrender.com";
 
 
-        /* ==================================================
-           ELEMENTS
-        ================================================== */
+        // =================================================
+        // ELEMENTS
+        // =================================================
 
         const eventName =
             document.getElementById("eventName");
@@ -680,17 +603,17 @@
             );
 
 
-        /* ==================================================
-           YEAR
-        ================================================== */
+        // =================================================
+        // YEAR
+        // =================================================
 
         document.getElementById("year").textContent =
             new Date().getFullYear();
 
 
-        /* ==================================================
-           EVENT ID
-        ================================================== */
+        // =================================================
+        // EVENT ID
+        // =================================================
 
         const params =
             new URLSearchParams(
@@ -701,9 +624,9 @@
             params.get("id");
 
 
-        /* ==================================================
-           FORMAT DATE
-        ================================================== */
+        // =================================================
+        // FORMAT DATE
+        // =================================================
 
         function formatDate(dateValue) {
 
@@ -712,7 +635,6 @@
             }
 
             let date;
-
 
             if (typeof dateValue === "string") {
 
@@ -735,11 +657,9 @@
 
             }
 
-
             if (isNaN(date.getTime())) {
                 return String(dateValue);
             }
-
 
             return date.toLocaleDateString(
                 "en-IN",
@@ -749,12 +669,13 @@
                     year: "numeric"
                 }
             );
+
         }
 
 
-        /* ==================================================
-           GET MEDIA URL
-        ================================================== */
+        // =================================================
+        // MEDIA URL
+        // =================================================
 
         function getMediaUrl(media) {
 
@@ -762,11 +683,9 @@
                 return "";
             }
 
-
             if (typeof media === "string") {
                 return media;
             }
-
 
             return (
                 media.url ||
@@ -776,12 +695,13 @@
                 media.src ||
                 ""
             );
+
         }
 
 
-        /* ==================================================
-           GET MEDIA NAME
-        ================================================== */
+        // =================================================
+        // MEDIA NAME
+        // =================================================
 
         function getMediaName(
             media,
@@ -798,7 +718,6 @@
                     const parts =
                         cleanUrl.split("/");
 
-
                     return (
                         decodeURIComponent(
                             parts[parts.length - 1]
@@ -814,19 +733,19 @@
 
             }
 
-
             return (
                 media.name ||
                 media.fileName ||
                 media.filename ||
                 "Media " + (index + 1)
             );
+
         }
 
 
-        /* ==================================================
-           DISPLAY EVENT
-        ================================================== */
+        // =================================================
+        // DISPLAY EVENT
+        // =================================================
 
         function displayEvent(data) {
 
@@ -835,26 +754,24 @@
                 data.title ||
                 "Untitled Event";
 
-
             eventDate.textContent =
                 "📅 " +
                 formatDate(data.date);
 
-
             eventDescription.textContent =
                 data.description ||
                 "No description available.";
+
         }
 
 
-        /* ==================================================
-           DISPLAY PHOTOS
-        ================================================== */
+        // =================================================
+        // DISPLAY PHOTOS
+        // =================================================
 
         function displayPhotos(photos) {
 
             photoGallery.innerHTML = "";
-
 
             if (
                 !Array.isArray(photos) ||
@@ -867,10 +784,8 @@
                 return;
             }
 
-
             photoEmpty.style.display =
                 "none";
-
 
             photos.forEach(
                 function(photo, index) {
@@ -878,11 +793,9 @@
                     const url =
                         getMediaUrl(photo);
 
-
                     if (!url) {
                         return;
                     }
-
 
                     const card =
                         document.createElement(
@@ -891,7 +804,6 @@
 
                     card.className =
                         "media-card";
-
 
                     const image =
                         document.createElement(
@@ -910,7 +822,6 @@
                     image.loading =
                         "lazy";
 
-
                     image.addEventListener(
                         "click",
                         function() {
@@ -924,7 +835,6 @@
 
                         }
                     );
-
 
                     image.addEventListener(
                         "error",
@@ -940,11 +850,9 @@
                         }
                     );
 
-
                     card.appendChild(
                         image
                     );
-
 
                     const name =
                         document.createElement(
@@ -954,18 +862,15 @@
                     name.className =
                         "media-name";
 
-
                     name.textContent =
                         getMediaName(
                             photo,
                             index
                         );
 
-
                     card.appendChild(
                         name
                     );
-
 
                     photoGallery.appendChild(
                         card
@@ -973,17 +878,17 @@
 
                 }
             );
+
         }
 
 
-        /* ==================================================
-           DISPLAY VIDEOS
-        ================================================== */
+        // =================================================
+        // DISPLAY VIDEOS
+        // =================================================
 
         function displayVideos(videos) {
 
             videoGallery.innerHTML = "";
-
 
             if (
                 !Array.isArray(videos) ||
@@ -996,10 +901,8 @@
                 return;
             }
 
-
             videoEmpty.style.display =
                 "none";
-
 
             videos.forEach(
                 function(video, index) {
@@ -1007,11 +910,9 @@
                     const url =
                         getMediaUrl(video);
 
-
                     if (!url) {
                         return;
                     }
-
 
                     const card =
                         document.createElement(
@@ -1021,12 +922,10 @@
                     card.className =
                         "media-card";
 
-
                     const videoElement =
                         document.createElement(
                             "video"
                         );
-
 
                     videoElement.src =
                         url;
@@ -1040,11 +939,9 @@
                     videoElement.playsInline =
                         true;
 
-
                     card.appendChild(
                         videoElement
                     );
-
 
                     const name =
                         document.createElement(
@@ -1054,18 +951,15 @@
                     name.className =
                         "media-name";
 
-
                     name.textContent =
                         getMediaName(
                             video,
                             index
                         );
 
-
                     card.appendChild(
                         name
                     );
-
 
                     videoGallery.appendChild(
                         card
@@ -1073,12 +967,13 @@
 
                 }
             );
+
         }
 
 
-        /* ==================================================
-           LOAD EVENT MEDIA
-        ================================================== */
+        // =================================================
+        // LOAD EVENT MEDIA FROM RENDER
+        // =================================================
 
         async function loadEventMedia() {
 
@@ -1087,12 +982,11 @@
                 throw new Error(
                     "Event ID is missing."
                 );
-            }
 
+            }
 
             mediaStatus.textContent =
                 "Loading photos and videos...";
-
 
             mediaStatus.className =
                 "status-message";
@@ -1131,6 +1025,7 @@
                     "Media API returned HTTP " +
                     response.status
                 );
+
             }
 
 
@@ -1155,6 +1050,7 @@
                         ? mediaData.message
                         : "Media API returned an invalid response."
                 );
+
             }
 
 
@@ -1212,13 +1108,15 @@
 
                 mediaStatus.className =
                     "status-message success";
+
             }
+
         }
 
 
-        /* ==================================================
-           LOAD EVENT FROM FIREBASE
-        ================================================== */
+        // =================================================
+        // LOAD EVENT FROM FIREBASE
+        // =================================================
 
         async function loadEvent() {
 
@@ -1233,11 +1131,6 @@
 
 
             try {
-
-                /*
-                 * Load event information
-                 * from Firestore.
-                 */
 
                 const eventDoc =
                     await db
@@ -1271,11 +1164,6 @@
                 );
 
 
-                /*
-                 * Photos and videos are loaded
-                 * from the Node.js backend.
-                 */
-
                 try {
 
                     await loadEventMedia();
@@ -1291,10 +1179,8 @@
                     photoCount.textContent =
                         "📷 Photos: 0";
 
-
                     videoCount.textContent =
                         "🎥 Videos: 0";
-
 
                     displayPhotos([]);
 
@@ -1302,11 +1188,11 @@
 
 
                     mediaStatus.textContent =
-                        "Could not load event photos and videos. Check that the backend is running.";
-
+                        "Could not load event photos and videos.";
 
                     mediaStatus.className =
                         "status-message error";
+
                 }
 
             } catch (error) {
@@ -1316,17 +1202,18 @@
                     error
                 );
 
-
                 showError(
                     "Could not load the event."
                 );
+
             }
+
         }
 
 
-        /* ==================================================
-           LIGHTBOX
-        ================================================== */
+        // =================================================
+        // LIGHTBOX
+        // =================================================
 
         lightboxClose.onclick =
             function() {
@@ -1373,63 +1260,92 @@
                 "active"
             );
 
-            lightboxImage.src = "";
+            lightboxImage.src =
+                "";
+
         }
 
 
-        /* ==================================================
-           ERROR PAGE
-        ================================================== */
+        // =================================================
+        // ERROR PAGE
+        // =================================================
 
         function showError(message) {
 
-            eventContainer.innerHTML = `
+            eventContainer.innerHTML = "";
 
-                <div class="not-found">
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
 
-                    <div
-                        style="
-                            font-size: 50px;
-                            margin-bottom: 15px;
-                        "
-                    >
-                        ⚠️
-                    </div>
-
-                    <h1></h1>
-
-                    <p>
-                        The event may have been removed
-                        or the link may be incorrect.
-                    </p>
-
-                    <a
-                        href="../index.html#events"
-                        class="button button-primary"
-                    >
-                        ← Back to Events
-                    </a>
-
-                </div>
-
-            `;
+            wrapper.className =
+                "not-found";
 
 
-            /*
-             * Use textContent for the error message
-             * instead of inserting it directly into HTML.
-             */
+            const icon =
+                document.createElement(
+                    "div"
+                );
 
-            eventContainer
-                .querySelector("h1")
-                .textContent =
+            icon.style.fontSize =
+                "50px";
+
+            icon.style.marginBottom =
+                "15px";
+
+            icon.textContent =
+                "⚠️";
+
+
+            const heading =
+                document.createElement(
+                    "h1"
+                );
+
+            heading.textContent =
                 message;
+
+
+            const paragraph =
+                document.createElement(
+                    "p"
+                );
+
+            paragraph.textContent =
+                "The event may have been removed or the link may be incorrect.";
+
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+            link.href =
+                "../index.html#events";
+
+            link.className =
+                "button button-primary";
+
+            link.textContent =
+                "← Back to Events";
+
+
+            wrapper.appendChild(icon);
+            wrapper.appendChild(heading);
+            wrapper.appendChild(paragraph);
+            wrapper.appendChild(link);
+
+            eventContainer.appendChild(
+                wrapper
+            );
+
         }
 
 
-        /* ==================================================
-           START PAGE
-        ================================================== */
+        // =================================================
+        // START
+        // =================================================
 
         console.log(
             "================================"
@@ -1446,19 +1362,13 @@
 
         console.log(
             "Backend API:",
-            API_BASE_URL +
-            "/api/upload/event/" +
-            eventId
+            API_BASE_URL
         );
 
         console.log(
             "================================"
         );
 
-
-        /* ==================================================
-           LOAD EVENT
-        ================================================== */
 
         loadEvent();
 
@@ -1467,4 +1377,3 @@
 </body>
 
 </html>
-

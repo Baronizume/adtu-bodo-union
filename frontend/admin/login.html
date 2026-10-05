@@ -11,11 +11,16 @@
 
     <title>ADTU Bodo Union | Admin Login</title>
 
+    <!-- Main stylesheet -->
     <link
         rel="stylesheet"
         href="../css/style.css">
 
     <style>
+
+        /* ==================================================
+           ADMIN LOGIN PAGE
+        ================================================== */
 
         .admin-login-page {
             min-height: 70vh;
@@ -35,12 +40,13 @@
         }
 
         .admin-login-card h1 {
-            margin-bottom: 10px;
+            margin: 0 0 10px;
         }
 
         .admin-login-card p {
-            margin-bottom: 25px;
+            margin: 0 0 25px;
             color: #666;
+            line-height: 1.5;
         }
 
         .admin-login-card label {
@@ -59,19 +65,26 @@
             font-size: 16px;
         }
 
-        .admin-login-card button {
+        .admin-login-card input:focus {
+            outline: none;
+            border-color: #1f6feb;
+            box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.10);
+        }
+
+        .login-button {
             width: 100%;
             padding: 13px;
             border: none;
             border-radius: 8px;
+            background: #1f6feb;
+            color: white;
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
         }
 
-        .login-button {
-            background: #1f6feb;
-            color: white;
+        .login-button:hover {
+            background: #1558bd;
         }
 
         .login-button:disabled {
@@ -81,345 +94,607 @@
 
         .login-message {
             margin-top: 15px;
+            padding: 10px;
             text-align: center;
-            color: #c62828;
+            border-radius: 7px;
             min-height: 20px;
+            font-size: 14px;
+        }
+
+        .login-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .login-message.success {
+            background: #dcfce7;
+            color: #166534;
         }
 
         .back-link {
-            display: inline-block;
+            display: block;
             margin-top: 20px;
+            text-align: center;
         }
 
     </style>
 
 </head>
 
-
 <body>
 
-<header class="navbar">
+    <!-- ==================================================
+         NAVBAR
+    ================================================== -->
 
-    <div class="nav-container">
+    <header class="navbar">
 
-        <a
-            href="../index.html"
-            class="brand">
-
-            <div class="brand-logo">
-                ABU
-            </div>
-
-            <div class="brand-text">
-
-                <strong>
-                    ADTU BODO UNION
-                </strong>
-
-                <span>
-                    Event &amp; Photo Hub
-                </span>
-
-            </div>
-
-        </a>
-
-    </div>
-
-</header>
-
-
-<main>
-
-    <section class="admin-login-page">
-
-        <div class="admin-login-card">
-
-            <h1>
-                🔐 Admin Login
-            </h1>
-
-            <p>
-                Only authorized administrators can access the admin dashboard.
-            </p>
-
-
-            <form id="adminLoginForm">
-
-                <label for="adminEmail">
-                    Email
-                </label>
-
-                <input
-                    id="adminEmail"
-                    type="email"
-                    placeholder="Admin email"
-                    autocomplete="username"
-                    required>
-
-
-                <label for="adminPassword">
-                    Password
-                </label>
-
-                <input
-                    id="adminPassword"
-                    type="password"
-                    placeholder="Password"
-                    autocomplete="current-password"
-                    required>
-
-
-                <button
-                    id="loginButton"
-                    type="submit"
-                    class="login-button">
-
-                    🔐 Login
-
-                </button>
-
-            </form>
-
-
-            <div
-                id="loginMessage"
-                class="login-message">
-            </div>
-
+        <div class="nav-container">
 
             <a
                 href="../index.html"
-                class="back-link">
+                class="brand">
 
-                ← Back to website
+                <div class="brand-logo">
+                    ABU
+                </div>
+
+                <div class="brand-text">
+
+                    <strong>
+                        ADTU BODO UNION
+                    </strong>
+
+                    <span>
+                        Event &amp; Photo Hub
+                    </span>
+
+                </div>
 
             </a>
 
         </div>
 
-    </section>
-
-</main>
+    </header>
 
 
-<footer>
+    <!-- ==================================================
+         MAIN CONTENT
+    ================================================== -->
 
-    <div class="footer-container">
+    <main>
 
-        <div>
+        <section class="admin-login-page">
 
-            <strong>
-                ADTU BODO UNION
-            </strong>
+            <div class="admin-login-card">
+
+                <h1>
+                    🔐 Admin Login
+                </h1>
+
+                <p>
+                    Only authorized administrators can access
+                    the admin dashboard.
+                </p>
+
+
+                <!-- ==================================================
+                     LOGIN FORM
+                ================================================== -->
+
+                <form id="adminLoginForm">
+
+                    <label for="adminEmail">
+                        Email
+                    </label>
+
+                    <input
+                        id="adminEmail"
+                        type="email"
+                        placeholder="Admin email"
+                        autocomplete="username"
+                        required>
+
+
+                    <label for="adminPassword">
+                        Password
+                    </label>
+
+                    <input
+                        id="adminPassword"
+                        type="password"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                        required>
+
+
+                    <button
+                        id="loginButton"
+                        type="submit"
+                        class="login-button">
+
+                        🔐 Login
+
+                    </button>
+
+                </form>
+
+
+                <!-- ==================================================
+                     LOGIN MESSAGE
+                ================================================== -->
+
+                <div
+                    id="loginMessage"
+                    class="login-message">
+                </div>
+
+
+                <!-- ==================================================
+                     BACK TO WEBSITE
+                ================================================== -->
+
+                <a
+                    href="../index.html"
+                    class="back-link">
+
+                    ← Back to website
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
+
+    <footer>
+
+        <div class="footer-container">
+
+            <div>
+
+                <strong>
+                    ADTU BODO UNION
+                </strong>
+
+                <p>
+                    Event &amp; Photo Hub
+                </p>
+
+            </div>
 
             <p>
-                Event &amp; Photo Hub
+                ©
+                <span id="year"></span>
+                ADTU Bodo Union
             </p>
 
         </div>
 
-        <p>
-            ©
-            <span id="year"></span>
-            ADTU Bodo Union
-        </p>
-
-    </div>
-
-</footer>
+    </footer>
 
 
-<!-- FIREBASE -->
+    <!-- ==================================================
+         FIREBASE
+    ================================================== -->
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<script src="../js/firebase.js"></script>
-
-
-<script>
-
-    const loginForm =
-        document.getElementById("adminLoginForm");
-
-    const emailInput =
-        document.getElementById("adminEmail");
-
-    const passwordInput =
-        document.getElementById("adminPassword");
-
-    const loginButton =
-        document.getElementById("loginButton");
-
-    const loginMessage =
-        document.getElementById("loginMessage");
-
-    const yearElement =
-        document.getElementById("year");
+    <!-- Firebase configuration -->
+    <script src="../js/firebase.js"></script>
 
 
-    if (yearElement) {
-        yearElement.textContent =
-            new Date().getFullYear();
-    }
+    <script>
+
+        // ==================================================
+        // DOM ELEMENTS
+        // ==================================================
+
+        const loginForm =
+            document.getElementById("adminLoginForm");
+
+        const emailInput =
+            document.getElementById("adminEmail");
+
+        const passwordInput =
+            document.getElementById("adminPassword");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+        const loginMessage =
+            document.getElementById("loginMessage");
+
+        const yearElement =
+            document.getElementById("year");
 
 
-    // =====================================
-    // ADMIN LOGIN
-    // =====================================
+        // ==================================================
+        // YEAR
+        // ==================================================
 
-    loginForm.addEventListener(
-        "submit",
-        async function (event) {
+        if (yearElement) {
 
-            event.preventDefault();
+            yearElement.textContent =
+                new Date().getFullYear();
 
-            const email =
-                emailInput.value.trim();
-
-            const password =
-                passwordInput.value;
+        }
 
 
-            loginMessage.textContent = "";
+        // ==================================================
+        // SHOW MESSAGE
+        // ==================================================
 
-            loginButton.disabled = true;
+        function showMessage(
+            message,
+            type = "error"
+        ) {
 
-            loginButton.textContent =
-                "Checking admin access...";
+            loginMessage.textContent =
+                message;
+
+            loginMessage.className =
+                "login-message " + type;
+
+        }
 
 
-            try {
+        // ==================================================
+        // CLEAR MESSAGE
+        // ==================================================
 
-                // Firebase Authentication
-                const userCredential =
-                    await auth.signInWithEmailAndPassword(
-                        email,
-                        password
+        function clearMessage() {
+
+            loginMessage.textContent =
+                "";
+
+            loginMessage.className =
+                "login-message";
+
+        }
+
+
+        // ==================================================
+        // ADMIN LOGIN
+        // ==================================================
+
+        loginForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+                clearMessage();
+
+
+                // Get email
+                const email =
+                    emailInput.value
+                        .trim()
+                        .toLowerCase();
+
+
+                // Get password
+                const password =
+                    passwordInput.value;
+
+
+                // Validate fields
+                if (!email || !password) {
+
+                    showMessage(
+                        "Please enter your email and password."
+                    );
+
+                    return;
+
+                }
+
+
+                // Disable login button
+                loginButton.disabled =
+                    true;
+
+                loginButton.textContent =
+                    "Checking admin access...";
+
+
+                try {
+
+                    // ==================================================
+                    // FIREBASE AUTHENTICATION
+                    // ==================================================
+
+                    const credential =
+                        await auth.signInWithEmailAndPassword(
+                            email,
+                            password
+                        );
+
+
+                    const user =
+                        credential.user;
+
+
+                    if (!user) {
+
+                        throw new Error(
+                            "Unable to get Firebase user."
+                        );
+
+                    }
+
+
+                    // ==================================================
+                    // CHECK ADMIN DOCUMENT
+                    // ==================================================
+
+                    const adminDocument =
+                        await db
+                            .collection("admins")
+                            .doc(user.uid)
+                            .get();
+
+
+                    // Admin document does not exist
+                    if (!adminDocument.exists) {
+
+                        await auth.signOut();
+
+                        showMessage(
+                            "Access denied. This account is not an administrator."
+                        );
+
+                        loginButton.disabled =
+                            false;
+
+                        loginButton.textContent =
+                            "🔐 Login";
+
+                        return;
+
+                    }
+
+
+                    // ==================================================
+                    // CHECK ADMIN ROLE
+                    // ==================================================
+
+                    const adminData =
+                        adminDocument.data() || {};
+
+
+                    if (
+                        adminData.role &&
+                        adminData.role.toLowerCase() !== "admin"
+                    ) {
+
+                        await auth.signOut();
+
+                        showMessage(
+                            "Access denied. Invalid administrator role."
+                        );
+
+                        loginButton.disabled =
+                            false;
+
+                        loginButton.textContent =
+                            "🔐 Login";
+
+                        return;
+
+                    }
+
+
+                    // ==================================================
+                    // LOGIN SUCCESS
+                    // ==================================================
+
+                    showMessage(
+                        "Login successful. Opening dashboard...",
+                        "success"
                     );
 
 
-                const user =
-                    userCredential.user;
+                    loginButton.textContent =
+                        "Opening dashboard...";
 
 
-                // =====================================
-                // CHECK ADMIN COLLECTION
-                // =====================================
+                    // Open admin dashboard
+                    setTimeout(
+                        function () {
 
-                const adminDoc =
-                    await db
-                        .collection("admins")
-                        .doc(user.uid)
-                        .get();
+                            window.location.replace(
+                                "../admin/admin-dashboard.html"
+                            );
+
+                        },
+                        300
+                    );
+
+                }
 
 
-                // User authenticated but isn't admin
-                if (!adminDoc.exists) {
+                // ==================================================
+                // LOGIN ERROR
+                // ==================================================
 
-                    await auth.signOut();
+                catch (error) {
 
-                    loginMessage.textContent =
-                        "Access denied. You are not an administrator.";
+                    console.error(
+                        "ADMIN LOGIN ERROR:",
+                        error
+                    );
 
-                    loginButton.disabled = false;
+
+                    switch (error.code) {
+
+                        case "auth/invalid-email":
+
+                            showMessage(
+                                "Please enter a valid email address."
+                            );
+
+                            break;
+
+
+                        case "auth/user-not-found":
+
+                            showMessage(
+                                "No administrator account was found with this email."
+                            );
+
+                            break;
+
+
+                        case "auth/wrong-password":
+
+                            showMessage(
+                                "Incorrect password."
+                            );
+
+                            break;
+
+
+                        case "auth/invalid-credential":
+
+                            showMessage(
+                                "Invalid email or password."
+                            );
+
+                            break;
+
+
+                        case "auth/user-disabled":
+
+                            showMessage(
+                                "This account has been disabled."
+                            );
+
+                            break;
+
+
+                        case "auth/too-many-requests":
+
+                            showMessage(
+                                "Too many login attempts. Please wait and try again."
+                            );
+
+                            break;
+
+
+                        case "auth/network-request-failed":
+
+                            showMessage(
+                                "Network error. Please check your internet connection."
+                            );
+
+                            break;
+
+
+                        default:
+
+                            showMessage(
+                                "Unable to login. Please try again."
+                            );
+
+                            console.error(
+                                "Firebase error code:",
+                                error.code
+                            );
+
+                    }
+
+
+                    // Re-enable button
+                    loginButton.disabled =
+                        false;
 
                     loginButton.textContent =
                         "🔐 Login";
 
-                    return;
                 }
-
-
-                // Check role field if available
-                const adminData =
-                    adminDoc.data();
-
-
-                if (
-                    adminData.role &&
-                    adminData.role !== "admin"
-                ) {
-
-                    await auth.signOut();
-
-                    loginMessage.textContent =
-                        "Access denied. Invalid administrator role.";
-
-                    loginButton.disabled = false;
-
-                    loginButton.textContent =
-                        "🔐 Login";
-
-                    return;
-                }
-
-
-                // =====================================
-                // ADMIN VERIFIED
-                // =====================================
-
-                loginButton.textContent =
-                    "Login successful...";
-
-
-                window.location.href =
-                    "admin-dashboard.html";
 
             }
+        );
 
 
-            catch (error) {
+        // ==================================================
+        // CHECK IF ALREADY LOGGED IN
+        // ==================================================
 
-                console.error(
-                    "Admin login error:",
-                    error
-                );
+        auth.onAuthStateChanged(
+            async function (user) {
 
+                // No logged-in user
+                if (!user) {
 
-                if (
-                    error.code ===
-                    "auth/invalid-credential"
-                ) {
-
-                    loginMessage.textContent =
-                        "Invalid email or password.";
-
-                }
-
-                else if (
-                    error.code ===
-                    "auth/user-disabled"
-                ) {
-
-                    loginMessage.textContent =
-                        "This account has been disabled.";
-
-                }
-
-                else {
-
-                    loginMessage.textContent =
-                        "Unable to login. Please try again.";
+                    return;
 
                 }
 
 
-                loginButton.disabled = false;
+                try {
 
-                loginButton.textContent =
-                    "🔐 Login";
+                    // ==================================================
+                    // CHECK ADMIN DOCUMENT
+                    // ==================================================
+
+                    const adminDocument =
+                        await db
+                            .collection("admins")
+                            .doc(user.uid)
+                            .get();
+
+
+                    if (adminDocument.exists) {
+
+                        const adminData =
+                            adminDocument.data() || {};
+
+
+                        // ==================================================
+                        // CHECK ADMIN ROLE
+                        // ==================================================
+
+                        if (
+                            !adminData.role ||
+                            adminData.role.toLowerCase() === "admin"
+                        ) {
+
+                            window.location.replace(
+                                "../admin/admin-dashboard.html"
+                            );
+
+                        }
+
+                    }
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Existing admin check failed:",
+                        error
+                    );
+
+                }
 
             }
+        );
 
-        }
-    );
-
-</script>
+    </script>
 
 </body>
 
