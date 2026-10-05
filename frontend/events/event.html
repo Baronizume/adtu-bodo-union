@@ -1,27 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ADTU Bodo Union | Event</title>
 
-    <link
-        rel="stylesheet"
-        href="../css/style.css"
-    >
+    <link rel="stylesheet" href="../css/style.css">
 
     <style>
-
-        /* ==============================
-           EVENT PAGE
-        ============================== */
+        /* ================================
+           PAGE
+        ================================= */
 
         .event-details {
             max-width: 1100px;
@@ -29,16 +19,28 @@
             padding: 40px 20px;
         }
 
+        /* ================================
+           BACK BUTTON
+        ================================= */
+
         .back-button {
             display: inline-block;
             margin-bottom: 20px;
-            text-decoration: none;
             color: #2563eb;
+            text-decoration: none;
             font-weight: 600;
         }
 
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        /* ================================
+           EVENT CARD
+        ================================= */
+
         .event-details-card {
-            background: #fff;
+            background: #ffffff;
             border-radius: 18px;
             padding: 35px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
@@ -65,21 +67,21 @@
         }
 
         .event-date {
-            color: #666;
+            margin: 0 0 20px;
+            color: #666666;
             font-weight: 600;
-            margin-bottom: 20px;
         }
 
         .event-detail-description {
+            margin: 0;
             line-height: 1.8;
-            color: #444;
+            color: #444444;
             white-space: pre-line;
         }
 
-
-        /* ==============================
+        /* ================================
            MEDIA SECTION
-        ============================== */
+        ================================= */
 
         .event-media-section {
             margin-top: 40px;
@@ -90,22 +92,31 @@
         }
 
         .event-media-section h2 {
-            margin-top: 0;
+            margin: 0 0 8px;
             color: #111827;
         }
+
+        .media-description {
+            margin: 0;
+            color: #666666;
+        }
+
+        /* ================================
+           MEDIA COUNTS
+        ================================= */
 
         .media-info {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            margin: 20px 0;
+            margin: 20px 0 30px;
         }
 
         .media-count {
             padding: 10px 16px;
-            background: #fff;
+            background: #ffffff;
             border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #dddddd;
             font-weight: 700;
         }
 
@@ -117,16 +128,19 @@
             color: #00897b;
         }
 
+        /* ================================
+           MEDIA TITLES
+        ================================= */
+
         .media-title {
-            margin-top: 30px;
-            margin-bottom: 15px;
+            margin: 30px 0 15px;
             font-size: 24px;
+            color: #111827;
         }
 
-
-        /* ==============================
-           PHOTO GALLERY
-        ============================== */
+        /* ================================
+           GALLERY
+        ================================= */
 
         .media-gallery {
             display: grid;
@@ -134,88 +148,92 @@
             gap: 18px;
         }
 
-        /*
-         * No filename is displayed.
-         * The card contains ONLY the image.
-         */
+        /* ================================
+           MEDIA CARD
+        ================================= */
 
         .media-card {
-            background: transparent;
-            border: none;
-            box-shadow: none;
+            background: #ffffff;
             border-radius: 12px;
             overflow: hidden;
+            border: 1px solid #dddddd;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
         }
+
+        /* ================================
+           PHOTOS
+        ================================= */
 
         .media-card img {
             width: 100%;
-            height: 280px;
+            height: 260px;
             object-fit: cover;
             display: block;
             cursor: pointer;
-            border-radius: 12px;
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
+            transition: transform 0.2s ease;
         }
 
         .media-card img:hover {
             transform: scale(1.02);
-            box-shadow:
-                0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
+        /* Never show uploaded filename */
 
-        /* ==============================
-           VIDEO
-        ============================== */
+        .media-name {
+            display: none !important;
+        }
+
+        /* ================================
+           VIDEOS
+        ================================= */
 
         .media-card video {
             width: 100%;
-            height: 280px;
+            height: 260px;
             object-fit: cover;
             display: block;
-            background: #111;
-            border-radius: 12px;
+            background: #111111;
         }
 
-
-        /* ==============================
+        /* ================================
            EMPTY MESSAGE
-        ============================== */
+        ================================= */
 
         .media-empty {
             padding: 35px 20px;
             text-align: center;
-            background: #fff;
-            border: 1px dashed #ccc;
+            background: #ffffff;
+            border: 1px dashed #cccccc;
             border-radius: 10px;
-            color: #777;
+            color: #777777;
         }
+
+        /* ================================
+           STATUS
+        ================================= */
 
         .status-message {
-            margin-top: 15px;
+            margin-top: 20px;
             min-height: 20px;
-            color: #666;
+            color: #666666;
         }
 
-        .success {
+        .status-message.success {
             color: #2e7d32;
         }
 
-        .error {
+        .status-message.error {
             color: #c62828;
         }
 
-
-        /* ==============================
+        /* ================================
            LIGHTBOX
-        ============================== */
+        ================================= */
 
         .lightbox {
             display: none;
             position: fixed;
-            z-index: 9999;
+            z-index: 99999;
             inset: 0;
             background: rgba(0, 0, 0, 0.92);
             align-items: center;
@@ -230,27 +248,37 @@
         .lightbox img {
             max-width: 95%;
             max-height: 90vh;
-            width: auto;
-            height: auto;
             object-fit: contain;
             border-radius: 8px;
         }
 
         .lightbox-close {
             position: absolute;
-            top: 20px;
+            top: 15px;
             right: 25px;
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
+            color: #ffffff;
+            font-size: 42px;
             line-height: 1;
-            z-index: 10000;
+            cursor: pointer;
+            z-index: 100000;
         }
 
+        .lightbox-close:hover {
+            color: #dddddd;
+        }
 
-        /* ==============================
+        /* ================================
+           ERROR
+        ================================= */
+
+        .not-found {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        /* ================================
            BUTTON
-        ============================== */
+        ================================= */
 
         .button {
             display: inline-block;
@@ -264,43 +292,28 @@
 
         .button-primary {
             background: #2563eb;
-            color: #fff;
+            color: #ffffff;
         }
 
         .button-primary:hover {
             background: #1558b0;
         }
 
-
-        /* ==============================
-           ERROR PAGE
-        ============================== */
-
-        .not-found {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-
-        /* ==============================
+        /* ================================
            TABLET
-        ============================== */
+        ================================= */
 
         @media (max-width: 800px) {
-
             .media-gallery {
                 grid-template-columns: repeat(2, 1fr);
             }
-
         }
 
-
-        /* ==============================
+        /* ================================
            MOBILE
-        ============================== */
+        ================================= */
 
         @media (max-width: 600px) {
-
             .event-details {
                 padding: 25px 15px;
             }
@@ -313,6 +326,10 @@
                 font-size: 28px;
             }
 
+            .event-media-section {
+                padding: 20px;
+            }
+
             .media-gallery {
                 grid-template-columns: 1fr;
             }
@@ -322,80 +339,47 @@
                 height: 250px;
             }
 
-            .event-media-section {
-                padding: 20px;
+            .media-title {
+                font-size: 21px;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- ==============================
+    <!-- ================================
          NAVBAR
-    ============================== -->
+    ================================= -->
 
     <header class="navbar">
-
         <div class="nav-container">
 
-            <a
-                href="../index.html"
-                class="brand"
-            >
-
+            <a href="../index.html" class="brand">
                 <div class="brand-logo">
                     ABU
                 </div>
 
                 <div class="brand-text">
-
-                    <strong>
-                        ADTU BODO UNION
-                    </strong>
-
-                    <span>
-                        Event &amp; Photo Hub
-                    </span>
-
+                    <strong>ADTU BODO UNION</strong>
+                    <span>Event &amp; Photo Hub</span>
                 </div>
-
             </a>
 
-
             <nav>
-
-                <a href="../index.html">
-                    Home
-                </a>
-
-                <a href="../index.html#events">
-                    Events
-                </a>
-
-                <a href="../index.html#photos">
-                    Photos
-                </a>
-
+                <a href="../index.html">Home</a>
+                <a href="../index.html#events">Events</a>
+                <a href="../index.html#photos">Photos</a>
             </nav>
 
         </div>
-
     </header>
 
-
-
-    <!-- ==============================
+    <!-- ================================
          MAIN
-    ============================== -->
+    ================================= -->
 
     <main>
-
         <section class="event-details">
 
             <a
@@ -405,26 +389,24 @@
                 ← Back to Events
             </a>
 
-
             <div
                 id="event-details-container"
                 class="event-details-card"
             >
 
+                <!-- EVENT INFORMATION -->
+
                 <div class="event-detail-icon">
                     📅
                 </div>
-
 
                 <span class="section-label">
                     EVENT
                 </span>
 
-
                 <h1 id="eventName">
                     Loading event...
                 </h1>
-
 
                 <p
                     id="eventDate"
@@ -433,7 +415,6 @@
                     Loading date...
                 </p>
 
-
                 <p
                     id="eventDescription"
                     class="event-detail-description"
@@ -441,11 +422,9 @@
                     Loading event details...
                 </p>
 
-
-
-                <!-- ==============================
+                <!-- ================================
                      MEDIA
-                ============================== -->
+                ================================= -->
 
                 <div class="event-media-section">
 
@@ -453,11 +432,11 @@
                         📷🎥 Event Photos &amp; Videos
                     </h2>
 
-
-                    <p>
+                    <p class="media-description">
                         Photos and videos from this event.
                     </p>
 
+                    <!-- COUNTS -->
 
                     <div class="media-info">
 
@@ -468,7 +447,6 @@
                             📷 Photos: 0
                         </span>
 
-
                         <span
                             id="videoCount"
                             class="media-count video-count"
@@ -478,20 +456,16 @@
 
                     </div>
 
-
-
                     <!-- PHOTOS -->
 
                     <h3 class="media-title">
                         📷 Event Photos
                     </h3>
 
-
                     <div
                         id="photoGallery"
                         class="media-gallery"
                     ></div>
-
 
                     <div
                         id="photoEmpty"
@@ -501,20 +475,16 @@
                         No photos uploaded for this event yet.
                     </div>
 
-
-
                     <!-- VIDEOS -->
 
                     <h3 class="media-title">
                         🎥 Event Videos
                     </h3>
 
-
                     <div
                         id="videoGallery"
                         class="media-gallery"
                     ></div>
-
 
                     <div
                         id="videoEmpty"
@@ -524,6 +494,7 @@
                         No videos uploaded for this event yet.
                     </div>
 
+                    <!-- STATUS -->
 
                     <p
                         id="mediaStatus"
@@ -537,14 +508,11 @@
             </div>
 
         </section>
-
     </main>
 
-
-
-    <!-- ==============================
+    <!-- ================================
          LIGHTBOX
-    ============================== -->
+    ================================= -->
 
     <div
         id="lightbox"
@@ -558,7 +526,6 @@
             ×
         </span>
 
-
         <img
             id="lightboxImage"
             src=""
@@ -567,48 +534,32 @@
 
     </div>
 
-
-
-    <!-- ==============================
+    <!-- ================================
          FOOTER
-    ============================== -->
+    ================================= -->
 
     <footer>
-
         <div class="footer-container">
 
             <div>
-
-                <strong>
-                    ADTU BODO UNION
-                </strong>
+                <strong>ADTU BODO UNION</strong>
 
                 <p>
                     Event &amp; Photo Hub
                 </p>
-
             </div>
 
-
             <p>
-
-                ©
-
-                <span id="year"></span>
-
+                © <span id="year"></span>
                 ADTU Bodo Union
-
             </p>
 
         </div>
-
     </footer>
 
-
-
-    <!-- ==============================
+    <!-- ================================
          FIREBASE
-    ============================== -->
+    ================================= -->
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
@@ -616,22 +567,23 @@
 
     <script src="../js/firebase.js"></script>
 
-
+    <!-- ================================
+         EVENT JAVASCRIPT
+    ================================= -->
 
     <script>
 
-        /* =========================================
-           RENDER BACKEND
-        ========================================= */
+        /* =================================
+           BACKEND
+        ================================= */
 
         const API_BASE_URL =
             "https://adtu-bodo-union.onrender.com";
 
 
-
-        /* =========================================
+        /* =================================
            ELEMENTS
-        ========================================= */
+        ================================= */
 
         const eventName =
             document.getElementById("eventName");
@@ -640,9 +592,7 @@
             document.getElementById("eventDate");
 
         const eventDescription =
-            document.getElementById(
-                "eventDescription"
-            );
+            document.getElementById("eventDescription");
 
         const eventContainer =
             document.getElementById(
@@ -650,69 +600,47 @@
             );
 
         const photoCount =
-            document.getElementById(
-                "photoCount"
-            );
+            document.getElementById("photoCount");
 
         const videoCount =
-            document.getElementById(
-                "videoCount"
-            );
+            document.getElementById("videoCount");
 
         const photoGallery =
-            document.getElementById(
-                "photoGallery"
-            );
+            document.getElementById("photoGallery");
 
         const videoGallery =
-            document.getElementById(
-                "videoGallery"
-            );
+            document.getElementById("videoGallery");
 
         const photoEmpty =
-            document.getElementById(
-                "photoEmpty"
-            );
+            document.getElementById("photoEmpty");
 
         const videoEmpty =
-            document.getElementById(
-                "videoEmpty"
-            );
+            document.getElementById("videoEmpty");
 
         const mediaStatus =
-            document.getElementById(
-                "mediaStatus"
-            );
+            document.getElementById("mediaStatus");
 
         const lightbox =
-            document.getElementById(
-                "lightbox"
-            );
+            document.getElementById("lightbox");
 
         const lightboxImage =
-            document.getElementById(
-                "lightboxImage"
-            );
+            document.getElementById("lightboxImage");
 
         const lightboxClose =
-            document.getElementById(
-                "lightboxClose"
-            );
+            document.getElementById("lightboxClose");
 
 
-
-        /* =========================================
+        /* =================================
            YEAR
-        ========================================= */
+        ================================= */
 
         document.getElementById("year").textContent =
             new Date().getFullYear();
 
 
-
-        /* =========================================
-           EVENT ID
-        ========================================= */
+        /* =================================
+           GET EVENT ID
+        ================================= */
 
         const params =
             new URLSearchParams(
@@ -723,10 +651,9 @@
             params.get("id");
 
 
-
-        /* =========================================
+        /* =================================
            FORMAT DATE
-        ========================================= */
+        ================================= */
 
         function formatDate(dateValue) {
 
@@ -734,9 +661,7 @@
                 return "Date not available";
             }
 
-
             let date;
-
 
             if (typeof dateValue === "string") {
 
@@ -746,34 +671,22 @@
                         : dateValue + "T00:00:00"
                 );
 
-            }
-
-            else if (
+            } else if (
                 dateValue &&
                 typeof dateValue.toDate === "function"
             ) {
 
-                date =
-                    dateValue.toDate();
+                date = dateValue.toDate();
+
+            } else {
+
+                date = new Date(dateValue);
 
             }
-
-            else {
-
-                date =
-                    new Date(dateValue);
-
-            }
-
 
             if (isNaN(date.getTime())) {
-
-                return String(
-                    dateValue
-                );
-
+                return String(dateValue);
             }
-
 
             return date.toLocaleDateString(
                 "en-IN",
@@ -783,14 +696,12 @@
                     year: "numeric"
                 }
             );
-
         }
 
 
-
-        /* =========================================
+        /* =================================
            GET MEDIA URL
-        ========================================= */
+        ================================= */
 
         function getMediaUrl(media) {
 
@@ -798,23 +709,9 @@
                 return "";
             }
 
-
-            /*
-             * If API gives a string,
-             * use it directly.
-             */
-
             if (typeof media === "string") {
-
-                return media.trim();
-
+                return media;
             }
-
-
-            /*
-             * If API gives an object,
-             * check common URL fields.
-             */
 
             return (
                 media.url ||
@@ -822,17 +719,14 @@
                 media.fileUrl ||
                 media.fileURL ||
                 media.src ||
-                media.path ||
                 ""
-            ).trim();
-
+            );
         }
 
 
-
-        /* =========================================
+        /* =================================
            DISPLAY EVENT
-        ========================================= */
+        ================================= */
 
         function displayEvent(data) {
 
@@ -841,272 +735,140 @@
                 data.title ||
                 "Untitled Event";
 
-
             eventDate.textContent =
-                "📅 " +
-                formatDate(data.date);
-
+                "📅 " + formatDate(data.date);
 
             eventDescription.textContent =
                 data.description ||
                 "No description available.";
-
         }
 
 
-
-        /* =========================================
+        /* =================================
            DISPLAY PHOTOS
-           
-           IMPORTANT:
-           Only the image is added.
-           Filename is NOT displayed.
-        ========================================= */
+        ================================= */
 
         function displayPhotos(photos) {
 
             photoGallery.innerHTML = "";
-
 
             if (
                 !Array.isArray(photos) ||
                 photos.length === 0
             ) {
 
-                photoEmpty.style.display =
-                    "block";
-
+                photoEmpty.style.display = "block";
                 return;
-
             }
 
+            photoEmpty.style.display = "none";
 
-            photoEmpty.style.display =
-                "none";
+            photos.forEach(function (photo) {
 
+                const url = getMediaUrl(photo);
 
-            let displayedPhotos = 0;
-
-
-            photos.forEach(
-                function(photo) {
-
-                    const url =
-                        getMediaUrl(photo);
-
-
-                    if (!url) {
-                        return;
-                    }
-
-
-                    /*
-                     * Create card
-                     */
-
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
-
-                    card.className =
-                        "media-card";
-
-
-                    /*
-                     * Create image
-                     */
-
-                    const image =
-                        document.createElement(
-                            "img"
-                        );
-
-
-                    image.src =
-                        url;
-
-
-                    /*
-                     * Do NOT use filename
-                     * as alt text.
-                     */
-
-                    image.alt =
-                        "Event photo";
-
-
-                    image.loading =
-                        "lazy";
-
-
-                    /*
-                     * Open image in lightbox
-                     */
-
-                    image.addEventListener(
-                        "click",
-                        function() {
-
-                            lightboxImage.src =
-                                url;
-
-                            lightbox.classList.add(
-                                "active"
-                            );
-
-                        }
-                    );
-
-
-                    /*
-                     * If image cannot load,
-                     * remove broken card.
-                     */
-
-                    image.addEventListener(
-                        "error",
-                        function() {
-
-                            console.error(
-                                "PHOTO LOAD FAILED:",
-                                url
-                            );
-
-                            card.remove();
-
-                        }
-                    );
-
-
-                    /*
-                     * ONLY IMAGE INSIDE CARD
-                     */
-
-                    card.appendChild(
-                        image
-                    );
-
-
-                    photoGallery.appendChild(
-                        card
-                    );
-
-
-                    displayedPhotos++;
-
+                if (!url) {
+                    return;
                 }
-            );
 
+                const card =
+                    document.createElement("div");
 
-            /*
-             * If API returned photo records
-             * but no usable URLs.
-             */
+                card.className = "media-card";
 
-            if (displayedPhotos === 0) {
+                const image =
+                    document.createElement("img");
 
-                photoEmpty.style.display =
-                    "block";
+                image.src = url;
+                image.alt = "Event photo";
+                image.loading = "lazy";
 
-                photoEmpty.textContent =
-                    "Photo could not be displayed.";
+                /* Open image */
 
-            }
+                image.addEventListener(
+                    "click",
+                    function () {
 
+                        lightboxImage.src = url;
+
+                        lightbox.classList.add(
+                            "active"
+                        );
+                    }
+                );
+
+                /* Image error */
+
+                image.addEventListener(
+                    "error",
+                    function () {
+
+                        console.error(
+                            "PHOTO LOAD FAILED:",
+                            url
+                        );
+
+                        card.remove();
+                    }
+                );
+
+                card.appendChild(image);
+
+                photoGallery.appendChild(card);
+            });
         }
 
 
-
-        /* =========================================
+        /* =================================
            DISPLAY VIDEOS
-        ========================================= */
+        ================================= */
 
         function displayVideos(videos) {
 
             videoGallery.innerHTML = "";
-
 
             if (
                 !Array.isArray(videos) ||
                 videos.length === 0
             ) {
 
-                videoEmpty.style.display =
-                    "block";
-
+                videoEmpty.style.display = "block";
                 return;
-
             }
 
+            videoEmpty.style.display = "none";
 
-            videoEmpty.style.display =
-                "none";
+            videos.forEach(function (video) {
 
+                const url = getMediaUrl(video);
 
-            videos.forEach(
-                function(video) {
-
-                    const url =
-                        getMediaUrl(video);
-
-
-                    if (!url) {
-                        return;
-                    }
-
-
-                    const card =
-                        document.createElement(
-                            "div"
-                        );
-
-                    card.className =
-                        "media-card";
-
-
-                    const videoElement =
-                        document.createElement(
-                            "video"
-                        );
-
-
-                    videoElement.src =
-                        url;
-
-                    videoElement.controls =
-                        true;
-
-                    videoElement.preload =
-                        "metadata";
-
-                    videoElement.playsInline =
-                        true;
-
-
-                    card.appendChild(
-                        videoElement
-                    );
-
-
-                    /*
-                     * No video filename displayed.
-                     */
-
-                    videoGallery.appendChild(
-                        card
-                    );
-
+                if (!url) {
+                    return;
                 }
-            );
 
+                const card =
+                    document.createElement("div");
+
+                card.className = "media-card";
+
+                const videoElement =
+                    document.createElement("video");
+
+                videoElement.src = url;
+                videoElement.controls = true;
+                videoElement.preload = "metadata";
+                videoElement.playsInline = true;
+
+                card.appendChild(videoElement);
+
+                videoGallery.appendChild(card);
+            });
         }
 
 
-
-        /* =========================================
+        /* =================================
            LOAD EVENT MEDIA
-        ========================================= */
+        ================================= */
 
         async function loadEventMedia() {
 
@@ -1115,9 +877,7 @@
                 throw new Error(
                     "Event ID is missing."
                 );
-
             }
-
 
             mediaStatus.textContent =
                 "Loading photos and videos...";
@@ -1125,20 +885,15 @@
             mediaStatus.className =
                 "status-message";
 
-
             const apiUrl =
                 API_BASE_URL +
                 "/api/upload/event/" +
-                encodeURIComponent(
-                    eventId
-                );
-
+                encodeURIComponent(eventId);
 
             console.log(
                 "Loading event media:",
                 apiUrl
             );
-
 
             const response =
                 await fetch(
@@ -1152,26 +907,21 @@
                     }
                 );
 
-
             if (!response.ok) {
 
                 throw new Error(
                     "Media API returned HTTP " +
                     response.status
                 );
-
             }
-
 
             const mediaData =
                 await response.json();
-
 
             console.log(
                 "EVENT MEDIA RESPONSE:",
                 mediaData
             );
-
 
             if (
                 !mediaData ||
@@ -1184,45 +934,35 @@
                         ? mediaData.message
                         : "Invalid media response."
                 );
-
             }
 
-
             const photos =
-                Array.isArray(
-                    mediaData.photos
-                )
+                Array.isArray(mediaData.photos)
                     ? mediaData.photos
                     : [];
 
-
             const videos =
-                Array.isArray(
-                    mediaData.videos
-                )
+                Array.isArray(mediaData.videos)
                     ? mediaData.videos
                     : [];
 
 
-            photoCount.textContent =
-                "📷 Photos: " +
-                photos.length;
+            /* Counts */
 
+            photoCount.textContent =
+                "📷 Photos: " + photos.length;
 
             videoCount.textContent =
-                "🎥 Videos: " +
-                videos.length;
+                "🎥 Videos: " + videos.length;
 
 
-            displayPhotos(
-                photos
-            );
+            /* Display */
+
+            displayPhotos(photos);
+            displayVideos(videos);
 
 
-            displayVideos(
-                videos
-            );
-
+            /* Status */
 
             if (
                 photos.length === 0 &&
@@ -1235,25 +975,19 @@
                 mediaStatus.className =
                     "status-message";
 
-            }
+            } else {
 
-            else {
-
-                mediaStatus.textContent =
-                    "";
+                mediaStatus.textContent = "";
 
                 mediaStatus.className =
                     "status-message";
-
             }
-
         }
 
 
-
-        /* =========================================
-           LOAD EVENT
-        ========================================= */
+        /* =================================
+           LOAD EVENT FROM FIREBASE
+        ================================= */
 
         async function loadEvent() {
 
@@ -1264,9 +998,7 @@
                 );
 
                 return;
-
             }
-
 
             try {
 
@@ -1276,7 +1008,6 @@
                         .doc(eventId)
                         .get();
 
-
                 if (!eventDoc.exists) {
 
                     showError(
@@ -1284,38 +1015,31 @@
                     );
 
                     return;
-
                 }
-
 
                 const data =
                     eventDoc.data();
-
 
                 console.log(
                     "EVENT DATA:",
                     data
                 );
 
+                displayEvent(data);
 
-                displayEvent(
-                    data
-                );
 
+                /* Load media */
 
                 try {
 
                     await loadEventMedia();
 
-                }
-
-                catch (mediaError) {
+                } catch (mediaError) {
 
                     console.error(
                         "MEDIA ERROR:",
                         mediaError
                     );
-
 
                     photoCount.textContent =
                         "📷 Photos: 0";
@@ -1323,151 +1047,107 @@
                     videoCount.textContent =
                         "🎥 Videos: 0";
 
-
                     displayPhotos([]);
-
                     displayVideos([]);
-
 
                     mediaStatus.textContent =
                         "Could not load event photos and videos.";
 
                     mediaStatus.className =
                         "status-message error";
-
                 }
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 console.error(
                     "EVENT LOADING ERROR:",
                     error
                 );
 
-
                 showError(
                     "Could not load the event."
                 );
-
             }
-
         }
 
 
-
-        /* =========================================
+        /* =================================
            LIGHTBOX CLOSE
-        ========================================= */
+        ================================= */
 
-        lightboxClose.onclick =
-            function() {
+        function closeLightbox() {
 
-                closeLightbox();
+            lightbox.classList.remove("active");
 
-            };
+            lightboxImage.src = "";
+        }
 
 
-        lightbox.onclick =
-            function(event) {
+        lightboxClose.addEventListener(
+            "click",
+            closeLightbox
+        );
 
-                if (
-                    event.target ===
-                    lightbox
-                ) {
 
+        lightbox.addEventListener(
+            "click",
+            function (event) {
+
+                if (event.target === lightbox) {
                     closeLightbox();
-
                 }
-
-            };
-
-
-        document.addEventListener(
-            "keydown",
-            function(event) {
-
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    closeLightbox();
-
-                }
-
             }
         );
 
 
-        function closeLightbox() {
+        document.addEventListener(
+            "keydown",
+            function (event) {
 
-            lightbox.classList.remove(
-                "active"
-            );
-
-            lightboxImage.src =
-                "";
-
-        }
-
+                if (event.key === "Escape") {
+                    closeLightbox();
+                }
+            }
+        );
 
 
-        /* =========================================
+        /* =================================
            ERROR PAGE
-        ========================================= */
+        ================================= */
 
         function showError(message) {
 
             eventContainer.innerHTML = "";
 
-
             const wrapper =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
-            wrapper.className =
-                "not-found";
+            wrapper.className = "not-found";
 
 
             const icon =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
-            icon.style.fontSize =
-                "50px";
-
-            icon.style.marginBottom =
-                "15px";
-
-            icon.textContent =
-                "⚠️";
+            icon.style.fontSize = "50px";
+            icon.style.marginBottom = "15px";
+            icon.textContent = "⚠️";
 
 
             const heading =
-                document.createElement(
-                    "h1"
-                );
+                document.createElement("h1");
 
-            heading.textContent =
-                message;
+            heading.textContent = message;
 
 
             const paragraph =
-                document.createElement(
-                    "p"
-                );
+                document.createElement("p");
 
             paragraph.textContent =
                 "The event may have been removed or the link may be incorrect.";
 
 
             const link =
-                document.createElement(
-                    "a"
-                );
+                document.createElement("a");
 
             link.href =
                 "../index.html#events";
@@ -1480,25 +1160,21 @@
 
 
             wrapper.appendChild(icon);
-
             wrapper.appendChild(heading);
-
             wrapper.appendChild(paragraph);
-
             wrapper.appendChild(link);
 
-
-            eventContainer.appendChild(
-                wrapper
-            );
-
+            eventContainer.appendChild(wrapper);
         }
 
 
-
-        /* =========================================
+        /* =================================
            START
-        ========================================= */
+        ================================= */
+
+        console.log(
+            "================================"
+        );
 
         console.log(
             "ADTU BODO UNION EVENT PAGE"
@@ -1509,11 +1185,19 @@
             eventId
         );
 
+        console.log(
+            "Backend:",
+            API_BASE_URL
+        );
+
+        console.log(
+            "================================"
+        );
+
 
         loadEvent();
 
     </script>
 
 </body>
-
 </html>
