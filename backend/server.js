@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const cloudinary = require("./cloudinary");
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
