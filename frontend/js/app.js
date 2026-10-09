@@ -1,4 +1,4 @@
-```javascript
+
 /*
     ADTU BODO UNION
     EVENT & PHOTO HUB
@@ -565,4 +565,4 @@ updateFilterButtons();
 updateSelectedDate();
 renderCalendar();
 loadEvents();
-```
+
