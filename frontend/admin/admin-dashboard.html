@@ -5,19 +5,14 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ADTU Bodo Union | Admin Dashboard</title>
 
     <!-- Main CSS -->
-    <link
-        rel="stylesheet"
-        href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <style>
-
         /* ==================================================
            ADMIN PAGE
         ================================================== */
@@ -463,7 +458,6 @@
             }
 
         }
-
     </style>
 
 </head>
@@ -472,819 +466,771 @@
 <body>
 
 
-<div class="admin-page">
+    <div class="admin-page">
 
 
-    <!-- ==================================================
+        <!-- ==================================================
          ADMIN HEADER
     ================================================== -->
 
-    <header class="admin-header">
+        <header class="admin-header">
 
-        <div class="admin-header-container">
+            <div class="admin-header-container">
 
-            <div>
+                <div>
 
-                <h1>
-                    Admin Dashboard
-                </h1>
+                    <h1>
+                        Admin Dashboard
+                    </h1>
 
-                <p>
-                    Manage events, photos and videos.
+                    <p>
+                        Manage events, photos and videos.
+                    </p>
+
+                </div>
+
+
+                <div class="admin-user-area">
+
+                    <span id="adminUser">
+                        Checking admin...
+                    </span>
+
+                    <button id="logoutButton" type="button">
+
+                        Logout
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ==================================================
+         MAIN CONTENT
+    ================================================== -->
+
+        <main class="admin-container">
+
+
+            <!-- ==================================================
+             ADD / EDIT EVENT
+        ================================================== -->
+
+            <section class="admin-card">
+
+                <h2 id="eventFormTitle">
+                    Add Event
+                </h2>
+
+
+                <form id="eventForm">
+
+
+                    <!-- Event Name -->
+
+                    <div class="form-group">
+
+                        <label for="eventName">
+                            Event Name
+                        </label>
+
+                        <input type="text" id="eventName" placeholder="Enter event name" required>
+
+                    </div>
+
+
+                    <!-- Event Date -->
+
+                    <div class="form-group">
+
+                        <label for="eventDate">
+                            Event Date
+                        </label>
+
+                        <input type="date" id="eventDate" required>
+
+                    </div>
+
+
+                    <!-- Event Description -->
+
+                    <div class="form-group">
+
+                        <label for="eventDescription">
+                            Event Description
+                        </label>
+
+                        <textarea id="eventDescription" placeholder="Enter event description" required></textarea>
+
+                    </div>
+
+
+                    <!-- Buttons -->
+
+                    <div class="button-group">
+
+                        <button type="submit" id="saveEventButton" class="btn btn-primary">
+
+                            Add Event
+
+                        </button>
+
+
+                        <button type="button" id="clearFormButton" class="btn btn-secondary">
+
+                            Clear
+
+                        </button>
+
+                    </div>
+
+
+                    <div id="formMessage" class="message">
+                    </div>
+
+
+                </form>
+
+            </section>
+
+
+
+            <!-- ==================================================
+             EVENTS
+        ================================================== -->
+
+            <section class="admin-card">
+
+                <h2>
+                    Events
+                </h2>
+
+
+                <div id="eventList" class="event-list">
+
+                    <div class="loading">
+                        Loading events...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+             EVENT MEDIA UPLOAD
+        ================================================== -->
+
+            <section class="admin-card">
+
+                <h2>
+                    📁 Event Photos &amp; Videos
+                </h2>
+
+                <p class="upload-description">
+                    Select photos or videos directly from your
+                    computer or mobile device.
                 </p>
 
-            </div>
+
+                <!-- Select Event -->
+
+                <div class="form-group">
+
+                    <label for="uploadEvent">
+                        Select Event
+                    </label>
+
+                    <select id="uploadEvent">
+
+                        <option value="">
+                            Select an event
+                        </option>
+
+                    </select>
+
+                </div>
 
 
-            <div class="admin-user-area">
 
-                <span id="adminUser">
-                    Checking admin...
-                </span>
+                <!-- ==================================================
+                 PHOTOS
+            ================================================== -->
 
-                <button
-                    id="logoutButton"
-                    type="button">
+                <div class="upload-box">
 
-                    Logout
+                    <h3>
+                        📷 Event Photos
+                    </h3>
 
-                </button>
+                    <p>
+                        Select photos from your device.
+                    </p>
 
-            </div>
 
-        </div>
+                    <input type="file" id="photoInput" class="file-input" accept="image/*" multiple>
 
-    </header>
+
+                    <br>
+                    <br>
+
+
+                    <button type="button" id="uploadPhotosButton" class="btn btn-success">
+
+                        📤 Upload Photos
+
+                    </button>
+
+
+                    <div id="photoStatus" class="upload-status">
+
+                        No photos selected.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==================================================
+                 VIDEOS
+            ================================================== -->
+
+                <div class="upload-box">
+
+                    <h3>
+                        🎥 Event Videos
+                    </h3>
+
+                    <p>
+                        Select videos from your device.
+                    </p>
+
+
+                    <input type="file" id="videoInput" class="file-input" accept="video/*" multiple>
+
+
+                    <br>
+                    <br>
+
+
+                    <button type="button" id="uploadVideosButton" class="btn btn-success">
+
+                        📤 Upload Videos
+
+                    </button>
+
+
+                    <div id="videoStatus" class="upload-status">
+
+                        No videos selected.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==================================================
+                 MEDIA COUNTS
+            ================================================== -->
+
+                <div class="media-counts">
+
+
+                    <div class="count-box">
+
+                        📷 Photos
+
+                        <strong id="photoCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="count-box">
+
+                        🎥 Videos
+
+                        <strong id="videoCount">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
 
 
 
     <!-- ==================================================
-         MAIN CONTENT
-    ================================================== -->
-
-    <main class="admin-container">
-
-
-        <!-- ==================================================
-             ADD / EDIT EVENT
-        ================================================== -->
-
-        <section class="admin-card">
-
-            <h2 id="eventFormTitle">
-                Add Event
-            </h2>
-
-
-            <form id="eventForm">
-
-
-                <!-- Event Name -->
-
-                <div class="form-group">
-
-                    <label for="eventName">
-                        Event Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="eventName"
-                        placeholder="Enter event name"
-                        required>
-
-                </div>
-
-
-                <!-- Event Date -->
-
-                <div class="form-group">
-
-                    <label for="eventDate">
-                        Event Date
-                    </label>
-
-                    <input
-                        type="date"
-                        id="eventDate"
-                        required>
-
-                </div>
-
-
-                <!-- Event Description -->
-
-                <div class="form-group">
-
-                    <label for="eventDescription">
-                        Event Description
-                    </label>
-
-                    <textarea
-                        id="eventDescription"
-                        placeholder="Enter event description"
-                        required></textarea>
-
-                </div>
-
-
-                <!-- Buttons -->
-
-                <div class="button-group">
-
-                    <button
-                        type="submit"
-                        id="saveEventButton"
-                        class="btn btn-primary">
-
-                        Add Event
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="clearFormButton"
-                        class="btn btn-secondary">
-
-                        Clear
-
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="formMessage"
-                    class="message">
-                </div>
-
-
-            </form>
-
-        </section>
-
-
-
-        <!-- ==================================================
-             EVENTS
-        ================================================== -->
-
-        <section class="admin-card">
-
-            <h2>
-                Events
-            </h2>
-
-
-            <div
-                id="eventList"
-                class="event-list">
-
-                <div class="loading">
-                    Loading events...
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- ==================================================
-             EVENT MEDIA UPLOAD
-        ================================================== -->
-
-        <section class="admin-card">
-
-            <h2>
-                📁 Event Photos &amp; Videos
-            </h2>
-
-            <p class="upload-description">
-                Select photos or videos directly from your
-                computer or mobile device.
-            </p>
-
-
-            <!-- Select Event -->
-
-            <div class="form-group">
-
-                <label for="uploadEvent">
-                    Select Event
-                </label>
-
-                <select id="uploadEvent">
-
-                    <option value="">
-                        Select an event
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <!-- ==================================================
-                 PHOTOS
-            ================================================== -->
-
-            <div class="upload-box">
-
-                <h3>
-                    📷 Event Photos
-                </h3>
-
-                <p>
-                    Select photos from your device.
-                </p>
-
-
-                <input
-                    type="file"
-                    id="photoInput"
-                    class="file-input"
-                    accept="image/*"
-                    multiple>
-
-
-                <br>
-                <br>
-
-
-                <button
-                    type="button"
-                    id="uploadPhotosButton"
-                    class="btn btn-success">
-
-                    📤 Upload Photos
-
-                </button>
-
-
-                <div
-                    id="photoStatus"
-                    class="upload-status">
-
-                    No photos selected.
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ==================================================
-                 VIDEOS
-            ================================================== -->
-
-            <div class="upload-box">
-
-                <h3>
-                    🎥 Event Videos
-                </h3>
-
-                <p>
-                    Select videos from your device.
-                </p>
-
-
-                <input
-                    type="file"
-                    id="videoInput"
-                    class="file-input"
-                    accept="video/*"
-                    multiple>
-
-
-                <br>
-                <br>
-
-
-                <button
-                    type="button"
-                    id="uploadVideosButton"
-                    class="btn btn-success">
-
-                    📤 Upload Videos
-
-                </button>
-
-
-                <div
-                    id="videoStatus"
-                    class="upload-status">
-
-                    No videos selected.
-
-                </div>
-
-            </div>
-
-
-
-            <!-- ==================================================
-                 MEDIA COUNTS
-            ================================================== -->
-
-            <div class="media-counts">
-
-
-                <div class="count-box">
-
-                    📷 Photos
-
-                    <strong id="photoCount">
-                        0
-                    </strong>
-
-                </div>
-
-
-                <div class="count-box">
-
-                    🎥 Videos
-
-                    <strong id="videoCount">
-                        0
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-    </main>
-
-</div>
-
-
-
-<!-- ==================================================
      FIREBASE
 ================================================== -->
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 
-<!-- Your Firebase configuration -->
-<script src="../js/firebase.js"></script>
+    <!-- Your Firebase configuration -->
+    <script src="../js/firebase.js"></script>
 
 
 
-<script>
+    <script>
 
-    /* ==================================================
-       CONFIGURATION
-    ================================================== */
+        /* ==================================================
+           CONFIGURATION
+        ================================================== */
 
-    const EVENTS_COLLECTION = "events";
+        const EVENTS_API = "/api/events";
 
-    const ADMINS_COLLECTION = "admins";
+        const API_URL = "";
 
-    const API_URL = "https://adtu-bodo-union.onrender.com";
+        const ADMINS_COLLECTION = "admins";
 
-    /* ==================================================
-       DOM ELEMENTS
-    ================================================== */
 
-    const adminUser =
-        document.getElementById("adminUser");
+        /* ==================================================
+           DOM ELEMENTS
+        ================================================== */
 
-    const logoutButton =
-        document.getElementById("logoutButton");
+        const adminUser =
+            document.getElementById("adminUser");
 
-    const eventForm =
-        document.getElementById("eventForm");
+        const logoutButton =
+            document.getElementById("logoutButton");
 
-    const eventFormTitle =
-        document.getElementById("eventFormTitle");
+        const eventForm =
+            document.getElementById("eventForm");
 
-    const eventName =
-        document.getElementById("eventName");
+        const eventFormTitle =
+            document.getElementById("eventFormTitle");
 
-    const eventDate =
-        document.getElementById("eventDate");
+        const eventName =
+            document.getElementById("eventName");
 
-    const eventDescription =
-        document.getElementById("eventDescription");
+        const eventDate =
+            document.getElementById("eventDate");
 
-    const saveEventButton =
-        document.getElementById("saveEventButton");
+        const eventDescription =
+            document.getElementById("eventDescription");
 
-    const clearFormButton =
-        document.getElementById("clearFormButton");
+        const saveEventButton =
+            document.getElementById("saveEventButton");
 
-    const formMessage =
-        document.getElementById("formMessage");
+        const clearFormButton =
+            document.getElementById("clearFormButton");
 
-    const eventList =
-        document.getElementById("eventList");
+        const formMessage =
+            document.getElementById("formMessage");
 
-    const uploadEvent =
-        document.getElementById("uploadEvent");
+        const eventList =
+            document.getElementById("eventList");
 
-    const photoInput =
-        document.getElementById("photoInput");
+        const uploadEvent =
+            document.getElementById("uploadEvent");
 
-    const videoInput =
-        document.getElementById("videoInput");
+        const photoInput =
+            document.getElementById("photoInput");
 
-    const uploadPhotosButton =
-        document.getElementById("uploadPhotosButton");
+        const videoInput =
+            document.getElementById("videoInput");
 
-    const uploadVideosButton =
-        document.getElementById("uploadVideosButton");
+        const uploadPhotosButton =
+            document.getElementById("uploadPhotosButton");
 
-    const photoStatus =
-        document.getElementById("photoStatus");
+        const uploadVideosButton =
+            document.getElementById("uploadVideosButton");
 
-    const videoStatus =
-        document.getElementById("videoStatus");
+        const photoStatus =
+            document.getElementById("photoStatus");
 
-    const photoCount =
-        document.getElementById("photoCount");
+        const videoStatus =
+            document.getElementById("videoStatus");
 
-    const videoCount =
-        document.getElementById("videoCount");
+        const photoCount =
+            document.getElementById("photoCount");
 
+        const videoCount =
+            document.getElementById("videoCount");
 
-    /* ==================================================
-       VARIABLES
-    ================================================== */
 
-    let editingEventId = null;
+        /* ==================================================
+           VARIABLES
+        ================================================== */
 
+        let editingEventId = null;
 
-    /* ==================================================
-       ESCAPE HTML
-    ================================================== */
 
-    function escapeHtml(value) {
+        /* ==================================================
+           ESCAPE HTML
+        ================================================== */
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                return "";
+            }
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
 
-        if (value === null || value === undefined) {
-            return "";
-        }
-
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    /* ==================================================
-       SHOW MESSAGE
-    ================================================== */
-
-    function showMessage(
-        element,
-        message,
-        type
-    ) {
-
-        element.textContent = message;
-
-        element.className =
-            "message " + type;
-
-    }
-
-
-    /* ==================================================
-       CLEAR MESSAGE
-    ================================================== */
-
-    function clearMessage(element) {
-
-        element.textContent = "";
-
-        element.className = "message";
-
-    }
-
-
-    /* ==================================================
-       RESET EVENT FORM
-    ================================================== */
-
-    function resetEventForm() {
-
-        editingEventId = null;
-
-        eventForm.reset();
-
-        eventFormTitle.textContent =
-            "Add Event";
-
-        saveEventButton.textContent =
-            "Add Event";
-
-        clearMessage(formMessage);
-
-    }
-
-
-    /* ==================================================
-       CHECK ADMIN
-    ================================================== */
-
-    async function checkAdmin(user) {
-
-        if (!user) {
-
-            window.location.href =
-                "/admin/login";
-
-            return false;
         }
 
 
-        try {
+        /* ==================================================
+           SHOW MESSAGE
+        ================================================== */
 
-            const adminDocument =
-                await db
-                    .collection(ADMINS_COLLECTION)
-                    .doc(user.uid)
-                    .get();
+        function showMessage(
+            element,
+            message,
+            type
+        ) {
+
+            element.textContent =
+                message;
+
+            element.className =
+                "message " + type;
+
+        }
 
 
-            if (!adminDocument.exists) {
+        /* ==================================================
+           CLEAR MESSAGE
+        ================================================== */
 
-                alert(
-                    "You are not authorized to access the admin dashboard."
-                );
+        function clearMessage(element) {
 
-                await auth.signOut();
+            element.textContent =
+                "";
 
-                    window.location.href =
-                        "/admin/login";
+            element.className =
+                "message";
+
+        }
+
+
+        /* ==================================================
+           RESET EVENT FORM
+        ================================================== */
+
+        function resetEventForm() {
+
+            editingEventId =
+                null;
+
+            eventForm.reset();
+
+            eventFormTitle.textContent =
+                "Add Event";
+
+            saveEventButton.textContent =
+                "Add Event";
+
+            clearMessage(formMessage);
+
+        }
+
+
+        /* ==================================================
+           CHECK ADMIN
+        ================================================== */
+
+        async function checkAdmin(user) {
+
+            if (!user) {
+
+                window.location.href =
+                    "/admin/login";
 
                 return false;
             }
 
 
-            const adminData =
-                adminDocument.data();
-
-
-            /*
-             * If role exists, make sure it is admin.
-             * If role does not exist, the admin document
-             * itself is enough.
-             */
-
-            if (
-                adminData.role &&
-                adminData.role !== "admin"
-            ) {
-
-                alert(
-                    "You are not authorized to access the admin dashboard."
-                );
-
-                await auth.signOut();
-
-                window.location.href = 
-                    "/admin/login";
-            }
-
-
-            adminUser.textContent =
-                user.email || "Admin";
-
-            return true;
-
-        }
-        catch (error) {
-
-            console.error(
-                "Admin verification error:",
-                error
-            );
-
-            adminUser.textContent =
-                "Admin verification failed.";
-
-            alert(
-                "Unable to verify admin account. Check Firestore rules and admin document."
-            );
-
-            return false;
-        }
-
-    }
-
-
-    /* ==================================================
-       AUTH STATE
-    ================================================== */
-
-    auth.onAuthStateChanged(
-        async function (user) {
-
-            const isAdmin =
-                await checkAdmin(user);
-
-            if (!isAdmin) {
-                return;
-            }
-
-            await loadEvents();
-
-        }
-    );
-
-
-    /* ==================================================
-       LOGOUT
-    ================================================== */
-    logoutButton.addEventListener(
-        "click",
-        async function () {
-
             try {
 
-                await auth.signOut();
+                const adminDocument =
+                    await db
+                        .collection(ADMINS_COLLECTION)
+                        .doc(user.uid)
+                        .get();
 
-                // Redirect to the correct admin login route
-                window.location.replace("/admin/login");
+
+                if (!adminDocument.exists) {
+
+                    alert(
+                        "You are not authorized to access the admin dashboard."
+                    );
+
+                    await auth.signOut();
+
+                    window.location.href =
+                        "/admin/login";
+
+                    return false;
+                }
+
+
+                const adminData =
+                    adminDocument.data();
+
+
+                if (
+                    adminData.role &&
+                    adminData.role !== "admin"
+                ) {
+
+                    alert(
+                        "You are not authorized to access the admin dashboard."
+                    );
+
+                    await auth.signOut();
+
+                    window.location.href =
+                        "/admin/login";
+
+                    return false;
+                }
+
+
+                adminUser.textContent =
+                    user.email || "Admin";
+
+                return true;
 
             }
             catch (error) {
 
                 console.error(
-                    "Logout error:",
+                    "Admin verification error:",
                     error
                 );
 
+                adminUser.textContent =
+                    "Admin verification failed.";
+
                 alert(
-                    "Unable to logout."
+                    "Unable to verify admin account."
                 );
 
+                return false;
             }
 
         }
-    );
 
 
-    /* ==================================================
-       LOAD EVENTS
-    ================================================== */
+        /* ==================================================
+           AUTH STATE
+        ================================================== */
 
-    async function loadEvents() {
+        auth.onAuthStateChanged(
+            async function (user) {
 
-        eventList.innerHTML =
-            `<div class="loading">
+                const isAdmin =
+                    await checkAdmin(user);
+
+                if (!isAdmin) {
+                    return;
+                }
+
+                await loadEvents();
+
+            }
+        );
+
+
+        /* ==================================================
+           LOGOUT
+        ================================================== */
+
+        logoutButton.addEventListener(
+            "click",
+            async function () {
+
+                try {
+
+                    await auth.signOut();
+
+                    window.location.replace(
+                        "/admin/login"
+                    );
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
+                    alert(
+                        "Unable to logout."
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* ==================================================
+           LOAD EVENTS FROM MONGODB
+        ================================================== */
+
+        async function loadEvents() {
+
+            eventList.innerHTML =
+                `
+            <div class="loading">
                 Loading events...
-            </div>`;
-
-
-        try {
-
-            let snapshot;
+            </div>
+            `;
 
 
             try {
 
-                snapshot =
-                    await db
-                        .collection(EVENTS_COLLECTION)
-                        .orderBy(
-                            "date",
-                            "desc"
-                        )
-                        .get();
+                const response =
+                    await fetch(EVENTS_API);
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.message ||
+                        "Failed to load events."
+                    );
+
+                }
+
+
+                const events =
+                    result.data || [];
+
+
+                if (!events.length) {
+
+                    eventList.innerHTML =
+                        `
+                    <div class="loading">
+                        No events found.
+                    </div>
+                    `;
+
+                    populateEventDropdown([]);
+
+                    return;
+                }
+
+
+                /*
+                 * Sort newest event first.
+                 */
+
+                events.sort(
+                    function (a, b) {
+
+                        return String(
+                            b.date || ""
+                        ).localeCompare(
+                            String(a.date || "")
+                        );
+
+                    }
+                );
+
+
+                displayEvents(events);
+
+                populateEventDropdown(events);
 
             }
             catch (error) {
 
-                console.warn(
-                    "Ordered query failed. Loading without order.",
+                console.error(
+                    "Error loading events:",
                     error
                 );
 
-                snapshot =
-                    await db
-                        .collection(EVENTS_COLLECTION)
-                        .get();
-
-            }
-
-
-            if (snapshot.empty) {
-
                 eventList.innerHTML =
-                    `<div class="loading">
-                        No events found.
-                    </div>`;
-
-                populateEventDropdown([]);
-
-                return;
-            }
-
-
-            const events = [];
-
-
-            snapshot.forEach(
-                function (document) {
-
-                    events.push({
-
-                        id: document.id,
-
-                        ...document.data()
-
-                    });
-
-                }
-            );
-
-
-            /*
-             * Sort events by date.
-             */
-
-            events.sort(
-                function (a, b) {
-
-                    return String(
-                        b.date || ""
-                    ).localeCompare(
-                        String(a.date || "")
-                    );
-
-                }
-            );
-
-
-            displayEvents(events);
-
-            populateEventDropdown(events);
-
-        }
-        catch (error) {
-
-            console.error(
-                "Error loading events:",
-                error
-            );
-
-            eventList.innerHTML =
-                `<div class="message error">
+                    `
+                <div class="message error">
                     Failed to load events.
                     <br>
                     ${escapeHtml(error.message)}
-                </div>`;
+                </div>
+                `;
+
+            }
 
         }
 
-    }
+
+        /* ==================================================
+           DISPLAY EVENTS
+        ================================================== */
+
+        function displayEvents(events) {
+
+            eventList.innerHTML =
+                "";
 
 
-    /* ==================================================
-       DISPLAY EVENTS
-    ================================================== */
+            events.forEach(
+                function (event) {
 
-    function displayEvents(events) {
-
-        eventList.innerHTML = "";
+                    const eventItem =
+                        document.createElement("div");
 
 
-        events.forEach(
-            function (event) {
-
-                const eventItem =
-                    document.createElement("div");
-
-                eventItem.className =
-                    "event-item";
+                    eventItem.className =
+                        "event-item";
 
 
-                eventItem.innerHTML = `
+                    eventItem.innerHTML =
+                        `
 
                     <h3>
-                        ${escapeHtml(event.name)}
+                        ${escapeHtml(
+                            event.title
+                        )}
                     </h3>
 
                     <div class="event-date">
-                        ${escapeHtml(event.date || "No date")}
+                        ${escapeHtml(
+                            event.date ||
+                            "No date"
+                        )}
                     </div>
 
                     <div class="event-description">
@@ -1298,23 +1244,25 @@
 
                         <button
                             class="view-btn"
-                            onclick="viewEvent('${event.id}')">
+                            onclick="viewEvent('${event._id}')">
 
                             View
 
                         </button>
 
+
                         <button
                             class="edit-btn"
-                            onclick="editEvent('${event.id}')">
+                            onclick="editEvent('${event._id}')">
 
                             Edit
 
                         </button>
 
+
                         <button
                             class="delete-btn"
-                            onclick="deleteEvent('${event.id}')">
+                            onclick="deleteEvent('${event._id}')">
 
                             Delete
 
@@ -1322,374 +1270,846 @@
 
                     </div>
 
-                `;
+                    `;
 
 
-                eventList.appendChild(
-                    eventItem
-                );
+                    eventList.appendChild(
+                        eventItem
+                    );
 
-            }
-        );
+                }
+            );
 
-    }
+        }
 
 
-    /* ==================================================
-       POPULATE EVENT DROPDOWN
-    ================================================== */
+        /* ==================================================
+           POPULATE EVENT DROPDOWN
+        ================================================== */
 
-    function populateEventDropdown(events) {
+        function populateEventDropdown(events) {
 
-        uploadEvent.innerHTML = `
-
+            uploadEvent.innerHTML =
+                `
             <option value="">
                 Select an event
             </option>
-
-        `;
-
-
-        events.forEach(
-            function (event) {
-
-                const option =
-                    document.createElement("option");
-
-                option.value =
-                    event.id;
-
-                option.textContent =
-                    event.name;
+            `;
 
 
-                uploadEvent.appendChild(
-                    option
-                );
+            events.forEach(
+                function (event) {
 
-            }
-        );
-
-    }
+                    const option =
+                        document.createElement("option");
 
 
-    /* ==================================================
-       ADD / EDIT EVENT
-    ================================================== */
-
-    eventForm.addEventListener(
-        "submit",
-        async function (event) {
-
-            event.preventDefault();
+                    option.value =
+                        event._id;
 
 
-            const name =
-                eventName.value.trim();
-
-            const date =
-                eventDate.value;
-
-            const description =
-                eventDescription.value.trim();
+                    option.textContent =
+                        event.title;
 
 
-            if (
-                !name ||
-                !date ||
-                !description
-            ) {
-
-                showMessage(
-                    formMessage,
-                    "Please fill in all fields.",
-                    "error"
-                );
-
-                return;
-            }
-
-
-            saveEventButton.disabled =
-                true;
-
-
-            try {
-
-                if (editingEventId) {
-
-                    await db
-                        .collection(EVENTS_COLLECTION)
-                        .doc(editingEventId)
-                        .update({
-
-                            name: name,
-
-                            date: date,
-
-                            description: description,
-
-                            updatedAt:
-                                firebase.firestore
-                                    .FieldValue
-                                    .serverTimestamp()
-
-                        });
-
-
-                    showMessage(
-                        formMessage,
-                        "Event updated successfully.",
-                        "success"
+                    uploadEvent.appendChild(
+                        option
                     );
 
                 }
-                else {
+            );
 
-                    await db
-                        .collection(EVENTS_COLLECTION)
-                        .add({
+        }
 
-                            name: name,
 
-                            date: date,
+        /* ==================================================
+           ADD / EDIT EVENT
+           MONGODB
+        ================================================== */
 
-                            description: description,
+        eventForm.addEventListener(
+            "submit",
+            async function (event) {
 
-                            createdAt:
-                                firebase.firestore
-                                    .FieldValue
-                                    .serverTimestamp(),
+                event.preventDefault();
 
-                            updatedAt:
-                                firebase.firestore
-                                    .FieldValue
-                                    .serverTimestamp()
 
-                        });
+                const title =
+                    eventName.value.trim();
 
+                const date =
+                    eventDate.value;
+
+                const description =
+                    eventDescription.value.trim();
+
+
+                if (
+                    !title ||
+                    !date ||
+                    !description
+                ) {
 
                     showMessage(
                         formMessage,
-                        "Event added successfully.",
-                        "success"
-                    );
-
-                }
-
-
-                resetEventForm();
-
-                await loadEvents();
-
-            }
-            catch (error) {
-
-                console.error(
-                    "Save event error:",
-                    error
-                );
-
-                showMessage(
-                    formMessage,
-                    "Failed to save event: " +
-                    error.message,
-                    "error"
-                );
-
-            }
-            finally {
-
-                saveEventButton.disabled =
-                    false;
-
-            }
-
-        }
-    );
-
-
-    /* ==================================================
-       CLEAR FORM
-    ================================================== */
-
-    clearFormButton.addEventListener(
-        "click",
-        function () {
-
-            resetEventForm();
-
-        }
-    );
-
-
-    /* ==================================================
-       EDIT EVENT
-    ================================================== */
-
-    window.editEvent =
-        async function (eventId) {
-
-            try {
-
-                const document =
-                    await db
-                        .collection(EVENTS_COLLECTION)
-                        .doc(eventId)
-                        .get();
-
-
-                if (!document.exists) {
-
-                    alert(
-                        "Event not found."
+                        "Please fill in all fields.",
+                        "error"
                     );
 
                     return;
                 }
 
 
-                const event =
-                    document.data();
+                saveEventButton.disabled =
+                    true;
 
-
-                editingEventId =
-                    eventId;
-
-
-                eventName.value =
-                    event.name || "";
-
-                eventDate.value =
-                    event.date || "";
-
-                eventDescription.value =
-                    event.description || "";
-
-
-                eventFormTitle.textContent =
-                    "Edit Event";
 
                 saveEventButton.textContent =
-                    "Update Event";
+                    editingEventId
+                        ? "Updating..."
+                        : "Adding...";
 
 
-                clearMessage(formMessage);
+                try {
+
+                    /*
+                     * ADD EVENT
+                     */
+
+                    if (!editingEventId) {
+
+                        const response =
+                            await fetch(
+                                EVENTS_API,
+                                {
+
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body: JSON.stringify({
+
+                                        title:
+                                            title,
+
+                                        description:
+                                            description,
+
+                                        date:
+                                            date,
+
+                                        location:
+                                            "ADTU Bodo Union",
+
+                                        image:
+                                            ""
+
+                                    })
+
+                                }
+                            );
 
 
-                window.scrollTo({
+                        const result =
+                            await response.json();
 
-                    top: 0,
 
-                    behavior: "smooth"
+                        if (!response.ok) {
 
-                });
+                            throw new Error(
+                                result.message ||
+                                "Failed to add event."
+                            );
+
+                        }
+
+
+                        showMessage(
+                            formMessage,
+                            "Event added successfully to MongoDB.",
+                            "success"
+                        );
+
+                    }
+
+
+                    /*
+                     * EDIT EVENT
+                     *
+                     * NOTE:
+                     * Your current backend does not yet
+                     * have PUT /api/events/:id.
+                     *
+                     * Therefore editing will be enabled
+                     * after the backend update route is added.
+                     */
+
+                    else {
+
+                        throw new Error(
+                            "Event editing is not available yet. The MongoDB update API needs to be added to the backend."
+                        );
+
+                    }
+
+
+                    eventForm.reset();
+
+                    editingEventId =
+                        null;
+
+                    eventFormTitle.textContent =
+                        "Add Event";
+
+                    saveEventButton.textContent =
+                        "Add Event";
+
+
+                    await loadEvents();
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Save event error:",
+                        error
+                    );
+
+                    showMessage(
+                        formMessage,
+                        error.message,
+                        "error"
+                    );
+
+                }
+                finally {
+
+                    saveEventButton.disabled =
+                        false;
+
+
+                    if (!editingEventId) {
+
+                        saveEventButton.textContent =
+                            "Add Event";
+
+                    }
+
+                }
 
             }
-            catch (error) {
+        );
 
-                console.error(
-                    "Edit event error:",
-                    error
-                );
 
-                alert(
-                    "Unable to load event."
-                );
+        /* ==================================================
+           CLEAR FORM
+        ================================================== */
+
+        clearFormButton.addEventListener(
+            "click",
+            function () {
+
+                resetEventForm();
 
             }
-
-        };
-
-
-    /* ==================================================
-       DELETE EVENT
-    ================================================== */
-
-    window.deleteEvent =
-        async function (eventId) {
-
-            const confirmed =
-                confirm(
-                    "Are you sure you want to delete this event?"
-                );
+        );
 
 
-            if (!confirmed) {
-                return;
-            }
+        /* ==================================================
+           EDIT EVENT
+        ================================================== */
+
+        window.editEvent =
+            async function (eventId) {
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${EVENTS_API}/${encodeURIComponent(eventId)}`
+                        );
 
 
-            try {
-
-                await db
-                    .collection(EVENTS_COLLECTION)
-                    .doc(eventId)
-                    .delete();
+                    const result =
+                        await response.json();
 
 
-                alert(
-                    "Event deleted successfully."
-                );
+                    if (!response.ok) {
+
+                        throw new Error(
+                            result.message ||
+                            "Event not found."
+                        );
+
+                    }
 
 
-                if (
-                    editingEventId ===
-                    eventId
-                ) {
+                    const event =
+                        result.data;
 
-                    resetEventForm();
+
+                    editingEventId =
+                        event._id;
+
+
+                    eventName.value =
+                        event.title || "";
+
+
+                    eventDate.value =
+                        event.date || "";
+
+
+                    eventDescription.value =
+                        event.description || "";
+
+
+                    eventFormTitle.textContent =
+                        "Edit Event";
+
+
+                    saveEventButton.textContent =
+                        "Update Event";
+
+
+                    clearMessage(
+                        formMessage
+                    );
+
+
+                    window.scrollTo({
+
+                        top: 0,
+
+                        behavior: "smooth"
+
+                    });
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Edit event error:",
+                        error
+                    );
+
+                    alert(
+                        "Unable to load event: " +
+                        error.message
+                    );
+
+                }
+
+            };
+
+
+        /* ==================================================
+           DELETE EVENT
+        ================================================== */
+
+        window.deleteEvent =
+            async function (eventId) {
+
+                const confirmed =
+                    confirm(
+                        "Are you sure you want to delete this event?"
+                    );
+
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            `${EVENTS_API}/${encodeURIComponent(eventId)}`,
+                            {
+                                method: "DELETE"
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            result.message ||
+                            "Failed to delete event."
+                        );
+
+                    }
+
+
+                    alert(
+                        "Event deleted successfully from MongoDB."
+                    );
+
+
+                    if (
+                        editingEventId ===
+                        eventId
+                    ) {
+
+                        resetEventForm();
+
+                    }
+
+
+                    await loadEvents();
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Delete event error:",
+                        error
+                    );
+
+                    alert(
+                        "Failed to delete event: " +
+                        error.message
+                    );
+
+                }
+
+            };
+
+
+        /* ==================================================
+           VIEW EVENT
+        ================================================== */
+
+        window.viewEvent =
+            function (eventId) {
+
+                window.location.href =
+                    "../events/event.html?id=" +
+                    encodeURIComponent(eventId);
+
+            };
+
+
+        /* ==================================================
+           SELECT EVENT
+        ================================================== */
+
+        uploadEvent.addEventListener(
+            "change",
+            async function () {
+
+                const eventId =
+                    uploadEvent.value;
+
+
+                if (!eventId) {
+
+                    photoCount.textContent =
+                        "0";
+
+                    videoCount.textContent =
+                        "0";
+
+                    return;
 
                 }
 
 
-                await loadEvents();
+                await loadMediaCounts(
+                    eventId
+                );
+
+            }
+        );
+
+
+        /* ==================================================
+           PHOTO FILE SELECTION
+        ================================================== */
+
+        photoInput.addEventListener(
+            "change",
+            function () {
+
+                const files =
+                    photoInput.files;
+
+
+                if (!files.length) {
+
+                    photoStatus.textContent =
+                        "No photos selected.";
+
+                    return;
+
+                }
+
+
+                photoStatus.textContent =
+                    files.length +
+                    " photo(s) selected.";
+
+            }
+        );
+
+
+        /* ==================================================
+           VIDEO FILE SELECTION
+        ================================================== */
+
+        videoInput.addEventListener(
+            "change",
+            function () {
+
+                const files =
+                    videoInput.files;
+
+
+                if (!files.length) {
+
+                    videoStatus.textContent =
+                        "No videos selected.";
+
+                    return;
+
+                }
+
+
+                videoStatus.textContent =
+                    files.length +
+                    " video(s) selected.";
+
+            }
+        );
+
+
+        /* ==================================================
+           UPLOAD PHOTOS
+        ================================================== */
+
+        uploadPhotosButton.addEventListener(
+            "click",
+            async function () {
+
+                const eventId =
+                    uploadEvent.value;
+
+
+                const files =
+                    photoInput.files;
+
+
+                if (!eventId) {
+
+                    alert(
+                        "Please select an event first."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!files.length) {
+
+                    alert(
+                        "Please select at least one photo."
+                    );
+
+                    return;
+
+                }
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "eventId",
+                    eventId
+                );
+
+
+                for (
+                    let i = 0;
+                    i < files.length;
+                    i++
+                ) {
+
+                    formData.append(
+                        "photos",
+                        files[i]
+                    );
+
+                }
+
+
+                uploadPhotosButton.disabled =
+                    true;
+
+
+                photoStatus.textContent =
+                    "Uploading photos...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            API_URL +
+                            "/api/upload/photos",
+                            {
+
+                                method: "POST",
+
+                                body: formData
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            result.message ||
+                            "Photo upload failed."
+                        );
+
+                    }
+
+
+                    photoStatus.textContent =
+                        result.message ||
+                        "Photos uploaded successfully.";
+
+
+                    photoInput.value =
+                        "";
+
+
+                    await loadMediaCounts(
+                        eventId
+                    );
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Photo upload error:",
+                        error
+                    );
+
+                    photoStatus.textContent =
+                        "Photo upload failed: " +
+                        error.message;
+
+                }
+                finally {
+
+                    uploadPhotosButton.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+
+        /* ==================================================
+           UPLOAD VIDEOS
+        ================================================== */
+
+        uploadVideosButton.addEventListener(
+            "click",
+            async function () {
+
+                const eventId =
+                    uploadEvent.value;
+
+
+                const files =
+                    videoInput.files;
+
+
+                if (!eventId) {
+
+                    alert(
+                        "Please select an event first."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!files.length) {
+
+                    alert(
+                        "Please select at least one video."
+                    );
+
+                    return;
+
+                }
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "eventId",
+                    eventId
+                );
+
+
+                for (
+                    let i = 0;
+                    i < files.length;
+                    i++
+                ) {
+
+                    formData.append(
+                        "videos",
+                        files[i]
+                    );
+
+                }
+
+
+                uploadVideosButton.disabled =
+                    true;
+
+
+                videoStatus.textContent =
+                    "Uploading videos...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            API_URL +
+                            "/api/upload/videos",
+                            {
+
+                                method: "POST",
+
+                                body: formData
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            result.message ||
+                            "Video upload failed."
+                        );
+
+                    }
+
+
+                    videoStatus.textContent =
+                        result.message ||
+                        "Videos uploaded successfully.";
+
+
+                    videoInput.value =
+                        "";
+
+
+                    await loadMediaCounts(
+                        eventId
+                    );
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Video upload error:",
+                        error
+                    );
+
+                    videoStatus.textContent =
+                        "Video upload failed: " +
+                        error.message;
+
+                }
+                finally {
+
+                    uploadVideosButton.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+
+        /* ==================================================
+           LOAD MEDIA COUNTS
+        ================================================== */
+
+        async function loadMediaCounts(
+            eventId
+        ) {
+
+            try {
+
+                const response =
+                    await fetch(
+                        API_URL +
+                        "/api/upload/event/" +
+                        encodeURIComponent(eventId)
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to load media."
+                    );
+
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                photoCount.textContent =
+                    result.photoCount || 0;
+
+
+                videoCount.textContent =
+                    result.videoCount || 0;
 
             }
             catch (error) {
 
                 console.error(
-                    "Delete event error:",
+                    "Media count error:",
                     error
                 );
-
-                alert(
-                    "Failed to delete event: " +
-                    error.message
-                );
-
-            }
-
-        };
-
-
-    /* ==================================================
-       VIEW EVENT
-    ================================================== */
-
-    window.viewEvent =
-        function (eventId) {
-
-            window.location.href =
-                "../events/event.html?id=" +
-                encodeURIComponent(eventId);
-
-        };
-
-
-    /* ==================================================
-       SELECT EVENT
-    ================================================== */
-
-    uploadEvent.addEventListener(
-        "change",
-        async function () {
-
-            const eventId =
-                uploadEvent.value;
-
-
-            if (!eventId) {
 
                 photoCount.textContent =
                     "0";
@@ -1697,408 +2117,11 @@
                 videoCount.textContent =
                     "0";
 
-                return;
-
-            }
-
-
-            await loadMediaCounts(
-                eventId
-            );
-
-        }
-    );
-
-
-    /* ==================================================
-       PHOTO FILE SELECTION
-    ================================================== */
-
-    photoInput.addEventListener(
-        "change",
-        function () {
-
-            const files =
-                photoInput.files;
-
-
-            if (!files.length) {
-
-                photoStatus.textContent =
-                    "No photos selected.";
-
-                return;
-
-            }
-
-
-            photoStatus.textContent =
-                files.length +
-                " photo(s) selected.";
-
-        }
-    );
-
-
-    /* ==================================================
-       VIDEO FILE SELECTION
-    ================================================== */
-
-    videoInput.addEventListener(
-        "change",
-        function () {
-
-            const files =
-                videoInput.files;
-
-
-            if (!files.length) {
-
-                videoStatus.textContent =
-                    "No videos selected.";
-
-                return;
-
-            }
-
-
-            videoStatus.textContent =
-                files.length +
-                " video(s) selected.";
-
-        }
-    );
-
-
-    /* ==================================================
-       UPLOAD PHOTOS
-    ================================================== */
-
-    uploadPhotosButton.addEventListener(
-        "click",
-        async function () {
-
-            const eventId =
-                uploadEvent.value;
-
-            const files =
-                photoInput.files;
-
-
-            if (!eventId) {
-
-                alert(
-                    "Please select an event first."
-                );
-
-                return;
-
-            }
-
-
-            if (!files.length) {
-
-                alert(
-                    "Please select at least one photo."
-                );
-
-                return;
-
-            }
-
-
-            const formData =
-                new FormData();
-
-
-            formData.append(
-                "eventId",
-                eventId
-            );
-
-
-            for (
-                let i = 0;
-                i < files.length;
-                i++
-            ) {
-
-                formData.append(
-                    "photos",
-                    files[i]
-                );
-
-            }
-
-
-            uploadPhotosButton.disabled =
-                true;
-
-
-            photoStatus.textContent =
-                "Uploading photos...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        API_URL +
-                        "/api/upload/photos",
-                        {
-
-                            method: "POST",
-
-                            body: formData
-
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        result.message ||
-                        "Photo upload failed."
-                    );
-
-                }
-
-
-                photoStatus.textContent =
-                    result.message ||
-                    "Photos uploaded successfully.";
-
-
-                photoInput.value =
-                    "";
-
-
-                await loadMediaCounts(
-                    eventId
-                );
-
-            }
-            catch (error) {
-
-                console.error(
-                    "Photo upload error:",
-                    error
-                );
-
-                photoStatus.textContent =
-                    "Photo upload failed: " +
-                    error.message;
-
-            }
-            finally {
-
-                uploadPhotosButton.disabled =
-                    false;
-
             }
 
         }
-    );
 
-
-    /* ==================================================
-       UPLOAD VIDEOS
-    ================================================== */
-
-    uploadVideosButton.addEventListener(
-        "click",
-        async function () {
-
-            const eventId =
-                uploadEvent.value;
-
-            const files =
-                videoInput.files;
-
-
-            if (!eventId) {
-
-                alert(
-                    "Please select an event first."
-                );
-
-                return;
-
-            }
-
-
-            if (!files.length) {
-
-                alert(
-                    "Please select at least one video."
-                );
-
-                return;
-
-            }
-
-
-            const formData =
-                new FormData();
-
-
-            formData.append(
-                "eventId",
-                eventId
-            );
-
-
-            for (
-                let i = 0;
-                i < files.length;
-                i++
-            ) {
-
-                formData.append(
-                    "videos",
-                    files[i]
-                );
-
-            }
-
-
-            uploadVideosButton.disabled =
-                true;
-
-
-            videoStatus.textContent =
-                "Uploading videos...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        API_URL +
-                        "/api/upload/videos",
-                        {
-
-                            method: "POST",
-
-                            body: formData
-
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        result.message ||
-                        "Video upload failed."
-                    );
-
-                }
-
-
-                videoStatus.textContent =
-                    result.message ||
-                    "Videos uploaded successfully.";
-
-
-                videoInput.value =
-                    "";
-
-
-                await loadMediaCounts(
-                    eventId
-                );
-
-            }
-            catch (error) {
-
-                console.error(
-                    "Video upload error:",
-                    error
-                );
-
-                videoStatus.textContent =
-                    "Video upload failed: " +
-                    error.message;
-
-            }
-            finally {
-
-                uploadVideosButton.disabled =
-                    false;
-
-            }
-
-        }
-    );
-
-
-    /* ==================================================
-       LOAD MEDIA COUNTS
-    ================================================== */
-
-    async function loadMediaCounts(
-        eventId
-    ) {
-
-        try {
-
-            const response =
-                await fetch(
-                    API_URL +
-                    "/api/upload/event/" +
-                    encodeURIComponent(eventId)
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Unable to load media."
-                );
-
-            }
-
-
-            const result =
-                await response.json();
-
-
-            photoCount.textContent =
-                result.photoCount || 0;
-
-
-            videoCount.textContent =
-                result.videoCount || 0;
-
-        }
-        catch (error) {
-
-            console.error(
-                "Media count error:",
-                error
-            );
-
-            photoCount.textContent =
-                "0";
-
-            videoCount.textContent =
-                "0";
-
-        }
-
-    }
-
-</script>
+    </script>
 
 
 </body>

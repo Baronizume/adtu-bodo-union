@@ -1,83 +1,78 @@
+require("dotenv").config();
+
 const express = require("express");
+const mongoose = require("mongoose");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const cors = require("cors");
+const cloudinary = require("./cloudinary");
+
+const Event = require("./models/Event");
+
+const Media = require("./models/Media");
+
+
+/* ==================================================
+   APP CONFIGURATION
+================================================== */
 
 const app = express();
 
-// =====================================================
-// CONFIGURATION
-// =====================================================
-
-const PORT = process.env.PORT || 5000;
+const PORT =
+    process.env.PORT || 5000;
 
 const NODE_ENV =
     process.env.NODE_ENV || "development";
 
-// =====================================================
-// PATHS
-// =====================================================
 
-const frontendPath = path.join(
-    __dirname,
-    "..",
-    "frontend"
-);
+/* ==================================================
+   PATH CONFIGURATION
+================================================== */
 
-const uploadsPath = path.join(
-    __dirname,
-    "..",
-    "uploads"
-);
+const FRONTEND_PATH =
+    path.join(__dirname, "../frontend");
 
-const photosPath = path.join(
-    uploadsPath,
-    "photos"
-);
+const UPLOADS_PATH =
+    path.join(__dirname, "../uploads");
 
-const videosPath = path.join(
-    uploadsPath,
-    "videos"
-);
+const PHOTOS_PATH =
+    path.join(UPLOADS_PATH, "photos");
 
-// =====================================================
-// CREATE DIRECTORIES
-// =====================================================
+const VIDEOS_PATH =
+    path.join(UPLOADS_PATH, "videos");
 
-fs.mkdirSync(
-    photosPath,
-    {
-        recursive: true
+
+/* ==================================================
+   CREATE UPLOAD DIRECTORIES
+================================================== */
+
+[
+    UPLOADS_PATH,
+    PHOTOS_PATH,
+    VIDEOS_PATH
+].forEach((directory) => {
+
+    if (!fs.existsSync(directory)) {
+
+        fs.mkdirSync(
+            directory,
+            {
+                recursive: true
+            }
+        );
+
     }
-);
 
-fs.mkdirSync(
-    videosPath,
-    {
-        recursive: true
-    }
-);
+});
 
-// =====================================================
-// MIDDLEWARE
-// =====================================================
+
+/* ==================================================
+   MIDDLEWARE
+================================================== */
 
 app.use(
-    cors({
-        origin: true,
-        methods: [
-            "GET",
-            "POST",
-            "PUT",
-            "DELETE",
-            "OPTIONS"
-        ],
-        allowedHeaders: [
-            "Content-Type",
-            "Authorization"
-        ]
-    })
+    cors()
 );
 
 app.use(
@@ -93,212 +88,88 @@ app.use(
     })
 );
 
-// =====================================================
-// REQUEST LOGGER
-// =====================================================
+
+/* ==================================================
+   REQUEST LOGGER
+================================================== */
 
 app.use(
     (req, res, next) => {
 
         console.log(
-            `${new Date().toISOString()} ${req.method} ${req.originalUrl}`
+            `${new Date().toISOString()} - ${req.method} ${req.originalUrl}`
         );
 
         next();
+
     }
 );
 
-// =====================================================
-// SERVE FRONTEND
-// =====================================================
+
+/* ==================================================
+   STATIC FRONTEND
+================================================== */
 
 app.use(
-    express.static(frontendPath)
+    express.static(
+        FRONTEND_PATH
+    )
 );
 
-// =====================================================
-// SERVE UPLOADED MEDIA
-// =====================================================
+
+/* ==================================================
+   STATIC UPLOADS
+================================================== */
 
 app.use(
     "/uploads",
     express.static(
-        uploadsPath,
-        {
-            maxAge: "1d"
-        }
+        UPLOADS_PATH
     )
 );
 
-// =====================================================
-// MULTER FILE NAME
-// =====================================================
 
-function createSafeFilename(
-    originalName
-) {
+/* ==================================================
+   MULTER MEMORY STORAGE
+================================================== */
 
-    const extension =
-        path.extname(
-            originalName
-        ).toLowerCase();
+const storage =
+    multer.memoryStorage();
 
-    const originalBaseName =
-        path.basename(
-            originalName,
-            extension
-        );
 
-    const safeBaseName =
-        originalBaseName
-            .replace(
-                /[^a-zA-Z0-9-_]/g,
-                "_"
-            )
-            .substring(
-                0,
-                100
-            );
+/* ==================================================
+   FILE FILTER
+================================================== */
 
-    return (
-        Date.now() +
-        "-" +
-        Math.round(
-            Math.random() * 1e9
-        ) +
-        "-" +
-        safeBaseName +
-        extension
-    );
-}
-
-// =====================================================
-// PHOTO STORAGE
-// =====================================================
-
-const photoStorage =
-    multer.diskStorage({
-
-        destination:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    photosPath
-                );
-            },
-
-        filename:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    createSafeFilename(
-                        file.originalname
-                    )
-                );
-            }
-    });
-
-// =====================================================
-// VIDEO STORAGE
-// =====================================================
-
-const videoStorage =
-    multer.diskStorage({
-
-        destination:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    videosPath
-                );
-            },
-
-        filename:
-            function (
-                req,
-                file,
-                callback
-            ) {
-
-                callback(
-                    null,
-                    createSafeFilename(
-                        file.originalname
-                    )
-                );
-            }
-    });
-
-// =====================================================
-// FILE FILTERS
-// =====================================================
-
-function photoFileFilter(
+function fileFilter(
     req,
     file,
     callback
 ) {
 
-    const allowedTypes = [
+    const allowedImages = [
         "image/jpeg",
         "image/png",
+        "image/jpg",
         "image/webp",
         "image/gif"
     ];
 
-    if (
-        allowedTypes.includes(
-            file.mimetype
-        )
-    ) {
 
-        callback(
-            null,
-            true
-        );
-
-    } else {
-
-        callback(
-            new Error(
-                "Only JPG, JPEG, PNG, WEBP and GIF photos are allowed."
-            ),
-            false
-        );
-    }
-}
-
-
-function videoFileFilter(
-    req,
-    file,
-    callback
-) {
-
-    const allowedTypes = [
+    const allowedVideos = [
         "video/mp4",
         "video/webm",
+        "video/ogg",
         "video/quicktime",
-        "video/x-m4v"
+        "video/x-msvideo"
     ];
 
+
     if (
-        allowedTypes.includes(
+        allowedImages.includes(
+            file.mimetype
+        ) ||
+        allowedVideos.includes(
             file.mimetype
         )
     ) {
@@ -308,87 +179,74 @@ function videoFileFilter(
             true
         );
 
-    } else {
+    }
+    else {
 
         callback(
             new Error(
-                "Only MP4, WEBM, MOV and M4V videos are allowed."
-            ),
-            false
+                "Unsupported file type."
+            )
         );
+
     }
+
 }
 
-// =====================================================
-// MULTER CONFIGURATION
-// =====================================================
 
-const uploadPhotos =
+/* ==================================================
+   MULTER CONFIGURATION
+================================================== */
+
+const upload =
     multer({
 
         storage:
-            photoStorage,
+            storage,
 
         fileFilter:
-            photoFileFilter,
+            fileFilter,
 
         limits: {
 
-            files: 50,
-
-            // 25 MB per photo
             fileSize:
-                25 * 1024 * 1024
+                100 * 1024 * 1024
+
         }
+
     });
 
-
-const uploadVideos =
-    multer({
-
-        storage:
-            videoStorage,
-
-        fileFilter:
-            videoFileFilter,
-
-        limits: {
-
-            files: 10,
-
-            // 500 MB per video
-            fileSize:
-                500 * 1024 * 1024
-        }
-    });
-
-// =====================================================
-// HEALTH CHECK
-// =====================================================
+/* ==================================================
+   HEALTH CHECK
+================================================== */
 
 app.get(
     "/health",
     (req, res) => {
 
-        res.status(200).json({
+        res.json({
 
             success: true,
 
             message:
                 "ADTU Bodo Union backend is running.",
 
-            environment:
-                NODE_ENV,
+            database:
+                mongoose.connection.readyState === 1
+                    ? "connected"
+                    : "disconnected",
 
-            timestamp:
-                new Date().toISOString()
+            environment:
+                NODE_ENV
+
         });
+
     }
 );
 
-// =====================================================
-// API STATUS
-// =====================================================
+
+/* ==================================================
+   API STATUS
+================================================== */
 
 app.get(
     "/api",
@@ -398,21 +256,28 @@ app.get(
 
             success: true,
 
-            name:
-                "ADTU Bodo Union Backend",
+            message:
+                "ADTU Bodo Union API is running.",
 
-            status:
-                "online",
+            endpoints: {
 
-            environment:
-                NODE_ENV
+                events:
+                    "/api/events",
+
+                health:
+                    "/health"
+
+            }
+
         });
+
     }
 );
 
-// =====================================================
-// ADMIN LOGIN PAGE
-// =====================================================
+
+/* ==================================================
+   ADMIN LOGIN PAGE
+================================================== */
 
 app.get(
     "/admin/login",
@@ -420,17 +285,18 @@ app.get(
 
         res.sendFile(
             path.join(
-                frontendPath,
-                "admin",
-                "login.html"
+                FRONTEND_PATH,
+                "admin-login.html"
             )
         );
+
     }
 );
 
-// =====================================================
-// ADMIN DASHBOARD
-// =====================================================
+
+/* ==================================================
+   ADMIN DASHBOARD PAGE
+================================================== */
 
 app.get(
     "/admin/dashboard",
@@ -438,83 +304,494 @@ app.get(
 
         res.sendFile(
             path.join(
-                frontendPath,
-                "admin",
-                "admin-dashboard.html"
+                FRONTEND_PATH,
+                "admin.html"
             )
         );
+
     }
 );
 
-// =====================================================
-// PHOTO UPLOAD
-// =====================================================
+
+/* ==================================================
+   EVENT API
+================================================== */
+
+
+/* ==================================================
+   GET ALL EVENTS
+
+   GET /api/events
+================================================== */
+
+app.get(
+    "/api/events",
+    async (req, res) => {
+
+        try {
+
+            const events =
+                await Event
+                    .find()
+                    .sort({
+                        createdAt: -1
+                    });
+
+
+            res.json({
+
+                success: true,
+
+                count:
+                    events.length,
+
+                data:
+                    events
+
+            });
+
+        }
+        catch (error) {
+
+            console.error(
+                "Get events error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Failed to load events.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   CREATE EVENT
+
+   POST /api/events
+================================================== */
+
+app.post(
+    "/api/events",
+    async (req, res) => {
+
+        try {
+
+            const {
+                title,
+                description,
+                date,
+                location,
+                image
+            } = req.body;
+
+
+            /* ------------------------------------------
+               VALIDATION
+            ------------------------------------------ */
+
+            if (
+                !title ||
+                !description ||
+                !date ||
+                !location
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Title, description, date and location are required."
+
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               CREATE EVENT
+            ------------------------------------------ */
+
+            const event =
+                new Event({
+
+                    title:
+                        title.trim(),
+
+                    description:
+                        description.trim(),
+
+                    date:
+                        date,
+
+                    location:
+                        location.trim(),
+
+                    image:
+                        image || ""
+
+                });
+
+
+            const savedEvent =
+                await event.save();
+
+
+            /* ------------------------------------------
+               SUCCESS
+            ------------------------------------------ */
+
+            res.status(201).json({
+
+                success: true,
+
+                message:
+                    "Event created successfully.",
+
+                data:
+                    savedEvent
+
+            });
+
+        }
+        catch (error) {
+
+            console.error(
+                "Create event error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Failed to create event.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   GET SINGLE EVENT
+
+   GET /api/events/:id
+================================================== */
+
+app.get(
+    "/api/events/:id",
+    async (req, res) => {
+
+        try {
+
+            const event =
+                await Event.findById(
+                    req.params.id
+                );
+
+
+            if (!event) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Event not found."
+
+                });
+
+            }
+
+
+            res.json({
+
+                success: true,
+
+                data:
+                    event
+
+            });
+
+        }
+        catch (error) {
+
+            console.error(
+                "Get single event error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Failed to load event.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   UPDATE EVENT
+
+   PUT /api/events/:id
+================================================== */
+
+app.put(
+    "/api/events/:id",
+    async (req, res) => {
+
+        try {
+
+            const {
+                title,
+                description,
+                date,
+                location,
+                image
+            } = req.body;
+
+
+            /* ------------------------------------------
+               VALIDATION
+            ------------------------------------------ */
+
+            if (
+                !title ||
+                !description ||
+                !date ||
+                !location
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Title, description, date and location are required."
+
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               UPDATE EVENT
+            ------------------------------------------ */
+
+            const updatedEvent =
+                await Event.findByIdAndUpdate(
+
+                    req.params.id,
+
+                    {
+
+                        title:
+                            title.trim(),
+
+                        description:
+                            description.trim(),
+
+                        date:
+                            date,
+
+                        location:
+                            location.trim(),
+
+                        image:
+                            image || ""
+
+                    },
+
+                    {
+
+                        new: true,
+
+                        runValidators: true
+
+                    }
+
+                );
+
+
+            /* ------------------------------------------
+               EVENT NOT FOUND
+            ------------------------------------------ */
+
+            if (!updatedEvent) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Event not found."
+
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               SUCCESS
+            ------------------------------------------ */
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "Event updated successfully.",
+
+                data:
+                    updatedEvent
+
+            });
+
+        }
+        catch (error) {
+
+            console.error(
+                "Update event error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Failed to update event.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   DELETE EVENT
+
+   DELETE /api/events/:id
+================================================== */
+
+app.delete(
+    "/api/events/:id",
+    async (req, res) => {
+
+        try {
+
+            const deletedEvent =
+                await Event.findByIdAndDelete(
+                    req.params.id
+                );
+
+
+            if (!deletedEvent) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Event not found."
+
+                });
+
+            }
+
+
+            res.json({
+
+                success: true,
+
+                message:
+                    "Event deleted successfully.",
+
+                data:
+                    deletedEvent
+
+            });
+
+        }
+        catch (error) {
+
+            console.error(
+                "Delete event error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Failed to delete event.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+/* ==================================================
+   PHOTO UPLOAD TO CLOUDINARY
+================================================== */
 
 app.post(
     "/api/upload/photos",
-
-    uploadPhotos.array(
+    upload.array(
         "photos",
         50
     ),
-
-    async function (
-        req,
-        res
-    ) {
+    async (req, res) => {
 
         try {
 
-            // -----------------------------------------
-            // EVENT ID
-            // -----------------------------------------
-
-            const eventId =
-                req.body.eventId;
-
-            if (!eventId) {
-
-                // Remove files if event ID missing
-                if (req.files) {
-
-                    for (
-                        const file of req.files
-                    ) {
-
-                        try {
-
-                            fs.unlinkSync(
-                                file.path
-                            );
-
-                        } catch (error) {
-
-                            console.error(
-                                "Could not remove file:",
-                                error
-                            );
-                        }
-                    }
-                }
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Event ID is required."
-                });
-            }
-
-            // -----------------------------------------
-            // FILES
-            // -----------------------------------------
-
-            const files =
-                req.files || [];
-
             if (
-                files.length === 0
+                !req.files ||
+                !req.files.length
             ) {
 
                 return res.status(400).json({
@@ -522,220 +799,385 @@ app.post(
                     success: false,
 
                     message:
-                        "No photos uploaded."
+                        "No photos were uploaded."
+
                 });
+
             }
 
-            // -----------------------------------------
-            // RESPONSE FILE DATA
-            // -----------------------------------------
 
-            const uploadedFiles =
-                files.map(
-                    function (file) {
+            const eventId =
+                req.body.eventId;
 
-                        return {
 
-                            originalName:
-                                file.originalname,
+            /* ------------------------------------------
+               VALIDATE EVENT ID
+            ------------------------------------------ */
 
-                            filename:
-                                file.filename,
+            if (!eventId) {
 
-                            mimetype:
-                                file.mimetype,
+                return res.status(400).json({
 
-                            size:
-                                file.size,
+                    success: false,
 
-                            eventId:
-                                eventId,
+                    message:
+                        "Event ID is required."
 
-                            url:
-                                `/uploads/photos/${encodeURIComponent(
-                                    file.filename
-                                )}`
-                        };
-                    }
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               CHECK EVENT
+            ------------------------------------------ */
+
+            const event =
+                await Event.findById(
+                    eventId
                 );
 
-            console.log(
-                `Uploaded ${files.length} photo(s) for event ${eventId}`
-            );
 
-            return res.status(200).json({
+            if (!event) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Event not found."
+
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               UPLOAD PHOTOS TO CLOUDINARY
+            ------------------------------------------ */
+
+            const uploadedMedia = [];
+
+
+            for (
+                const file
+                of req.files
+            ) {
+
+                const result =
+                    await new Promise(
+                        (resolve, reject) => {
+
+                            const stream =
+                                cloudinary.uploader.upload_stream(
+                                    {
+                                        folder:
+                                            `adtu-bodo-union/events/${eventId}/photos`,
+
+                                        resource_type:
+                                            "image"
+                                    },
+
+                                    (
+                                        error,
+                                        result
+                                    ) => {
+
+                                        if (error) {
+
+                                            reject(
+                                                error
+                                            );
+
+                                        }
+                                        else {
+
+                                            resolve(
+                                                result
+                                            );
+
+                                        }
+
+                                    }
+                                );
+
+
+                            stream.end(
+                                file.buffer
+                            );
+
+                        }
+                    );
+
+                console.log("CLOUDINARY VIDEO RESULT:");
+                console.log(result);
+                uploadedMedia.push({
+
+                    eventId:
+                        eventId,
+
+                    type:
+                        "photo",
+
+                    originalName:
+                        file.originalname,
+
+                    filename:
+                        result.public_id ||
+                        result.asset_id ||
+                        file.originalname,
+
+                    path:
+                        result.secure_url
+
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               SAVE MEDIA RECORDS TO MONGODB
+            ------------------------------------------ */
+            console.log("UPLOADED MEDIA:");
+            console.log(uploadedMedia);
+            const savedMedia =
+                await Media.insertMany(
+                    uploadedMedia
+                );
+
+
+            /* ------------------------------------------
+               SUCCESS
+            ------------------------------------------ */
+
+            res.status(201).json({
 
                 success: true,
 
                 message:
-                    "Photos uploaded successfully.",
-
-                eventId:
-                    eventId,
+                    `${savedMedia.length} photo(s) uploaded successfully.`,
 
                 count:
-                    uploadedFiles.length,
+                    savedMedia.length,
 
                 files:
-                    uploadedFiles
+                    savedMedia
+
             });
 
-        } catch (error) {
+        }
+        catch (error) {
 
             console.error(
-                "PHOTO UPLOAD ERROR:",
+                "Photo upload error:",
                 error
             );
 
-            return res.status(500).json({
+
+            res.status(500).json({
 
                 success: false,
 
                 message:
-                    error.message ||
-                    "Photo upload failed."
+                    "Photo upload failed.",
+
+                error:
+                    error.message
+
             });
+
         }
+
     }
 );
 
-// =====================================================
-// VIDEO UPLOAD
-// =====================================================
+/* ==================================================
+   VIDEO UPLOAD TO CLOUDINARY
+================================================== */
 
 app.post(
     "/api/upload/videos",
-
-    uploadVideos.array(
+    upload.array(
         "videos",
-        10
+        20
     ),
-
-    async function (
-        req,
-        res
-    ) {
+    async (req, res) => {
 
         try {
 
-            // -----------------------------------------
-            // EVENT ID
-            // -----------------------------------------
+            if (
+                !req.files ||
+                req.files.length === 0
+            ) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "No videos were uploaded."
+                });
+
+            }
 
             const eventId =
                 req.body.eventId;
 
+
+            /* ------------------------------------------
+               VALIDATE EVENT ID
+            ------------------------------------------ */
+
             if (!eventId) {
 
-                if (req.files) {
-
-                    for (
-                        const file of req.files
-                    ) {
-
-                        try {
-
-                            fs.unlinkSync(
-                                file.path
-                            );
-
-                        } catch (error) {
-
-                            console.error(
-                                "Could not remove file:",
-                                error
-                            );
-                        }
-                    }
-                }
-
                 return res.status(400).json({
-
                     success: false,
-
                     message:
                         "Event ID is required."
                 });
+
             }
 
-            // -----------------------------------------
-            // FILES
-            // -----------------------------------------
 
-            const files =
-                req.files || [];
+            /* ------------------------------------------
+               CHECK EVENT
+            ------------------------------------------ */
 
-            if (
-                files.length === 0
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "No videos uploaded."
-                });
-            }
-
-            // -----------------------------------------
-            // RESPONSE FILE DATA
-            // -----------------------------------------
-
-            const uploadedFiles =
-                files.map(
-                    function (file) {
-
-                        return {
-
-                            originalName:
-                                file.originalname,
-
-                            filename:
-                                file.filename,
-
-                            mimetype:
-                                file.mimetype,
-
-                            size:
-                                file.size,
-
-                            eventId:
-                                eventId,
-
-                            url:
-                                `/uploads/videos/${encodeURIComponent(
-                                    file.filename
-                                )}`
-                        };
-                    }
+            const event =
+                await Event.findById(
+                    eventId
                 );
 
-            console.log(
-                `Uploaded ${files.length} video(s) for event ${eventId}`
-            );
+            if (!event) {
 
-            return res.status(200).json({
+                return res.status(404).json({
+                    success: false,
+                    message:
+                        "Event not found."
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               UPLOAD VIDEOS
+               TO CLOUDINARY
+            ------------------------------------------ */
+
+            const uploadedMedia = [];
+
+            for (
+                const file
+                of req.files
+            ) {
+
+                const result =
+                    await new Promise(
+                        (resolve, reject) => {
+
+                            const stream =
+                                cloudinary.uploader.upload_stream(
+                                    {
+                                        folder:
+                                            `adtu-bodo-union/events/${eventId}/videos`,
+
+                                        resource_type:
+                                            "video"
+                                    },
+
+                                    (
+                                        error,
+                                        result
+                                    ) => {
+
+                                        if (error) {
+
+                                            reject(
+                                                error
+                                            );
+
+                                        } else {
+
+                                            resolve(
+                                                result
+                                            );
+
+                                        }
+
+                                    }
+                                );
+
+                            stream.end(
+                                file.buffer
+                            );
+
+                        }
+                    );
+
+
+                /* --------------------------------------
+                   CREATE MEDIA RECORD
+                -------------------------------------- */
+
+                uploadedMedia.push({
+
+                    eventId:
+                        eventId,
+
+                    type:
+                        "video",
+
+                    originalName:
+                        file.originalname,
+
+                    filename:
+                        String(
+                            result.public_id ||
+                            file.originalname
+                        ),
+
+                    path:
+                        String(
+                            result.secure_url
+                        )
+
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               SAVE TO MONGODB
+            ------------------------------------------ */
+
+            const savedMedia =
+                await Media.insertMany(
+                    uploadedMedia
+                );
+
+
+            /* ------------------------------------------
+               SUCCESS
+            ------------------------------------------ */
+
+            return res.status(201).json({
 
                 success: true,
 
                 message:
-                    "Videos uploaded successfully.",
-
-                eventId:
-                    eventId,
+                    `${savedMedia.length} video(s) uploaded successfully.`,
 
                 count:
-                    uploadedFiles.length,
+                    savedMedia.length,
 
                 files:
-                    uploadedFiles
+                    savedMedia
+
             });
 
-        } catch (error) {
+        }
+        catch (error) {
 
             console.error(
-                "VIDEO UPLOAD ERROR:",
+                "Video upload error:",
                 error
             );
 
@@ -744,46 +1186,48 @@ app.post(
                 success: false,
 
                 message:
-                    error.message ||
-                    "Video upload failed."
+                    "Video upload failed.",
+
+                error:
+                    error.message
+
             });
+
         }
+
     }
 );
 
-// =====================================================
-// MEDIA LIST
-// =====================================================
+/* ==================================================
+   MEDIA LIST
+================================================== */
 
 app.get(
     "/api/media/:type",
-    function (
-        req,
-        res
-    ) {
+    (req, res) => {
 
         try {
 
             const type =
                 req.params.type;
 
+
             let directory;
 
-            if (
-                type === "photos"
-            ) {
+
+            if (type === "photos") {
 
                 directory =
-                    photosPath;
+                    PHOTOS_PATH;
 
-            } else if (
-                type === "videos"
-            ) {
+            }
+            else if (type === "videos") {
 
                 directory =
-                    videosPath;
+                    VIDEOS_PATH;
 
-            } else {
+            }
+            else {
 
                 return res.status(400).json({
 
@@ -791,277 +1235,490 @@ app.get(
 
                     message:
                         "Invalid media type."
+
                 });
+
             }
 
+
+            if (!fs.existsSync(directory)) {
+
+                return res.json({
+
+                    success: true,
+
+                    count: 0,
+
+                    files: []
+
+                });
+
+            }
+
+
             const files =
-                fs
-                    .readdirSync(
-                        directory
-                    )
-                    .map(
-                        function (
-                            filename
-                        ) {
+                fs.readdirSync(
+                    directory
+                );
 
-                            return {
 
-                                filename:
-                                    filename,
+            const fileList =
+                files.map(
+                    (file) => {
 
-                                url:
-                                    `/uploads/${type}/${encodeURIComponent(
-                                        filename
-                                    )}`
-                            };
-                        }
-                    );
+                        return {
 
-            return res.json({
+                            filename:
+                                file,
+
+                            url:
+                                `/uploads/${type}/${file}`
+
+                        };
+
+                    }
+                );
+
+
+            res.json({
 
                 success: true,
 
                 count:
-                    files.length,
+                    fileList.length,
 
                 files:
-                    files
+                    fileList
+
             });
 
-        } catch (error) {
+        }
+        catch (error) {
 
             console.error(
-                "MEDIA LIST ERROR:",
+                "Media list error:",
                 error
             );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load media.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+// ==================================================
+// GET MEDIA FOR A SPECIFIC EVENT
+// ==================================================
+
+app.get(
+    "/api/media/event/:eventId",
+    async (req, res) => {
+
+        try {
+
+            const eventId =
+                req.params.eventId;
+
+
+            // Check if event exists
+            const event =
+                await Event.findById(eventId);
+
+
+            if (!event) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message: "Event not found."
+
+                });
+
+            }
+
+
+            // Get all media for this event
+            const media =
+                await Media
+                    .find({ eventId: eventId })
+                    .sort({ createdAt: -1 });
+
+
+            // Separate photos
+            const photos =
+                media
+                    .filter(
+                        item =>
+                            item.type === "photo"
+                    )
+                    .map(item => ({
+
+                        _id: item._id,
+
+                        originalName:
+                            item.originalName,
+
+                        filename:
+                            item.filename,
+
+                        url:
+                            item.path,
+
+                        createdAt:
+                            item.createdAt
+
+                    }));
+
+
+            // Separate videos
+            const videos =
+                media
+                    .filter(
+                        item =>
+                            item.type === "video"
+                    )
+                    .map(item => ({
+
+                        _id: item._id,
+
+                        originalName:
+                            item.originalName,
+
+                        filename:
+                            item.filename,
+
+                        url:
+                            item.path,
+
+                        createdAt:
+                            item.createdAt
+
+                    }));
+
+
+            res.json({
+
+                success: true,
+
+                eventId: eventId,
+
+                photos: photos,
+
+                videos: videos
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Event media error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load event media.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+/* ==================================================
+   EVENT MEDIA COUNT
+================================================== */
+
+app.get(
+    "/api/upload/event/:eventId",
+    async (req, res) => {
+
+        try {
+
+            const eventId =
+                req.params.eventId;
+
+
+            /* ------------------------------------------
+               CHECK EVENT
+            ------------------------------------------ */
+
+            const event =
+                await Event.findById(
+                    eventId
+                );
+
+
+            if (!event) {
+
+                return res.status(404).json({
+
+                    success: false,
+
+                    message:
+                        "Event not found."
+
+                });
+
+            }
+
+
+            /* ------------------------------------------
+               COUNT PHOTOS
+            ------------------------------------------ */
+
+            const photoCount =
+                await Media.countDocuments({
+
+                    eventId:
+                        eventId,
+
+                    type:
+                        "photo"
+
+                });
+
+
+            /* ------------------------------------------
+               COUNT VIDEOS
+            ------------------------------------------ */
+
+            const videoCount =
+                await Media.countDocuments({
+
+                    eventId:
+                        eventId,
+
+                    type:
+                        "video"
+
+                });
+
+
+            /* ------------------------------------------
+               SUCCESS
+            ------------------------------------------ */
+
+            res.json({
+
+                success: true,
+
+                eventId:
+                    eventId,
+
+                photoCount:
+                    photoCount,
+
+                videoCount:
+                    videoCount
+
+            });
+
+        }
+        catch (error) {
+
+            console.error(
+                "Event media count error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to load media counts.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   MULTER ERROR HANDLER
+================================================== */
+
+app.use(
+    (error, req, res, next) => {
+
+        if (
+            error instanceof multer.MulterError
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "File upload error.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+
+        if (error) {
+
+            console.error(
+                "Server error:",
+                error
+            );
+
 
             return res.status(500).json({
 
                 success: false,
 
                 message:
-                    "Could not load media."
-            });
-        }
-    }
-);
-
-// =====================================================
-// HOME PAGE
-// =====================================================
-
-app.get(
-    "/",
-    function (
-        req,
-        res
-    ) {
-
-        res.sendFile(
-            path.join(
-                frontendPath,
-                "index.html"
-            )
-        );
-    }
-);
-
-// =====================================================
-// MULTER / UPLOAD ERROR HANDLER
-// =====================================================
-
-app.use(
-    function (
-        error,
-        req,
-        res,
-        next
-    ) {
-
-        if (
-            error instanceof
-            multer.MulterError
-        ) {
-
-            console.error(
-                "MULTER ERROR:",
-                error
-            );
-
-            if (
-                error.code ===
-                "LIMIT_FILE_SIZE"
-            ) {
-
-                return res.status(413).json({
-
-                    success: false,
-
-                    message:
-                        "File is too large."
-                });
-            }
-
-            if (
-                error.code ===
-                "LIMIT_FILE_COUNT"
-            ) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Too many files uploaded."
-                });
-            }
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
                     error.message ||
-                    "File upload error."
+                    "Internal server error."
+
             });
+
         }
 
-        if (error) {
-
-            console.error(
-                "UPLOAD ERROR:",
-                error
-            );
-
-            return res.status(400).json({
-
-                success: false,
-
-                message:
-                    error.message ||
-                    "Upload failed."
-            });
-        }
 
         next();
+
     }
 );
 
-// =====================================================
-// 404 HANDLER
-// =====================================================
+
+/* ==================================================
+   404 HANDLER
+================================================== */
 
 app.use(
-    function (
-        req,
-        res
-    ) {
+    (req, res) => {
 
-        if (
-            req.originalUrl.startsWith(
-                "/api/"
-            )
-        ) {
-
-            return res.status(404).json({
-
-                success: false,
-
-                message:
-                    "API endpoint not found."
-            });
-        }
-
-        return res.status(404).send(
-            "Page not found."
-        );
-    }
-);
-
-// =====================================================
-// GLOBAL ERROR HANDLER
-// =====================================================
-
-app.use(
-    function (
-        error,
-        req,
-        res,
-        next
-    ) {
-
-        console.error(
-            "SERVER ERROR:",
-            error
-        );
-
-        if (
-            res.headersSent
-        ) {
-
-            return next(
-                error
-            );
-        }
-
-        return res.status(500).json({
+        res.status(404).json({
 
             success: false,
 
             message:
-                error.message ||
-                "Internal server error."
+                "API endpoint not found."
+
         });
+
     }
 );
 
-// =====================================================
-// START SERVER
-// =====================================================
+
+/* ==================================================
+   GLOBAL ERROR HANDLER
+================================================== */
+
+app.use(
+    (error, req, res, next) => {
+
+        console.error(
+            "Global error:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Internal server error.",
+
+            error:
+                error.message
+
+        });
+
+    }
+);
+
+
+/* ==================================================
+   MONGODB CONNECTION
+================================================== */
+
+mongoose
+    .connect(
+        process.env.MONGODB_URI
+    )
+    .then(
+        () => {
+
+            console.log(
+                "MongoDB connected successfully"
+            );
+
+        }
+    )
+    .catch(
+        (error) => {
+
+            console.error(
+                "MongoDB connection failed:",
+                error.message
+            );
+
+        }
+    );
+
+
+/* ==================================================
+   START SERVER
+================================================== */
 
 app.listen(
     PORT,
     "0.0.0.0",
-    function () {
+    () => {
 
         console.log(
-            "====================================="
+            `Campus Connect server running on port ${PORT}`
         );
 
         console.log(
-            "ADTU BODO UNION BACKEND"
+            `ADTU Bodo Union server running on http://localhost:${PORT}`
         );
 
         console.log(
-            "====================================="
+            `Frontend: ${FRONTEND_PATH}`
         );
 
         console.log(
-            `Environment: ${NODE_ENV}`
+            `Uploads: ${UPLOADS_PATH}`
         );
 
-        console.log(
-            `Port: ${PORT}`
-        );
-
-        console.log(
-            `Frontend: ${frontendPath}`
-        );
-
-        console.log(
-            `Uploads: ${uploadsPath}`
-        );
-
-        console.log(
-            `Photos: ${photosPath}`
-        );
-
-        console.log(
-            `Videos: ${videosPath}`
-        );
-
-        console.log(
-            "====================================="
-        );
     }
 );

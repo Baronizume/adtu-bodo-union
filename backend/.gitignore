@@ -1,0 +1,13 @@
+# Environment variables and secrets
+backend/.env
+.env
+.env.*
+
+# Dependencies
+node_modules/
+
+# Local uploads and media
+uploads/
+
+# Backup files
+backend/old-media-backup.json

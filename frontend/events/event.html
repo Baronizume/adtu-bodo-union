@@ -5,20 +5,13 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ADTU Bodo Union | Event</title>
 
-    <link
-        rel="stylesheet"
-        href="../css/style.css"
-    >
+    <link rel="stylesheet" href="../css/style.css">
 
     <style>
-
         .event-details {
             max-width: 1100px;
             margin: 0 auto;
@@ -70,6 +63,12 @@
             line-height: 1.8;
             color: #444;
             white-space: pre-line;
+        }
+
+        .event-location {
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
 
         .event-media-section {
@@ -271,7 +270,6 @@
             }
 
         }
-
     </style>
 
 </head>
@@ -279,16 +277,15 @@
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- =================================================
+         NAVBAR
+    ================================================== -->
 
     <header class="navbar">
 
         <div class="nav-container">
 
-            <a
-                href="../index.html"
-                class="brand"
-            >
+            <a href="../index.html" class="brand">
 
                 <div class="brand-logo">
                     ABU
@@ -329,23 +326,19 @@
     </header>
 
 
-    <!-- MAIN -->
+    <!-- =================================================
+         MAIN
+    ================================================== -->
 
     <main>
 
         <section class="event-details">
 
-            <a
-                href="../index.html#events"
-                class="back-button"
-            >
+            <a href="../index.html#events" class="back-button">
                 ← Back to Events
             </a>
 
-            <div
-                id="event-details-container"
-                class="event-details-card"
-            >
+            <div id="event-details-container" class="event-details-card">
 
                 <div class="event-detail-icon">
                     📅
@@ -359,22 +352,22 @@
                     Loading event...
                 </h1>
 
-                <p
-                    id="eventDate"
-                    class="event-date"
-                >
+                <p id="eventDate" class="event-date">
                     Loading date...
                 </p>
 
-                <p
-                    id="eventDescription"
-                    class="event-detail-description"
-                >
+                <p id="eventLocation" class="event-location">
+                    Loading location...
+                </p>
+
+                <p id="eventDescription" class="event-detail-description">
                     Loading event details...
                 </p>
 
 
-                <!-- MEDIA -->
+                <!-- =================================================
+                     MEDIA SECTION
+                ================================================== -->
 
                 <div class="event-media-section">
 
@@ -386,65 +379,47 @@
                         Photos and videos from this event.
                     </p>
 
+
                     <div class="media-info">
 
-                        <span
-                            id="photoCount"
-                            class="media-count photo-count"
-                        >
+                        <span id="photoCount" class="media-count photo-count">
                             📷 Photos: 0
                         </span>
 
-                        <span
-                            id="videoCount"
-                            class="media-count video-count"
-                        >
+                        <span id="videoCount" class="media-count video-count">
                             🎥 Videos: 0
                         </span>
 
                     </div>
 
 
+                    <!-- PHOTOS -->
+
                     <h3 class="media-title">
                         📷 Event Photos
                     </h3>
 
-                    <div
-                        id="photoGallery"
-                        class="media-gallery"
-                    ></div>
+                    <div id="photoGallery" class="media-gallery"></div>
 
-                    <div
-                        id="photoEmpty"
-                        class="media-empty"
-                        style="display: none;"
-                    >
+                    <div id="photoEmpty" class="media-empty" style="display: none;">
                         No photos uploaded for this event yet.
                     </div>
 
+
+                    <!-- VIDEOS -->
 
                     <h3 class="media-title">
                         🎥 Event Videos
                     </h3>
 
-                    <div
-                        id="videoGallery"
-                        class="media-gallery"
-                    ></div>
+                    <div id="videoGallery" class="media-gallery"></div>
 
-                    <div
-                        id="videoEmpty"
-                        class="media-empty"
-                        style="display: none;"
-                    >
+                    <div id="videoEmpty" class="media-empty" style="display: none;">
                         No videos uploaded for this event yet.
                     </div>
 
 
-                    <p
-                        id="mediaStatus"
-                        class="status-message"
-                    >
+                    <p id="mediaStatus" class="status-message">
                         Loading photos and videos...
                     </p>
 
@@ -457,30 +432,24 @@
     </main>
 
 
-    <!-- LIGHTBOX -->
+    <!-- =================================================
+         LIGHTBOX
+    ================================================== -->
 
-    <div
-        id="lightbox"
-        class="lightbox"
-    >
+    <div id="lightbox" class="lightbox">
 
-        <span
-            id="lightboxClose"
-            class="lightbox-close"
-        >
+        <span id="lightboxClose" class="lightbox-close">
             ×
         </span>
 
-        <img
-            id="lightboxImage"
-            src=""
-            alt="Event photo"
-        >
+        <img id="lightboxImage" src="" alt="Event photo">
 
     </div>
 
 
-    <!-- FOOTER -->
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
 
     <footer>
 
@@ -513,23 +482,17 @@
     </footer>
 
 
-    <!-- FIREBASE -->
-
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
-    <script src="../js/firebase.js"></script>
-
+    <!-- =================================================
+         JAVASCRIPT
+    ================================================== -->
 
     <script>
 
         // =================================================
-        // RENDER BACKEND
+        // BACKEND
         // =================================================
 
-        const API_BASE_URL =
-            "https://adtu-bodo-union.onrender.com";
+        const API_BASE_URL = "";
 
 
         // =================================================
@@ -542,10 +505,11 @@
         const eventDate =
             document.getElementById("eventDate");
 
+        const eventLocation =
+            document.getElementById("eventLocation");
+
         const eventDescription =
-            document.getElementById(
-                "eventDescription"
-            );
+            document.getElementById("eventDescription");
 
         const eventContainer =
             document.getElementById(
@@ -553,54 +517,34 @@
             );
 
         const photoCount =
-            document.getElementById(
-                "photoCount"
-            );
+            document.getElementById("photoCount");
 
         const videoCount =
-            document.getElementById(
-                "videoCount"
-            );
+            document.getElementById("videoCount");
 
         const photoGallery =
-            document.getElementById(
-                "photoGallery"
-            );
+            document.getElementById("photoGallery");
 
         const videoGallery =
-            document.getElementById(
-                "videoGallery"
-            );
+            document.getElementById("videoGallery");
 
         const photoEmpty =
-            document.getElementById(
-                "photoEmpty"
-            );
+            document.getElementById("photoEmpty");
 
         const videoEmpty =
-            document.getElementById(
-                "videoEmpty"
-            );
+            document.getElementById("videoEmpty");
 
         const mediaStatus =
-            document.getElementById(
-                "mediaStatus"
-            );
+            document.getElementById("mediaStatus");
 
         const lightbox =
-            document.getElementById(
-                "lightbox"
-            );
+            document.getElementById("lightbox");
 
         const lightboxImage =
-            document.getElementById(
-                "lightboxImage"
-            );
+            document.getElementById("lightboxImage");
 
         const lightboxClose =
-            document.getElementById(
-                "lightboxClose"
-            );
+            document.getElementById("lightboxClose");
 
 
         // =================================================
@@ -634,28 +578,12 @@
                 return "Date not available";
             }
 
-            let date;
-
-            if (typeof dateValue === "string") {
-
-                date = new Date(
-                    dateValue.includes("T")
+            const date =
+                new Date(
+                    String(dateValue).includes("T")
                         ? dateValue
                         : dateValue + "T00:00:00"
                 );
-
-            } else if (
-                dateValue &&
-                typeof dateValue.toDate === "function"
-            ) {
-
-                date = dateValue.toDate();
-
-            } else {
-
-                date = new Date(dateValue);
-
-            }
 
             if (isNaN(date.getTime())) {
                 return String(dateValue);
@@ -674,7 +602,36 @@
 
 
         // =================================================
-        // MEDIA URL
+        // DISPLAY EVENT
+        // =================================================
+
+        function displayEvent(data) {
+
+            eventName.textContent =
+                data.title ||
+                data.name ||
+                "Untitled Event";
+
+            eventDate.textContent =
+                "📅 " +
+                formatDate(data.date);
+
+            eventLocation.textContent =
+                "📍 " +
+                (
+                    data.location ||
+                    "Location not available"
+                );
+
+            eventDescription.textContent =
+                data.description ||
+                "No description available.";
+
+        }
+
+
+        // =================================================
+        // GET MEDIA URL
         // =================================================
 
         function getMediaUrl(media) {
@@ -689,10 +646,7 @@
 
             return (
                 media.url ||
-                media.downloadURL ||
-                media.fileUrl ||
-                media.fileURL ||
-                media.src ||
+                media.path ||
                 ""
             );
 
@@ -700,7 +654,7 @@
 
 
         // =================================================
-        // MEDIA NAME
+        // GET MEDIA NAME
         // =================================================
 
         function getMediaName(
@@ -708,59 +662,27 @@
             index
         ) {
 
+            if (!media) {
+                return "Media " + (index + 1);
+            }
+
             if (typeof media === "string") {
 
-                try {
+                const parts =
+                    media.split("/");
 
-                    const cleanUrl =
-                        media.split("?")[0];
-
-                    const parts =
-                        cleanUrl.split("/");
-
-                    return (
-                        decodeURIComponent(
-                            parts[parts.length - 1]
-                        ) ||
-                        "Media " + (index + 1)
-                    );
-
-                } catch (error) {
-
-                    return "Media " + (index + 1);
-
-                }
+                return (
+                    parts[parts.length - 1] ||
+                    "Media " + (index + 1)
+                );
 
             }
 
             return (
-                media.name ||
-                media.fileName ||
+                media.originalName ||
                 media.filename ||
                 "Media " + (index + 1)
             );
-
-        }
-
-
-        // =================================================
-        // DISPLAY EVENT
-        // =================================================
-
-        function displayEvent(data) {
-
-            eventName.textContent =
-                data.name ||
-                data.title ||
-                "Untitled Event";
-
-            eventDate.textContent =
-                "📅 " +
-                formatDate(data.date);
-
-            eventDescription.textContent =
-                data.description ||
-                "No description available.";
 
         }
 
@@ -782,33 +704,37 @@
                     "block";
 
                 return;
+
             }
 
             photoEmpty.style.display =
                 "none";
 
-            photos.forEach(
-                function(photo, index) {
 
-                    const url =
+            photos.forEach(
+                function (photo, index) {
+
+                    const relativeUrl =
                         getMediaUrl(photo);
 
-                    if (!url) {
+                    if (!relativeUrl) {
                         return;
                     }
 
+                    const url =
+                        API_BASE_URL +
+                        relativeUrl;
+
+
                     const card =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     card.className =
                         "media-card";
 
+
                     const image =
-                        document.createElement(
-                            "img"
-                        );
+                        document.createElement("img");
 
                     image.src =
                         url;
@@ -822,9 +748,10 @@
                     image.loading =
                         "lazy";
 
+
                     image.addEventListener(
                         "click",
-                        function() {
+                        function () {
 
                             lightboxImage.src =
                                 url;
@@ -836,9 +763,10 @@
                         }
                     );
 
+
                     image.addEventListener(
                         "error",
-                        function() {
+                        function () {
 
                             console.error(
                                 "PHOTO LOAD FAILED:",
@@ -850,14 +778,14 @@
                         }
                     );
 
+
                     card.appendChild(
                         image
                     );
 
+
                     const name =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     name.className =
                         "media-name";
@@ -868,9 +796,11 @@
                             index
                         );
 
+
                     card.appendChild(
                         name
                     );
+
 
                     photoGallery.appendChild(
                         card
@@ -899,33 +829,37 @@
                     "block";
 
                 return;
+
             }
 
             videoEmpty.style.display =
                 "none";
 
-            videos.forEach(
-                function(video, index) {
 
-                    const url =
+            videos.forEach(
+                function (video, index) {
+
+                    const relativeUrl =
                         getMediaUrl(video);
 
-                    if (!url) {
+                    if (!relativeUrl) {
                         return;
                     }
 
+                    const url =
+                        API_BASE_URL +
+                        relativeUrl;
+
+
                     const card =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     card.className =
                         "media-card";
 
+
                     const videoElement =
-                        document.createElement(
-                            "video"
-                        );
+                        document.createElement("video");
 
                     videoElement.src =
                         url;
@@ -939,14 +873,14 @@
                     videoElement.playsInline =
                         true;
 
+
                     card.appendChild(
                         videoElement
                     );
 
+
                     const name =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     name.className =
                         "media-name";
@@ -957,9 +891,11 @@
                             index
                         );
 
+
                     card.appendChild(
                         name
                     );
+
 
                     videoGallery.appendChild(
                         card
@@ -972,108 +908,57 @@
 
 
         // =================================================
-        // LOAD EVENT MEDIA FROM RENDER
+        // LOAD EVENT MEDIA
         // =================================================
 
         async function loadEventMedia() {
 
-            if (!eventId) {
-
-                throw new Error(
-                    "Event ID is missing."
-                );
-
-            }
-
-            mediaStatus.textContent =
-                "Loading photos and videos...";
-
-            mediaStatus.className =
-                "status-message";
-
-
-            const apiUrl =
-                API_BASE_URL +
-                "/api/upload/event/" +
-                encodeURIComponent(
-                    eventId
-                );
-
-
-            console.log(
-                "Loading event media from:",
-                apiUrl
-            );
-
-
             const response =
                 await fetch(
-                    apiUrl,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Accept":
-                                "application/json"
-                        }
-                    }
+                    API_BASE_URL +
+                    "/api/media/event/" +
+                    encodeURIComponent(eventId)
                 );
 
 
-            if (!response.ok) {
-
-                throw new Error(
-                    "Media API returned HTTP " +
-                    response.status
-                );
-
-            }
-
-
-            const mediaData =
+            const result =
                 await response.json();
 
 
             console.log(
                 "EVENT MEDIA RESPONSE:",
-                mediaData
+                result
             );
 
 
             if (
-                !mediaData ||
-                mediaData.success !== true
+                !response.ok ||
+                result.success !== true
             ) {
 
                 throw new Error(
-                    mediaData &&
-                    mediaData.message
-                        ? mediaData.message
-                        : "Media API returned an invalid response."
+                    result.message ||
+                    "Unable to load event media."
                 );
 
             }
 
 
             const photos =
-                Array.isArray(
-                    mediaData.photos
-                )
-                    ? mediaData.photos
+                Array.isArray(result.photos)
+                    ? result.photos
                     : [];
 
 
             const videos =
-                Array.isArray(
-                    mediaData.videos
-                )
-                    ? mediaData.videos
+                Array.isArray(result.videos)
+                    ? result.videos
                     : [];
 
 
             photoCount.textContent =
                 "📷 Photos: " +
                 photos.length;
-
 
             videoCount.textContent =
                 "🎥 Videos: " +
@@ -1083,7 +968,6 @@
             displayPhotos(
                 photos
             );
-
 
             displayVideos(
                 videos
@@ -1115,7 +999,7 @@
 
 
         // =================================================
-        // LOAD EVENT FROM FIREBASE
+        // LOAD EVENT FROM MONGODB
         // =================================================
 
         async function loadEvent() {
@@ -1127,42 +1011,57 @@
                 );
 
                 return;
+
             }
 
 
             try {
 
-                const eventDoc =
-                    await db
-                        .collection("events")
-                        .doc(eventId)
-                        .get();
+                console.log(
+                    "Loading event from MongoDB:",
+                    eventId
+                );
 
 
-                if (!eventDoc.exists) {
+                const response =
+                    await fetch(
+                        API_BASE_URL +
+                        "/api/events/" +
+                        encodeURIComponent(eventId)
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "EVENT API RESPONSE:",
+                    result
+                );
+
+
+                if (
+                    !response.ok ||
+                    result.success !== true
+                ) {
 
                     showError(
+                        result.message ||
                         "Event not found."
                     );
 
                     return;
+
                 }
 
 
-                const data =
-                    eventDoc.data();
-
-
-                console.log(
-                    "EVENT DATA:",
-                    data
-                );
-
-
                 displayEvent(
-                    data
+                    result.data
                 );
 
+
+                // Load photos and videos
 
                 try {
 
@@ -1181,6 +1080,7 @@
 
                     videoCount.textContent =
                         "🎥 Videos: 0";
+
 
                     displayPhotos([]);
 
@@ -1202,6 +1102,7 @@
                     error
                 );
 
+
                 showError(
                     "Could not load the event."
                 );
@@ -1216,7 +1117,7 @@
         // =================================================
 
         lightboxClose.onclick =
-            function() {
+            function () {
 
                 closeLightbox();
 
@@ -1224,7 +1125,7 @@
 
 
         lightbox.onclick =
-            function(event) {
+            function (event) {
 
                 if (
                     event.target ===
@@ -1240,7 +1141,7 @@
 
         document.addEventListener(
             "keydown",
-            function(event) {
+            function (event) {
 
                 if (
                     event.key === "Escape"
@@ -1267,26 +1168,23 @@
 
 
         // =================================================
-        // ERROR PAGE
+        // ERROR
         // =================================================
 
         function showError(message) {
 
             eventContainer.innerHTML = "";
 
+
             const wrapper =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             wrapper.className =
                 "not-found";
 
 
             const icon =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             icon.style.fontSize =
                 "50px";
@@ -1299,27 +1197,21 @@
 
 
             const heading =
-                document.createElement(
-                    "h1"
-                );
+                document.createElement("h1");
 
             heading.textContent =
                 message;
 
 
             const paragraph =
-                document.createElement(
-                    "p"
-                );
+                document.createElement("p");
 
             paragraph.textContent =
                 "The event may have been removed or the link may be incorrect.";
 
 
             const link =
-                document.createElement(
-                    "a"
-                );
+                document.createElement("a");
 
             link.href =
                 "../index.html#events";
@@ -1332,9 +1224,13 @@
 
 
             wrapper.appendChild(icon);
+
             wrapper.appendChild(heading);
+
             wrapper.appendChild(paragraph);
+
             wrapper.appendChild(link);
+
 
             eventContainer.appendChild(
                 wrapper
@@ -1361,8 +1257,7 @@
         );
 
         console.log(
-            "Backend API:",
-            API_BASE_URL
+            "Using MongoDB backend"
         );
 
         console.log(

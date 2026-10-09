@@ -3,8 +3,13 @@
 ADTU BODO UNION
 EVENT DETAILS PAGE
 
-MEDIA SYSTEM:
-- Local project files only
+DATABASE:
+- MongoDB Atlas
+- Express API
+- Mongoose
+
+MEDIA:
+- Local project files
 - No Firebase Storage
 - No Google Drive API
 - No Google OAuth
@@ -17,28 +22,17 @@ MEDIA SYSTEM:
 // CONFIGURATION
 // ==================================================
 
-const EVENTS_COLLECTION = "events";
+const EVENTS_API = "/api/events";
 
-const ADMIN_UID = "s7XAHabgLfc92ktoM0kBmdLXfAD3";
+const ADMIN_UID =
+    "s7XAHabgLfc92ktoM0kBmdLXfAD3";
 
-const DEFAULT_MEDIA_FOLDER = "rwnswndri";
+const DEFAULT_MEDIA_FOLDER =
+    "rwnswndri";
 
 
 // ==================================================
 // LOCAL MEDIA
-// ==================================================
-//
-// Folder:
-//
-// frontend/
-//   media/
-//     rwnswndri/
-//       photo1.jpg
-//       photo2.jpg
-//       photo3.jpg
-//       video1.mp4
-//
-// Add every filename here.
 // ==================================================
 
 const LOCAL_PHOTOS = [
@@ -58,49 +52,79 @@ const LOCAL_VIDEOS = [
 // ==================================================
 
 const nameElement =
-    document.getElementById("eventName");
+    document.getElementById(
+        "eventName"
+    );
 
 const descriptionElement =
-    document.getElementById("eventDescription");
+    document.getElementById(
+        "eventDescription"
+    );
 
 const yearElement =
-    document.getElementById("year");
+    document.getElementById(
+        "year"
+    );
 
 const deleteEventButton =
-    document.getElementById("deleteEventButton");
+    document.getElementById(
+        "deleteEventButton"
+    );
 
 const editEventButton =
-    document.getElementById("editEventButton");
+    document.getElementById(
+        "editEventButton"
+    );
 
 const adminUploadSection =
-    document.getElementById("adminUploadSection");
+    document.getElementById(
+        "adminUploadSection"
+    );
 
 const viewMediaButton =
-    document.getElementById("viewMediaButton");
+    document.getElementById(
+        "viewMediaButton"
+    );
 
 const eventGallery =
-    document.getElementById("eventGallery");
+    document.getElementById(
+        "eventGallery"
+    );
 
 const photoGallery =
-    document.getElementById("photoGallery");
+    document.getElementById(
+        "photoGallery"
+    );
 
 const videoGallery =
-    document.getElementById("videoGallery");
+    document.getElementById(
+        "videoGallery"
+    );
 
 const qrImage =
-    document.getElementById("eventQrImage");
+    document.getElementById(
+        "eventQrImage"
+    );
 
 const qrButton =
-    document.getElementById("qrButton");
+    document.getElementById(
+        "qrButton"
+    );
 
 const photoLightbox =
-    document.getElementById("photoLightbox");
+    document.getElementById(
+        "photoLightbox"
+    );
 
 const lightboxImage =
-    document.getElementById("lightboxImage");
+    document.getElementById(
+        "lightboxImage"
+    );
 
 const lightboxClose =
-    document.getElementById("lightboxClose");
+    document.getElementById(
+        "lightboxClose"
+    );
 
 
 // ==================================================
@@ -144,7 +168,9 @@ function isAdmin() {
     if (
         typeof auth === "undefined"
     ) {
+
         return false;
+
     }
 
     const user =
@@ -154,6 +180,7 @@ function isAdmin() {
         user &&
         user.uid === ADMIN_UID
     );
+
 }
 
 
@@ -172,6 +199,7 @@ function updateAdminControls() {
             admin
                 ? "inline-block"
                 : "none";
+
     }
 
     if (editEventButton) {
@@ -180,13 +208,11 @@ function updateAdminControls() {
             admin
                 ? "inline-block"
                 : "none";
+
     }
 
     /*
-    Google Drive / upload system
-    is completely disabled.
-
-    Hide old HTML section if it still exists.
+    Old upload section is disabled.
     */
 
     if (adminUploadSection) {
@@ -229,15 +255,20 @@ if (
 // FORMAT DATE
 // ==================================================
 
-function formatDate(dateString) {
+function formatDate(
+    dateString
+) {
 
     if (!dateString) {
+
         return "";
+
     }
 
     const date =
         new Date(
-            dateString + "T00:00:00"
+            dateString +
+            "T00:00:00"
         );
 
     if (
@@ -266,17 +297,23 @@ function formatDate(dateString) {
 // MEDIA FOLDER
 // ==================================================
 
-function getMediaFolder(event) {
+function getMediaFolder(
+    event
+) {
 
     if (
         event &&
-        typeof event.mediaFolder === "string" &&
+        typeof event.mediaFolder ===
+        "string" &&
         event.mediaFolder.trim()
     ) {
 
         return event.mediaFolder
             .trim()
-            .replace(/^\/+|\/+$/g, "");
+            .replace(
+                /^\/+|\/+$/g,
+                ""
+            );
 
     }
 
@@ -298,8 +335,13 @@ function createMediaURL(
         mediaFolder
             .split("/")
             .map(
-                part =>
-                    encodeURIComponent(part)
+                function (part) {
+
+                    return encodeURIComponent(
+                        part
+                    );
+
+                }
             )
             .join("/");
 
@@ -307,8 +349,13 @@ function createMediaURL(
         filename
             .split("/")
             .map(
-                part =>
-                    encodeURIComponent(part)
+                function (part) {
+
+                    return encodeURIComponent(
+                        part
+                    );
+
+                }
             )
             .join("/");
 
@@ -323,7 +370,7 @@ function createMediaURL(
 
 
 // ==================================================
-// LOAD EVENT
+// LOAD EVENT FROM MONGODB
 // ==================================================
 
 async function loadEvent() {
@@ -340,27 +387,33 @@ async function loadEvent() {
 
     try {
 
-        if (
-            typeof db === "undefined"
-        ) {
+        console.log(
+            "Loading event:",
+            eventId
+        );
 
-            throw new Error(
-                "Firebase Firestore is not initialized."
+        const response =
+            await fetch(
+                `${EVENTS_API}/${encodeURIComponent(
+                    eventId
+                )}`
             );
 
-        }
+        const result =
+            await response.json();
 
-        const eventDoc =
-            await db
-                .collection(
-                    EVENTS_COLLECTION
-                )
-                .doc(eventId)
-                .get();
+        console.log(
+            "Event API response:",
+            result
+        );
 
-        if (!eventDoc.exists) {
+        if (
+            !response.ok ||
+            !result.success
+        ) {
 
             showEventError(
+                result.message ||
                 "This event could not be found."
             );
 
@@ -369,15 +422,13 @@ async function loadEvent() {
         }
 
         currentEvent =
-            eventDoc.data();
+            result.data;
 
         displayEvent(
             currentEvent
         );
 
-        loadLocalMedia(
-            currentEvent
-        );
+        loadEventMedia();
 
     } catch (error) {
 
@@ -399,11 +450,14 @@ async function loadEvent() {
 // DISPLAY EVENT
 // ==================================================
 
-function displayEvent(event) {
+function displayEvent(
+    event
+) {
 
     if (nameElement) {
 
         nameElement.textContent =
+            event.title ||
             event.name ||
             "Untitled Event";
 
@@ -420,15 +474,35 @@ function displayEvent(event) {
                 event.date
             );
 
+        const location =
+            event.location ||
+            "";
+
         if (date) {
 
             if (text) {
+
                 text += " ";
+
             }
 
             text +=
                 "Date: " +
                 date;
+
+        }
+
+        if (location) {
+
+            if (text) {
+
+                text += " ";
+
+            }
+
+            text +=
+                "Location: " +
+                location;
 
         }
 
@@ -450,7 +524,9 @@ function displayEvent(event) {
     const qrURL =
         "https://api.qrserver.com/v1/create-qr-code/" +
         "?size=300x300&data=" +
-        encodeURIComponent(eventURL);
+        encodeURIComponent(
+            eventURL
+        );
 
     if (qrImage) {
 
@@ -468,78 +544,105 @@ function displayEvent(event) {
 
 }
 
-
 // ==================================================
-// LOAD LOCAL MEDIA
+// LOAD EVENT MEDIA
 // ==================================================
 
-function loadLocalMedia(event) {
+async function loadEventMedia() {
 
-    const mediaFolder =
-        getMediaFolder(event);
+    if (!eventId) {
 
-    console.log(
-        "Loading local media:",
-        mediaFolder
-    );
+        showEmptyMedia();
+
+        return;
+
+    }
+
+    try {
+
+        console.log(
+            "Loading media for event:",
+            eventId
+        );
 
 
-    // ==================================================
-    // PHOTOS
-    // ==================================================
-
-    const photos =
-        LOCAL_PHOTOS
-            .filter(
-                filename =>
-                    filename &&
-                    isPhoto(filename)
-            )
-            .map(
-                filename => ({
-                    name: filename,
-                    type: "photo"
-                })
+        const response =
+            await fetch(
+                `/api/media/event/${encodeURIComponent(eventId)}`
             );
 
 
-    // ==================================================
-    // VIDEOS
-    // ==================================================
+        const result =
+            await response.json();
 
-    const videos =
-        LOCAL_VIDEOS
-            .filter(
-                filename =>
-                    filename &&
-                    isVideo(filename)
-            )
-            .map(
-                filename => ({
-                    name: filename,
-                    type: "video"
-                })
+
+        console.log(
+            "Event media response:",
+            result
+        );
+
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            throw new Error(
+                result.message ||
+                "Could not load event media."
             );
 
+        }
 
-    displayLocalPhotos(
-        photos,
-        mediaFolder
-    );
 
-    displayLocalVideos(
-        videos,
-        mediaFolder
-    );
+        const photos =
+            Array.isArray(result.photos)
+                ? result.photos
+                : [];
+
+
+        const videos =
+            Array.isArray(result.videos)
+                ? result.videos
+                : [];
+
+
+        displayEventPhotos(photos);
+
+        displayEventVideos(videos);
+
+
+        updatePhotoCount(
+            photos.length
+        );
+
+
+        updateVideoCount(
+            videos.length
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Event media loading error:",
+            error
+        );
+
+        showEmptyMedia();
+
+    }
 
 }
-
 
 // ==================================================
 // CHECK PHOTO
 // ==================================================
 
-function isPhoto(filename) {
+function isPhoto(
+    filename
+) {
 
     const lower =
         filename.toLowerCase();
@@ -559,7 +662,9 @@ function isPhoto(filename) {
 // CHECK VIDEO
 // ==================================================
 
-function isVideo(filename) {
+function isVideo(
+    filename
+) {
 
     const lower =
         filename.toLowerCase();
@@ -573,98 +678,79 @@ function isVideo(filename) {
 
 }
 
-
 // ==================================================
-// DISPLAY PHOTOS
+// DISPLAY EVENT PHOTOS
 // ==================================================
 
-function displayLocalPhotos(
-    photos,
-    mediaFolder
-) {
+function displayEventPhotos(photos) {
 
-    updatePhotoCount(
-        photos.length
-    );
+    const gallery =
+        document.getElementById(
+            "photoGallery"
+        );
 
-    if (!photoGallery) {
+    if (!gallery) {
         return;
     }
 
-    photoGallery.innerHTML =
-        "";
 
-    if (photos.length === 0) {
+    gallery.innerHTML = "";
 
-        photoGallery.innerHTML = `
-            <div class="media-empty">
+
+    if (
+        !Array.isArray(photos) ||
+        photos.length === 0
+    ) {
+
+        gallery.innerHTML = `
+            <p class="empty-media">
                 No photos available.
-            </div>
+            </p>
         `;
 
         return;
-
     }
 
 
     photos.forEach(
-        function (file) {
+        (photo, index) => {
 
             const image =
-                document.createElement(
-                    "img"
-                );
+                document.createElement("img");
 
-            image.className =
-                "event-gallery-image";
+
+            image.src =
+                photo.url;
+
+
+            image.alt =
+                photo.originalName ||
+                `Event Photo ${index + 1}`;
+
 
             image.loading =
                 "lazy";
 
-            image.alt =
-                file.name ||
-                "Event photo";
 
-            const imageURL =
-                createMediaURL(
-                    mediaFolder,
-                    file.name
-                );
-
-            image.src =
-                imageURL;
-
-
-            image.addEventListener(
-                "error",
-                function () {
-
-                    console.warn(
-                        "Could not load:",
-                        imageURL
-                    );
-
-                    image.style.display =
-                        "none";
-
-                }
-            );
+            image.className =
+                "event-photo";
 
 
             image.addEventListener(
                 "click",
-                function () {
+                () => {
 
                     openLightbox(
-                        imageURL,
-                        file.name
+                        photo.url,
+                        photo.originalName ||
+                        `Event Photo ${index + 1}`
                     );
 
                 }
             );
 
 
-            photoGallery.appendChild(
+            gallery.appendChild(
                 image
             );
 
@@ -673,150 +759,84 @@ function displayLocalPhotos(
 
 }
 
-
 // ==================================================
-// DISPLAY VIDEOS
+// DISPLAY EVENT VIDEOS
 // ==================================================
 
-function displayLocalVideos(
-    videos,
-    mediaFolder
-) {
+function displayEventVideos(videos) {
 
-    updateVideoCount(
-        videos.length
-    );
+    const gallery =
+        document.getElementById(
+            "videoGallery"
+        );
 
-    if (!videoGallery) {
+    if (!gallery) {
         return;
     }
 
-    videoGallery.innerHTML =
-        "";
 
-    if (videos.length === 0) {
+    gallery.innerHTML = "";
 
-        videoGallery.innerHTML = `
-            <div class="media-empty">
+
+    if (
+        !Array.isArray(videos) ||
+        videos.length === 0
+    ) {
+
+        gallery.innerHTML = `
+            <p class="empty-media">
                 No videos available.
-            </div>
+            </p>
         `;
 
         return;
-
     }
 
 
     videos.forEach(
-        function (file) {
+        (video, index) => {
 
-            const wrapper =
-                document.createElement(
-                    "div"
-                );
-
-            wrapper.className =
-                "drive-video-item";
+            const videoElement =
+                document.createElement("video");
 
 
-            const video =
-                document.createElement(
-                    "video"
-                );
+            videoElement.src =
+                video.url;
 
-            video.className =
-                "event-gallery-video";
 
-            video.controls =
+            videoElement.controls =
                 true;
 
-            video.preload =
+
+            videoElement.preload =
                 "metadata";
 
-            video.playsInline =
-                true;
 
-            video.src =
-                createMediaURL(
-                    mediaFolder,
-                    file.name
-                );
+            videoElement.className =
+                "event-video";
 
 
-            const title =
-                document.createElement(
-                    "p"
-                );
-
-            title.className =
-                "video-file-name";
-
-            title.textContent =
-                file.name;
-
-
-            wrapper.appendChild(
-                video
+            videoElement.setAttribute(
+                "playsinline",
+                ""
             );
 
-            wrapper.appendChild(
-                title
+
+            videoElement.setAttribute(
+                "title",
+                video.originalName ||
+                `Event Video ${index + 1}`
             );
 
-            videoGallery.appendChild(
-                wrapper
+
+            gallery.appendChild(
+                videoElement
             );
 
         }
     );
 
 }
-
-
-// ==================================================
-// COUNTS
-// ==================================================
-
-function updatePhotoCount(count) {
-
-    const elements =
-        document.querySelectorAll(
-            "#photoUploadCount, #photoCount"
-        );
-
-    elements.forEach(
-        function (element) {
-
-            element.textContent =
-                "📷 Photos: " +
-                count;
-
-        }
-    );
-
-}
-
-
-function updateVideoCount(count) {
-
-    const elements =
-        document.querySelectorAll(
-            "#videoUploadCount, #videoCount"
-        );
-
-    elements.forEach(
-        function (element) {
-
-            element.textContent =
-                "🎥 Videos: " +
-                count;
-
-        }
-    );
-
-}
-
-
 // ==================================================
 // EMPTY MEDIA
 // ==================================================
@@ -854,7 +874,9 @@ function showEmptyMedia() {
 // EVENT ERROR
 // ==================================================
 
-function showEventError(message) {
+function showEventError(
+    message
+) {
 
     if (nameElement) {
 
@@ -886,7 +908,9 @@ if (viewMediaButton) {
         function () {
 
             if (!eventGallery) {
+
                 return;
+
             }
 
             eventGallery.scrollIntoView({
@@ -921,7 +945,9 @@ if (editEventButton) {
             }
 
             if (!eventId) {
+
                 return;
+
             }
 
             window.location.href =
@@ -957,7 +983,9 @@ if (deleteEventButton) {
             }
 
             if (!eventId) {
+
                 return;
+
             }
 
             const eventName =
@@ -971,7 +999,9 @@ if (deleteEventButton) {
                 );
 
             if (!confirmed) {
+
                 return;
+
             }
 
             deleteEventButton.disabled =
@@ -983,12 +1013,30 @@ if (deleteEventButton) {
 
             try {
 
-                await db
-                    .collection(
-                        EVENTS_COLLECTION
-                    )
-                    .doc(eventId)
-                    .delete();
+                const response =
+                    await fetch(
+                        `${EVENTS_API}/${encodeURIComponent(
+                            eventId
+                        )}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+                const result =
+                    await response.json();
+
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        result.message ||
+                        "Could not delete the event."
+                    );
+
+                }
 
                 alert(
                     "Event deleted successfully."
@@ -996,7 +1044,6 @@ if (deleteEventButton) {
 
                 window.location.href =
                     "../index.html#events";
-
 
             } catch (error) {
 
@@ -1040,7 +1087,9 @@ function openLightbox(
         !photoLightbox ||
         !lightboxImage
     ) {
+
         return;
+
     }
 
     lightboxImage.src =
@@ -1063,7 +1112,9 @@ function openLightbox(
 function closeLightbox() {
 
     if (!photoLightbox) {
+
         return;
+
     }
 
     photoLightbox.classList.remove(
@@ -1143,7 +1194,7 @@ console.log(
 );
 
 console.log(
-    "LOCAL MEDIA MODE"
+    "MongoDB API MODE"
 );
 
 console.log(
@@ -1167,5 +1218,9 @@ console.log(
     "======================================"
 );
 
+
+// ==================================================
+// LOAD EVENT
+// ==================================================
 
 loadEvent();
