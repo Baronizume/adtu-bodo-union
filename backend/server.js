@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 
 const cloudinary = require("./cloudinary");
@@ -7,11 +8,10 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const cors = require("cors");
-const cloudinary = require("./cloudinary");
 
 const Event = require("./models/Event");
-
 const Media = require("./models/Media");
+
 
 
 /* ==================================================
