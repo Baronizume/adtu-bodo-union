@@ -1,1274 +1,1719 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ADTU Bodo Union | Event</title>
+    <title>Event Details | ADTU Bodo Union</title>
+    <meta name="description" content="Explore event details, photos, and videos from ADTU Bodo Union.">
+    <meta name="theme-color" content="#172554">
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        .event-details {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        :root {
+            --primary: #1d4ed8;
+            --primary-dark: #172554;
+            --primary-light: #eff6ff;
+            --gold: #eab308;
+            --text: #172033;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --surface: #ffffff;
+            --background: #f5f7fb;
+            --success: #15803d;
+            --danger: #b91c1c;
+            --shadow: 0 12px 36px rgba(15, 23, 42, 0.07);
+            --radius: 20px;
         }
 
-        .back-button {
-            display: inline-block;
-            margin-bottom: 20px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.65;
+        }
+
+        a {
+            color: inherit;
             text-decoration: none;
-            color: #2563eb;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        img,
+        video {
+            display: block;
+            max-width: 100%;
+        }
+
+        .container {
+            width: min(1160px, calc(100% - 40px));
+            margin-inline: auto;
+        }
+
+        /* HEADER */
+
+        .site-header {
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(14px);
+        }
+
+        .navbar {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #1d4ed8, #172554);
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            box-shadow: 0 5px 15px rgba(29, 78, 216, 0.2);
+        }
+
+        .brand-name {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            color: var(--primary-dark);
+        }
+
+        .brand-subtitle {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 21px;
+        }
+
+        /* BREADCRUMB */
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin: 30px 0 22px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
             font-weight: 600;
         }
 
-        .event-details-card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 35px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        }
+        /* BUTTONS */
 
-        .event-detail-icon {
-            font-size: 45px;
-            margin-bottom: 8px;
-        }
-
-        .section-label {
-            display: inline-block;
-            color: #2563eb;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-height: 44px;
+            padding: 10px 17px;
+            border-radius: 12px;
+            border: 1px solid transparent;
             font-size: 13px;
             font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
         }
 
-        #eventName {
-            margin: 0 0 12px;
-            font-size: 38px;
-            color: #111827;
+        .btn:hover {
+            transform: translateY(-2px);
         }
 
-        .event-date {
-            color: #666;
-            font-weight: 600;
-            margin-bottom: 20px;
+        .btn-primary {
+            background: var(--primary);
+            color: white;
         }
 
-        .event-detail-description {
-            line-height: 1.8;
-            color: #444;
-            white-space: pre-line;
+        .btn-primary:hover {
+            background: #1e40af;
         }
 
-        .event-location {
-            color: #555;
-            font-weight: 600;
-            margin-bottom: 20px;
+        .btn-outline {
+            background: white;
+            border-color: var(--border);
+            color: var(--text);
         }
 
-        .event-media-section {
-            margin-top: 40px;
-            padding: 28px;
-            border-radius: 15px;
-            background: #f8f9ff;
-            border: 1px solid #e0e4f5;
-        }
+        /* EVENT HERO */
 
-        .event-media-section h2 {
-            margin-top: 0;
-            color: #111827;
-        }
-
-        .media-info {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-
-        .media-count {
-            padding: 10px 16px;
-            background: #fff;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-weight: 700;
-        }
-
-        .photo-count {
-            color: #7b1fa2;
-        }
-
-        .video-count {
-            color: #00897b;
-        }
-
-        .media-title {
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-
-        .media-gallery {
+        .event-hero {
+            position: relative;
+            overflow: hidden;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1.25fr 0.75fr;
+            min-height: 300px;
+            background:
+                radial-gradient(circle at 85% 15%, rgba(59, 130, 246, 0.35), transparent 32%),
+                linear-gradient(130deg, #172554, #1e40af 65%, #2563eb);
+            color: white;
+            border-radius: 26px;
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+        }
+
+        .event-content {
+            padding: 42px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+            color: #dbeafe;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 25px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        .event-title {
+            font-size: clamp(28px, 4vw, 44px);
+            line-height: 1.17;
+            letter-spacing: -1.3px;
+            overflow-wrap: anywhere;
+            margin-bottom: 20px;
+        }
+
+        .event-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 22px;
+            margin-bottom: 25px;
+            color: #e0e7ff;
+            font-size: 13px;
+        }
+
+        .meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .event-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .event-status.upcoming {
+            color: #dcfce7;
+        }
+
+        .event-status.past {
+            color: #e2e8f0;
+        }
+
+        .event-status.today {
+            color: #fef3c7;
+        }
+
+        .hero-art {
+            min-height: 300px;
+            display: grid;
+            place-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 25px;
+        }
+
+        .hero-art::before,
+        .hero-art::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 50%;
+        }
+
+        .hero-art::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .hero-art::after {
+            width: 220px;
+            height: 220px;
+        }
+
+        .hero-icon {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            width: 145px;
+            height: 145px;
+            border-radius: 36px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            font-size: 66px;
+            transform: rotate(-5deg);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        /* MAIN CONTENT */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 310px;
+            gap: 26px;
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-heading {
+            font-size: 20px;
+            line-height: 1.35;
+            letter-spacing: -0.4px;
+            margin-bottom: 16px;
+        }
+
+        .description {
+            color: #475569;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+
+        .sidebar {
+            display: grid;
             gap: 18px;
         }
 
-        .media-card {
-            background: #fff;
+        .info-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 21px;
+        }
+
+        .info-card-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .info-card-value {
+            font-size: 15px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .info-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: var(--primary-light);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        /* MEDIA SECTION */
+
+        .media-section {
+            margin-top: 38px;
+        }
+
+        .media-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .media-section-header h2 {
+            font-size: 24px;
+            letter-spacing: -0.6px;
+        }
+
+        .media-section-header p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .media-counts {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .count-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 13px;
             border-radius: 12px;
+            background: white;
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .gallery-panel {
+            margin-bottom: 24px;
+        }
+
+        .gallery-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-header h3 {
+            font-size: 17px;
+        }
+
+        .gallery-header span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .media-card {
+            position: relative;
+            min-width: 0;
             overflow: hidden;
-            border: 1px solid #ddd;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+            background: #f1f5f9;
+            border-radius: 14px;
+            aspect-ratio: 4 / 3;
+            border: 1px solid var(--border);
+        }
+
+        .media-card img,
+        .media-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .media-card img {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            display: block;
-            cursor: pointer;
-            transition: transform 0.2s;
+            cursor: zoom-in;
+            transition: transform 0.35s;
         }
 
-        .media-card img:hover {
-            transform: scale(1.02);
+        .media-card:hover img {
+            transform: scale(1.045);
         }
 
         .media-card video {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-            display: block;
-            background: #111;
+            background: #0f172a;
         }
 
-        .media-name {
-            padding: 10px 12px;
-            font-size: 14px;
-            color: #555;
-            word-break: break-word;
+        .media-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 22px 12px 11px;
+            color: white;
+            font-size: 11px;
+            background: linear-gradient(transparent, rgba(15, 23, 42, 0.8));
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            pointer-events: none;
         }
 
-        .media-empty {
+        .empty-state {
+            grid-column: 1 / -1;
             padding: 35px 20px;
             text-align: center;
-            background: #fff;
-            border: 1px dashed #ccc;
-            border-radius: 10px;
-            color: #777;
+            border: 1px dashed #cbd5e1;
+            border-radius: 15px;
+            background: #f8fafc;
+        }
+
+        .empty-state-icon {
+            display: grid;
+            place-items: center;
+            width: 55px;
+            height: 55px;
+            border-radius: 17px;
+            background: #eaf0ff;
+            margin: 0 auto 13px;
+            font-size: 25px;
+        }
+
+        .empty-state h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+            font-size: 12px;
         }
 
         .status-message {
-            margin-top: 15px;
-            min-height: 20px;
-            color: #666;
+            padding: 13px 15px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            display: none;
         }
 
-        .success {
-            color: #2e7d32;
+        .status-message.visible {
+            display: block;
         }
 
-        .error {
-            color: #c62828;
+        .status-message.error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: var(--danger);
         }
+
+        .status-message.info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        /* LOADING */
+
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                #e2e8f0 25%,
+                #f8fafc 50%,
+                #e2e8f0 75%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 12px;
+        }
+
+        .loading-hero {
+            min-height: 300px;
+            margin-bottom: 28px;
+            border-radius: 26px;
+        }
+
+        .loading-line {
+            height: 17px;
+            margin: 14px 0;
+        }
+
+        @keyframes shimmer {
+            from { background-position: 200% 0; }
+            to { background-position: -200% 0; }
+        }
+
+        /* ERROR STATE */
+
+        .error-page {
+            max-width: 600px;
+            margin: 55px auto 70px;
+            padding: 45px 25px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .error-icon {
+            display: grid;
+            place-items: center;
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 20px;
+            border-radius: 24px;
+            background: #fef2f2;
+            font-size: 35px;
+        }
+
+        .error-page h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .error-page p {
+            margin-bottom: 22px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* LIGHTBOX */
 
         .lightbox {
             display: none;
             position: fixed;
-            z-index: 9999;
             inset: 0;
-            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            background: rgba(2, 6, 23, 0.93);
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 30px;
         }
 
-        .lightbox.active {
+        .lightbox.open {
             display: flex;
         }
 
-        .lightbox img {
-            max-width: 95%;
-            max-height: 90vh;
+        .lightbox-content {
+            max-width: min(1100px, 95vw);
+            max-height: 85vh;
             object-fit: contain;
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .lightbox-close {
             position: absolute;
-            top: 20px;
-            right: 25px;
+            top: 18px;
+            right: 22px;
+            width: 45px;
+            height: 45px;
             color: white;
-            font-size: 40px;
+            background: rgba(255, 255, 255, 0.13);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
             cursor: pointer;
-            line-height: 1;
+            font-size: 25px;
         }
 
-        .button {
-            display: inline-block;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 18px;
-            text-decoration: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .button-primary {
-            background: #2563eb;
-            color: #fff;
-        }
-
-        .button-primary:hover {
-            background: #1558b0;
-        }
-
-        .not-found {
+        .lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            color: white;
             text-align: center;
-            padding: 60px 20px;
+            font-size: 13px;
         }
 
-        @media (max-width: 800px) {
+        /* FOOTER */
 
-            .media-gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
+        .site-footer {
+            margin-top: 60px;
+            padding: 32px 0;
+            background: var(--primary-dark);
+            color: #cbd5e1;
         }
 
-        @media (max-width: 600px) {
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
 
-            .event-details {
-                padding: 25px 15px;
-            }
+        .footer-brand {
+            color: white;
+            font-weight: 800;
+            font-size: 14px;
+        }
 
-            .event-details-card {
-                padding: 22px;
-            }
+        .footer-text {
+            font-size: 12px;
+            margin-top: 5px;
+        }
 
-            #eventName {
-                font-size: 28px;
-            }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+        }
 
-            .media-gallery {
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+            .content-grid {
                 grid-template-columns: 1fr;
             }
 
-            .media-card img,
-            .media-card video {
-                height: 250px;
+            .sidebar {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
 
-            .event-media-section {
+            .event-content {
+                padding: 32px;
+            }
+
+            .gallery {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 620px) {
+            .container {
+                width: min(100% - 28px, 1160px);
+            }
+
+            .navbar {
+                min-height: 70px;
+            }
+
+            .brand-logo {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+            }
+
+            .brand-name {
+                font-size: 12px;
+            }
+
+            .brand-subtitle {
+                font-size: 11px;
+            }
+
+            .menu-toggle {
+                display: grid;
+                place-items: center;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                padding: 18px 22px;
+                background: white;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow);
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 12px 0;
+            }
+
+            .breadcrumb {
+                margin: 22px 0 16px;
+            }
+
+            .event-hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .event-content {
+                padding: 27px 23px;
+            }
+
+            .event-title {
+                font-size: 31px;
+            }
+
+            .hero-art {
+                min-height: 150px;
                 padding: 20px;
             }
 
+            .hero-icon {
+                width: 95px;
+                height: 95px;
+                font-size: 43px;
+                border-radius: 25px;
+            }
+
+            .hero-art::before {
+                width: 180px;
+                height: 180px;
+            }
+
+            .hero-art::after {
+                width: 135px;
+                height: 135px;
+            }
+
+            .panel {
+                padding: 21px;
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+
+            .info-card {
+                display: grid;
+                grid-template-columns: 45px 1fr;
+                gap: 0 12px;
+                align-items: center;
+                padding: 17px;
+            }
+
+            .info-icon {
+                grid-row: span 2;
+                margin: 0;
+            }
+
+            .info-card-label {
+                margin: 0;
+            }
+
+            .media-section-header h2 {
+                font-size: 21px;
+            }
+
+            .gallery {
+                gap: 10px;
+            }
+
+            .gallery-panel {
+                padding: 18px;
+            }
+
+            .lightbox {
+                padding: 12px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
-
 </head>
-
 
 <body>
 
-    <!-- =================================================
-         NAVBAR
-    ================================================== -->
-
-    <header class="navbar">
-
-        <div class="nav-container">
-
-            <a href="../index.html" class="brand">
-
-                <div class="brand-logo">
-                    ABU
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container navbar">
+            <a class="brand" href="../index.html" aria-label="ADTU Bodo Union home">
+                <div class="brand-logo">ABU</div>
+                <div>
+                    <div class="brand-name">ADTU BODO UNION</div>
+                    <div class="brand-subtitle">Event &amp; Photo Hub</div>
                 </div>
-
-                <div class="brand-text">
-
-                    <strong>
-                        ADTU BODO UNION
-                    </strong>
-
-                    <span>
-                        Event &amp; Photo Hub
-                    </span>
-
-                </div>
-
             </a>
 
-            <nav>
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Toggle navigation"
+                aria-expanded="false">
+                ☰
+            </button>
 
-                <a href="../index.html">
-                    Home
-                </a>
-
-                <a href="../index.html#events">
-                    Events
-                </a>
-
-                <a href="../index.html#photos">
-                    Photos
-                </a>
-
+            <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#events" class="active">Events</a>
+                <a href="../index.html#photos">Photos</a>
             </nav>
-
         </div>
-
     </header>
 
+    <main class="container">
 
-    <!-- =================================================
-         MAIN
-    ================================================== -->
-
-    <main>
-
-        <section class="event-details">
-
-            <a href="../index.html#events" class="back-button">
-                ← Back to Events
-            </a>
-
-            <div id="event-details-container" class="event-details-card">
-
-                <div class="event-detail-icon">
-                    📅
-                </div>
-
-                <span class="section-label">
-                    EVENT
-                </span>
-
-                <h1 id="eventName">
-                    Loading event...
-                </h1>
-
-                <p id="eventDate" class="event-date">
-                    Loading date...
-                </p>
-
-                <p id="eventLocation" class="event-location">
-                    Loading location...
-                </p>
-
-                <p id="eventDescription" class="event-detail-description">
-                    Loading event details...
-                </p>
-
-
-                <!-- =================================================
-                     MEDIA SECTION
-                ================================================== -->
-
-                <div class="event-media-section">
-
-                    <h2>
-                        📷🎥 Event Photos &amp; Videos
-                    </h2>
-
-                    <p>
-                        Photos and videos from this event.
-                    </p>
-
-
-                    <div class="media-info">
-
-                        <span id="photoCount" class="media-count photo-count">
-                            📷 Photos: 0
-                        </span>
-
-                        <span id="videoCount" class="media-count video-count">
-                            🎥 Videos: 0
-                        </span>
-
-                    </div>
-
-
-                    <!-- PHOTOS -->
-
-                    <h3 class="media-title">
-                        📷 Event Photos
-                    </h3>
-
-                    <div id="photoGallery" class="media-gallery"></div>
-
-                    <div id="photoEmpty" class="media-empty" style="display: none;">
-                        No photos uploaded for this event yet.
-                    </div>
-
-
-                    <!-- VIDEOS -->
-
-                    <h3 class="media-title">
-                        🎥 Event Videos
-                    </h3>
-
-                    <div id="videoGallery" class="media-gallery"></div>
-
-                    <div id="videoEmpty" class="media-empty" style="display: none;">
-                        No videos uploaded for this event yet.
-                    </div>
-
-
-                    <p id="mediaStatus" class="status-message">
-                        Loading photos and videos...
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =================================================
-         LIGHTBOX
-    ================================================== -->
-
-    <div id="lightbox" class="lightbox">
-
-        <span id="lightboxClose" class="lightbox-close">
-            ×
-        </span>
-
-        <img id="lightboxImage" src="" alt="Event photo">
-
-    </div>
-
-
-    <!-- =================================================
-         FOOTER
-    ================================================== -->
-
-    <footer>
-
-        <div class="footer-container">
-
-            <div>
-
-                <strong>
-                    ADTU BODO UNION
-                </strong>
-
-                <p>
-                    Event &amp; Photo Hub
-                </p>
-
-            </div>
-
-            <p>
-
-                ©
-
-                <span id="year"></span>
-
-                ADTU Bodo Union
-
-            </p>
-
+        <div class="breadcrumb">
+            <a href="../index.html">Home</a>
+            <span>›</span>
+            <a href="../index.html#events">Events</a>
+            <span>›</span>
+            <span id="breadcrumbTitle">Event Details</span>
         </div>
 
+        <!-- LOADING PLACEHOLDER -->
+        <section id="loadingView" aria-label="Loading event">
+            <div class="loading-hero skeleton"></div>
+            <div class="panel">
+                <div class="skeleton loading-line" style="width: 35%;"></div>
+                <div class="skeleton loading-line" style="width: 85%;"></div>
+                <div class="skeleton loading-line" style="width: 65%;"></div>
+            </div>
+        </section>
+
+        <!-- ERROR VIEW -->
+        <section id="errorView" class="error-page" hidden>
+            <div class="error-icon">🔎</div>
+            <h2>Event unavailable</h2>
+            <p id="errorMessage">
+                We couldn't load this event. Please check the link and try again.
+            </p>
+            <button class="btn btn-primary" id="retryButton" type="button">
+                ↻ Try Again
+            </button>
+            <a class="btn btn-outline" href="../index.html#events">
+                ← Back to Events
+            </a>
+        </section>
+
+        <!-- EVENT DETAILS -->
+        <div id="eventPage" hidden>
+
+            <section class="event-hero">
+                <div class="event-content">
+                    <div class="eyebrow">ADTU Bodo Union Event Hub</div>
+
+                    <h1 class="event-title" id="eventTitle">
+                        Event title
+                    </h1>
+
+                    <div class="event-meta">
+                        <span class="meta-item">
+                            <span>📅</span>
+                            <span id="heroDate">Date not available</span>
+                        </span>
+
+                        <span class="meta-item">
+                            <span>📍</span>
+                            <span id="heroLocation">Location not available</span>
+                        </span>
+                    </div>
+
+                    <span class="event-status upcoming" id="eventStatus">
+                        Upcoming Event
+                    </span>
+                </div>
+
+                <div class="hero-art" aria-hidden="true">
+                    <div class="hero-icon">🎉</div>
+                </div>
+            </section>
+
+            <div id="pageStatus" class="status-message" role="status"></div>
+
+            <div class="content-grid">
+
+                <section class="panel">
+                    <h2 class="section-heading">About This Event</h2>
+
+                    <p class="description" id="eventDescription">
+                        Event information will appear here.
+                    </p>
+                </section>
+
+                <aside class="sidebar" aria-label="Event information">
+
+                    <div class="info-card">
+                        <div class="info-icon">📅</div>
+                        <div class="info-card-label">Event Date</div>
+                        <div class="info-card-value" id="detailDate">—</div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">📍</div>
+                        <div class="info-card-label">Location</div>
+                        <div class="info-card-value" id="detailLocation">—</div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">🏛️</div>
+                        <div class="info-card-label">Organized By</div>
+                        <div class="info-card-value">ADTU Bodo Union</div>
+                    </div>
+
+                </aside>
+            </div>
+
+            <!-- MEDIA GALLERIES -->
+            <section class="media-section" id="mediaSection">
+
+                <div class="media-section-header">
+                    <div>
+                        <h2>Event Memories</h2>
+                        <p>Photos and videos from this event.</p>
+                    </div>
+
+                    <div class="media-counts">
+                        <span class="count-pill">
+                            📷 <span id="photoCount">0 Photos</span>
+                        </span>
+                        <span class="count-pill">
+                            🎥 <span id="videoCount">0 Videos</span>
+                        </span>
+                    </div>
+                </div>
+
+                <section class="panel gallery-panel">
+                    <div class="gallery-header">
+                        <h3>📷 Photo Gallery</h3>
+                        <span id="photoSubtitle">0 photos</span>
+                    </div>
+
+                    <div class="gallery" id="photoGallery">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📷</div>
+                            <h4>Loading photos...</h4>
+                            <p>Please wait while we load the gallery.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel gallery-panel">
+                    <div class="gallery-header">
+                        <h3>🎥 Video Gallery</h3>
+                        <span id="videoSubtitle">0 videos</span>
+                    </div>
+
+                    <div class="gallery" id="videoGallery">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🎥</div>
+                            <h4>Loading videos...</h4>
+                            <p>Please wait while we load the gallery.</p>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a class="btn btn-primary" href="../index.html#events">
+                    ← Explore More Events
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- IMAGE LIGHTBOX -->
+    <div
+        class="lightbox"
+        id="lightbox"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Photo preview">
+
+        <button
+            class="lightbox-close"
+            id="lightboxClose"
+            type="button"
+            aria-label="Close image preview">
+            ×
+        </button>
+
+        <img class="lightbox-content" id="lightboxImage" alt="Event photo preview">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div>
+                <div class="footer-brand">ADTU BODO UNION</div>
+                <p class="footer-text">Event &amp; Photo Hub</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#events">Events</a>
+                <a href="../index.html#photos">Photos</a>
+            </div>
+
+            <p class="footer-text">
+                © <span id="currentYear"></span> ADTU Bodo Union
+            </p>
+        </div>
     </footer>
 
-
-    <!-- =================================================
-         JAVASCRIPT
-    ================================================== -->
-
     <script>
+        "use strict";
 
-        // =================================================
-        // BACKEND
-        // =================================================
+        /*
+         * API CONFIGURATION
+         * This page and the API are hosted on the same Render domain.
+         */
+        const API_BASE_URL = window.location.origin;
 
-        const API_BASE_URL = "";
+        const API = {
+            event: (id) =>
+                `${API_BASE_URL}/api/events/${encodeURIComponent(id)}`,
 
+            media: (id) =>
+                `${API_BASE_URL}/api/media/event/${encodeURIComponent(id)}`
+        };
 
-        // =================================================
-        // ELEMENTS
-        // =================================================
+        const $ = (id) => document.getElementById(id);
 
-        const eventName =
-            document.getElementById("eventName");
+        const elements = {
+            loadingView: $("loadingView"),
+            errorView: $("errorView"),
+            errorMessage: $("errorMessage"),
+            eventPage: $("eventPage"),
+            eventTitle: $("eventTitle"),
+            breadcrumbTitle: $("breadcrumbTitle"),
+            heroDate: $("heroDate"),
+            heroLocation: $("heroLocation"),
+            eventStatus: $("eventStatus"),
+            eventDescription: $("eventDescription"),
+            detailDate: $("detailDate"),
+            detailLocation: $("detailLocation"),
+            pageStatus: $("pageStatus"),
+            photoCount: $("photoCount"),
+            videoCount: $("videoCount"),
+            photoSubtitle: $("photoSubtitle"),
+            videoSubtitle: $("videoSubtitle"),
+            photoGallery: $("photoGallery"),
+            videoGallery: $("videoGallery"),
+            lightbox: $("lightbox"),
+            lightboxImage: $("lightboxImage"),
+            lightboxCaption: $("lightboxCaption")
+        };
 
-        const eventDate =
-            document.getElementById("eventDate");
+        const params = new URLSearchParams(window.location.search);
+        const eventId = params.get("id");
 
-        const eventLocation =
-            document.getElementById("eventLocation");
+        let currentEvent = null;
+        let requestVersion = 0;
 
-        const eventDescription =
-            document.getElementById("eventDescription");
+        /* ------------------------------
+           GENERAL HELPERS
+        ------------------------------ */
 
-        const eventContainer =
-            document.getElementById(
-                "event-details-container"
-            );
-
-        const photoCount =
-            document.getElementById("photoCount");
-
-        const videoCount =
-            document.getElementById("videoCount");
-
-        const photoGallery =
-            document.getElementById("photoGallery");
-
-        const videoGallery =
-            document.getElementById("videoGallery");
-
-        const photoEmpty =
-            document.getElementById("photoEmpty");
-
-        const videoEmpty =
-            document.getElementById("videoEmpty");
-
-        const mediaStatus =
-            document.getElementById("mediaStatus");
-
-        const lightbox =
-            document.getElementById("lightbox");
-
-        const lightboxImage =
-            document.getElementById("lightboxImage");
-
-        const lightboxClose =
-            document.getElementById("lightboxClose");
-
-
-        // =================================================
-        // YEAR
-        // =================================================
-
-        document.getElementById("year").textContent =
-            new Date().getFullYear();
-
-
-        // =================================================
-        // EVENT ID
-        // =================================================
-
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-        const eventId =
-            params.get("id");
-
-
-        // =================================================
-        // FORMAT DATE
-        // =================================================
-
-        function formatDate(dateValue) {
-
-            if (!dateValue) {
-                return "Date not available";
-            }
-
-            const date =
-                new Date(
-                    String(dateValue).includes("T")
-                        ? dateValue
-                        : dateValue + "T00:00:00"
-                );
-
-            if (isNaN(date.getTime())) {
-                return String(dateValue);
-            }
-
-            return date.toLocaleDateString(
-                "en-IN",
-                {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                }
-            );
-
+        function setVisible(element, visible) {
+            element.hidden = !visible;
         }
 
-
-        // =================================================
-        // DISPLAY EVENT
-        // =================================================
-
-        function displayEvent(data) {
-
-            eventName.textContent =
-                data.title ||
-                data.name ||
-                "Untitled Event";
-
-            eventDate.textContent =
-                "📅 " +
-                formatDate(data.date);
-
-            eventLocation.textContent =
-                "📍 " +
-                (
-                    data.location ||
-                    "Location not available"
-                );
-
-            eventDescription.textContent =
-                data.description ||
-                "No description available.";
-
+        function showStatus(message, type = "info") {
+            elements.pageStatus.textContent = message;
+            elements.pageStatus.className =
+                `status-message visible ${type}`;
         }
 
+        function hideStatus() {
+            elements.pageStatus.textContent = "";
+            elements.pageStatus.className = "status-message";
+        }
 
-        // =================================================
-        // GET MEDIA URL
-        // =================================================
+        function formatDate(value) {
+            if (!value) return "Date not available";
 
-        function getMediaUrl(media) {
+            /*
+             * Preserve YYYY-MM-DD calendar dates rather than allowing
+             * timezone conversion to move the date backward.
+             */
+            const dateText = String(value);
 
-            if (!media) {
+            const match = dateText.match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+            let date;
+
+            if (match) {
+                date = new Date(
+                    Number(match[1]),
+                    Number(match[2]) - 1,
+                    Number(match[3])
+                );
+            } else {
+                date = new Date(value);
+            }
+
+            if (Number.isNaN(date.getTime())) {
+                return dateText;
+            }
+
+            return new Intl.DateTimeFormat("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            }).format(date);
+        }
+
+        function getEventStatus(value) {
+            if (!value) {
+                return { label: "Date unavailable", className: "past" };
+            }
+
+            const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+            let date;
+
+            if (match) {
+                date = new Date(
+                    Number(match[1]),
+                    Number(match[2]) - 1,
+                    Number(match[3])
+                );
+            } else {
+                date = new Date(value);
+            }
+
+            if (Number.isNaN(date.getTime())) {
+                return { label: "Event", className: "past" };
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            date.setHours(0, 0, 0, 0);
+
+            if (date.getTime() === today.getTime()) {
+                return { label: "Happening Today", className: "today" };
+            }
+
+            if (date > today) {
+                return { label: "Upcoming Event", className: "upcoming" };
+            }
+
+            return { label: "Past Event", className: "past" };
+        }
+
+        async function fetchJSON(url) {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
+                cache: "no-store"
+            });
+
+            const rawText = await response.text();
+
+            let result;
+
+            try {
+                result = JSON.parse(rawText);
+            } catch {
+                throw new Error(
+                    `The server returned an invalid response (HTTP ${response.status}).`
+                );
+            }
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message ||
+                    `Request failed with status ${response.status}.`
+                );
+            }
+
+            return result;
+        }
+
+        function showError(message) {
+            setVisible(elements.loadingView, false);
+            setVisible(elements.eventPage, false);
+            setVisible(elements.errorView, true);
+
+            elements.errorMessage.textContent = message;
+        }
+
+        function showEventPage() {
+            setVisible(elements.loadingView, false);
+            setVisible(elements.errorView, false);
+            setVisible(elements.eventPage, true);
+        }
+
+        /* ------------------------------
+           EVENT DETAILS
+        ------------------------------ */
+
+        function displayEvent(event) {
+            if (!event || typeof event !== "object") {
+                throw new Error("The event information is missing.");
+            }
+
+            currentEvent = event;
+
+            const title = event.title || event.name || "Untitled Event";
+            const date = formatDate(event.date);
+            const location = event.location || "Location not specified";
+            const description =
+                event.description || "No description has been provided for this event.";
+
+            elements.eventTitle.textContent = title;
+            elements.breadcrumbTitle.textContent = title;
+            elements.heroDate.textContent = date;
+            elements.heroLocation.textContent = location;
+            elements.eventDescription.textContent = description;
+            elements.detailDate.textContent = date;
+            elements.detailLocation.textContent = location;
+
+            const status = getEventStatus(event.date);
+
+            elements.eventStatus.textContent = status.label;
+            elements.eventStatus.className =
+                `event-status ${status.className}`;
+
+            document.title = `${title} | ADTU Bodo Union`;
+        }
+
+        /* ------------------------------
+           MEDIA URL HELPERS
+        ------------------------------ */
+
+        function getMediaUrl(item) {
+            if (typeof item === "string") {
+                return item;
+            }
+
+            if (!item || typeof item !== "object") {
                 return "";
             }
 
-            if (typeof media === "string") {
-                return media;
-            }
-
             return (
-                media.url ||
-                media.path ||
+                item.secure_url ||
+                item.url ||
+                item.imageUrl ||
+                item.videoUrl ||
+                item.image ||
+                item.video ||
+                item.src ||
+                item.path ||
+                item.fileUrl ||
+                item.cloudinaryUrl ||
                 ""
             );
-
         }
 
-
-        // =================================================
-        // GET MEDIA NAME
-        // =================================================
-
-        function getMediaName(
-            media,
-            index
-        ) {
-
-            if (!media) {
-                return "Media " + (index + 1);
-            }
-
-            if (typeof media === "string") {
-
-                const parts =
-                    media.split("/");
-
+        function getMediaTitle(item, index, type) {
+            if (item && typeof item === "object") {
                 return (
-                    parts[parts.length - 1] ||
-                    "Media " + (index + 1)
+                    item.title ||
+                    item.originalName ||
+                    item.filename ||
+                    item.name ||
+                    `${type} ${index + 1}`
                 );
-
             }
 
-            return (
-                media.originalName ||
-                media.filename ||
-                "Media " + (index + 1)
-            );
-
+            return `${type} ${index + 1}`;
         }
 
+        function normalizeMediaArray(value) {
+            if (Array.isArray(value)) {
+                return value;
+            }
 
-        // =================================================
-        // DISPLAY PHOTOS
-        // =================================================
+            if (value && typeof value === "object") {
+                return Object.values(value);
+            }
+
+            return [];
+        }
+
+        function createEmptyState(icon, title, message) {
+            const wrapper = document.createElement("div");
+            wrapper.className = "empty-state";
+
+            const iconElement = document.createElement("div");
+            iconElement.className = "empty-state-icon";
+            iconElement.textContent = icon;
+
+            const heading = document.createElement("h4");
+            heading.textContent = title;
+
+            const description = document.createElement("p");
+            description.textContent = message;
+
+            wrapper.append(iconElement, heading, description);
+
+            return wrapper;
+        }
+
+        /* ------------------------------
+           PHOTO GALLERY
+        ------------------------------ */
 
         function displayPhotos(photos) {
+            elements.photoGallery.replaceChildren();
 
-            photoGallery.innerHTML = "";
+            const validPhotos = photos
+                .map((item, index) => ({
+                    item,
+                    index,
+                    url: getMediaUrl(item),
+                    title: getMediaTitle(item, index, "Photo")
+                }))
+                .filter((photo) => Boolean(photo.url));
 
-            if (
-                !Array.isArray(photos) ||
-                photos.length === 0
-            ) {
+            elements.photoCount.textContent =
+                `${validPhotos.length} ${validPhotos.length === 1 ? "Photo" : "Photos"}`;
 
-                photoEmpty.style.display =
-                    "block";
+            elements.photoSubtitle.textContent =
+                `${validPhotos.length} ${validPhotos.length === 1 ? "photo" : "photos"}`;
 
+            if (validPhotos.length === 0) {
+                elements.photoGallery.appendChild(
+                    createEmptyState(
+                        "📷",
+                        "No photos uploaded yet",
+                        "Photos from this event will appear here when available."
+                    )
+                );
                 return;
-
             }
 
-            photoEmpty.style.display =
-                "none";
+            validPhotos.forEach(({ url, title }) => {
+                const card = document.createElement("div");
+                card.className = "media-card";
 
+                const image = document.createElement("img");
+                image.src = url;
+                image.alt = title;
+                image.loading = "lazy";
 
-            photos.forEach(
-                function (photo, index) {
+                image.addEventListener("click", () => {
+                    openLightbox(url, title);
+                });
 
-                    const relativeUrl =
-                        getMediaUrl(photo);
-
-                    if (!relativeUrl) {
-                        return;
-                    }
-
-                    const url =
-                        API_BASE_URL +
-                        relativeUrl;
-
-
-                    const card =
-                        document.createElement("div");
-
-                    card.className =
-                        "media-card";
-
-
-                    const image =
-                        document.createElement("img");
-
-                    image.src =
-                        url;
-
-                    image.alt =
-                        getMediaName(
-                            photo,
-                            index
-                        );
-
-                    image.loading =
-                        "lazy";
-
-
-                    image.addEventListener(
-                        "click",
-                        function () {
-
-                            lightboxImage.src =
-                                url;
-
-                            lightbox.classList.add(
-                                "active"
-                            );
-
-                        }
+                image.addEventListener("error", () => {
+                    card.replaceChildren(
+                        createEmptyState(
+                            "⚠️",
+                            "Photo unavailable",
+                            "This image could not be loaded."
+                        )
                     );
+                }, { once: true });
 
+                const caption = document.createElement("div");
+                caption.className = "media-caption";
+                caption.textContent = title;
 
-                    image.addEventListener(
-                        "error",
-                        function () {
-
-                            console.error(
-                                "PHOTO LOAD FAILED:",
-                                url
-                            );
-
-                            card.remove();
-
-                        }
-                    );
-
-
-                    card.appendChild(
-                        image
-                    );
-
-
-                    const name =
-                        document.createElement("div");
-
-                    name.className =
-                        "media-name";
-
-                    name.textContent =
-                        getMediaName(
-                            photo,
-                            index
-                        );
-
-
-                    card.appendChild(
-                        name
-                    );
-
-
-                    photoGallery.appendChild(
-                        card
-                    );
-
-                }
-            );
-
+                card.append(image, caption);
+                elements.photoGallery.appendChild(card);
+            });
         }
 
-
-        // =================================================
-        // DISPLAY VIDEOS
-        // =================================================
+        /* ------------------------------
+           VIDEO GALLERY
+        ------------------------------ */
 
         function displayVideos(videos) {
+            elements.videoGallery.replaceChildren();
 
-            videoGallery.innerHTML = "";
+            const validVideos = videos
+                .map((item, index) => ({
+                    item,
+                    index,
+                    url: getMediaUrl(item),
+                    title: getMediaTitle(item, index, "Video")
+                }))
+                .filter((video) => Boolean(video.url));
 
-            if (
-                !Array.isArray(videos) ||
-                videos.length === 0
-            ) {
+            elements.videoCount.textContent =
+                `${validVideos.length} ${validVideos.length === 1 ? "Video" : "Videos"}`;
 
-                videoEmpty.style.display =
-                    "block";
+            elements.videoSubtitle.textContent =
+                `${validVideos.length} ${validVideos.length === 1 ? "video" : "videos"}`;
 
+            if (validVideos.length === 0) {
+                elements.videoGallery.appendChild(
+                    createEmptyState(
+                        "🎥",
+                        "No videos uploaded yet",
+                        "Videos from this event will appear here when available."
+                    )
+                );
                 return;
-
             }
 
-            videoEmpty.style.display =
-                "none";
+            validVideos.forEach(({ url, title }) => {
+                const card = document.createElement("div");
+                card.className = "media-card";
 
+                const video = document.createElement("video");
+                video.src = url;
+                video.controls = true;
+                video.preload = "metadata";
+                video.playsInline = true;
+                video.setAttribute("aria-label", title);
 
-            videos.forEach(
-                function (video, index) {
+                const caption = document.createElement("div");
+                caption.className = "media-caption";
+                caption.textContent = title;
 
-                    const relativeUrl =
-                        getMediaUrl(video);
+                video.addEventListener("error", () => {
+                    caption.textContent = "Video could not be loaded";
+                }, { once: true });
 
-                    if (!relativeUrl) {
-                        return;
-                    }
-
-                    const url =
-                        API_BASE_URL +
-                        relativeUrl;
-
-
-                    const card =
-                        document.createElement("div");
-
-                    card.className =
-                        "media-card";
-
-
-                    const videoElement =
-                        document.createElement("video");
-
-                    videoElement.src =
-                        url;
-
-                    videoElement.controls =
-                        true;
-
-                    videoElement.preload =
-                        "metadata";
-
-                    videoElement.playsInline =
-                        true;
-
-
-                    card.appendChild(
-                        videoElement
-                    );
-
-
-                    const name =
-                        document.createElement("div");
-
-                    name.className =
-                        "media-name";
-
-                    name.textContent =
-                        getMediaName(
-                            video,
-                            index
-                        );
-
-
-                    card.appendChild(
-                        name
-                    );
-
-
-                    videoGallery.appendChild(
-                        card
-                    );
-
-                }
-            );
-
+                card.append(video, caption);
+                elements.videoGallery.appendChild(card);
+            });
         }
 
-
-        // =================================================
-        // LOAD EVENT MEDIA
-        // =================================================
+        /* ------------------------------
+           LOAD EVENT MEDIA
+        ------------------------------ */
 
         async function loadEventMedia() {
-
-            const response =
-                await fetch(
-                    API_BASE_URL +
-                    "/api/media/event/" +
-                    encodeURIComponent(eventId)
-                );
-
-
-            const result =
-                await response.json();
-
-
-            console.log(
-                "EVENT MEDIA RESPONSE:",
-                result
-            );
-
-
-            if (
-                !response.ok ||
-                result.success !== true
-            ) {
-
-                throw new Error(
-                    result.message ||
-                    "Unable to load event media."
-                );
-
-            }
-
-
-            const photos =
-                Array.isArray(result.photos)
-                    ? result.photos
-                    : [];
-
-
-            const videos =
-                Array.isArray(result.videos)
-                    ? result.videos
-                    : [];
-
-
-            photoCount.textContent =
-                "📷 Photos: " +
-                photos.length;
-
-            videoCount.textContent =
-                "🎥 Videos: " +
-                videos.length;
-
-
-            displayPhotos(
-                photos
-            );
-
-            displayVideos(
-                videos
-            );
-
-
-            if (
-                photos.length === 0 &&
-                videos.length === 0
-            ) {
-
-                mediaStatus.textContent =
-                    "No photos or videos have been uploaded for this event yet.";
-
-                mediaStatus.className =
-                    "status-message";
-
-            } else {
-
-                mediaStatus.textContent =
-                    "Event photos and videos are displayed below.";
-
-                mediaStatus.className =
-                    "status-message success";
-
-            }
-
-        }
-
-
-        // =================================================
-        // LOAD EVENT FROM MONGODB
-        // =================================================
-
-        async function loadEvent() {
-
-            if (!eventId) {
-
-                showError(
-                    "No event was selected."
-                );
-
-                return;
-
-            }
-
+            if (!eventId) return;
 
             try {
+                const result = await fetchJSON(API.media(eventId));
 
-                console.log(
-                    "Loading event from MongoDB:",
-                    eventId
-                );
-
-
-                const response =
-                    await fetch(
-                        API_BASE_URL +
-                        "/api/events/" +
-                        encodeURIComponent(eventId)
+                if (result.success !== true) {
+                    throw new Error(
+                        result.message || "The media API did not return success."
                     );
-
-
-                const result =
-                    await response.json();
-
-
-                console.log(
-                    "EVENT API RESPONSE:",
-                    result
-                );
-
-
-                if (
-                    !response.ok ||
-                    result.success !== true
-                ) {
-
-                    showError(
-                        result.message ||
-                        "Event not found."
-                    );
-
-                    return;
-
                 }
 
+                /*
+                 * Supports either:
+                 * { photos: [], videos: [] }
+                 * or { data: { photos: [], videos: [] } }
+                 */
+                const payload = result.data || result;
 
-                displayEvent(
-                    result.data
+                const photos = normalizeMediaArray(
+                    payload.photos || payload.images
                 );
 
+                const videos = normalizeMediaArray(
+                    payload.videos || payload.video
+                );
 
-                // Load photos and videos
-
-                try {
-
-                    await loadEventMedia();
-
-                } catch (mediaError) {
-
-                    console.error(
-                        "MEDIA ERROR:",
-                        mediaError
-                    );
-
-
-                    photoCount.textContent =
-                        "📷 Photos: 0";
-
-                    videoCount.textContent =
-                        "🎥 Videos: 0";
-
-
-                    displayPhotos([]);
-
-                    displayVideos([]);
-
-
-                    mediaStatus.textContent =
-                        "Could not load event photos and videos.";
-
-                    mediaStatus.className =
-                        "status-message error";
-
-                }
+                displayPhotos(photos);
+                displayVideos(videos);
 
             } catch (error) {
+                console.error("Event media loading error:", error);
 
-                console.error(
-                    "EVENT LOADING ERROR:",
-                    error
+                displayPhotos([]);
+                displayVideos([]);
+
+                showStatus(
+                    "Event details loaded, but the photo and video gallery could not be retrieved. Please try refreshing the page.",
+                    "info"
                 );
+            }
+        }
 
+        /* ------------------------------
+           LOAD EVENT FROM MONGODB API
+        ------------------------------ */
+
+        async function loadEvent() {
+            const thisRequest = ++requestVersion;
+
+            hideStatus();
+            setVisible(elements.errorView, false);
+            setVisible(elements.eventPage, false);
+            setVisible(elements.loadingView, true);
+
+            if (!eventId) {
+                showError(
+                    "No event ID was found in the link. Please return to the Events page and select an event."
+                );
+                return;
+            }
+
+            try {
+                const result = await fetchJSON(API.event(eventId));
+
+                if (thisRequest !== requestVersion) return;
+
+                console.log("Event API response:", result);
+
+                if (
+                    result.success !== true ||
+                    !result.data ||
+                    typeof result.data !== "object"
+                ) {
+                    throw new Error(
+                        result.message || "The requested event was not found."
+                    );
+                }
+
+                displayEvent(result.data);
+                showEventPage();
+
+                /*
+                 * The event remains visible if its media endpoint fails.
+                 */
+                await loadEventMedia();
+
+            } catch (error) {
+                if (thisRequest !== requestVersion) return;
+
+                console.error("Event loading error:", error);
 
                 showError(
-                    "Could not load the event."
+                    error.message ||
+                    "Failed to load event details. Please try again."
                 );
-
             }
-
         }
 
+        /* ------------------------------
+           LIGHTBOX
+        ------------------------------ */
 
-        // =================================================
-        // LIGHTBOX
-        // =================================================
+        function openLightbox(url, title) {
+            elements.lightboxImage.src = url;
+            elements.lightboxImage.alt = title;
+            elements.lightboxCaption.textContent = title;
 
-        lightboxClose.onclick =
-            function () {
+            elements.lightbox.classList.add("open");
+            document.body.style.overflow = "hidden";
 
-                closeLightbox();
-
-            };
-
-
-        lightbox.onclick =
-            function (event) {
-
-                if (
-                    event.target ===
-                    lightbox
-                ) {
-
-                    closeLightbox();
-
-                }
-
-            };
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    closeLightbox();
-
-                }
-
-            }
-        );
-
+            $("lightboxClose").focus();
+        }
 
         function closeLightbox() {
-
-            lightbox.classList.remove(
-                "active"
-            );
-
-            lightboxImage.src =
-                "";
-
+            elements.lightbox.classList.remove("open");
+            elements.lightboxImage.removeAttribute("src");
+            document.body.style.overflow = "";
         }
 
+        $("lightboxClose").addEventListener("click", closeLightbox);
 
-        // =================================================
-        // ERROR
-        // =================================================
+        elements.lightbox.addEventListener("click", (event) => {
+            if (event.target === elements.lightbox) {
+                closeLightbox();
+            }
+        });
 
-        function showError(message) {
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closeLightbox();
+            }
+        });
 
-            eventContainer.innerHTML = "";
+        /* ------------------------------
+           MOBILE NAVIGATION
+        ------------------------------ */
 
+        $("menuToggle").addEventListener("click", () => {
+            const isOpen = elementsNavIsOpen();
 
-            const wrapper =
-                document.createElement("div");
+            $("navLinks").classList.toggle("open", !isOpen);
 
-            wrapper.className =
-                "not-found";
-
-
-            const icon =
-                document.createElement("div");
-
-            icon.style.fontSize =
-                "50px";
-
-            icon.style.marginBottom =
-                "15px";
-
-            icon.textContent =
-                "⚠️";
-
-
-            const heading =
-                document.createElement("h1");
-
-            heading.textContent =
-                message;
-
-
-            const paragraph =
-                document.createElement("p");
-
-            paragraph.textContent =
-                "The event may have been removed or the link may be incorrect.";
-
-
-            const link =
-                document.createElement("a");
-
-            link.href =
-                "../index.html#events";
-
-            link.className =
-                "button button-primary";
-
-            link.textContent =
-                "← Back to Events";
-
-
-            wrapper.appendChild(icon);
-
-            wrapper.appendChild(heading);
-
-            wrapper.appendChild(paragraph);
-
-            wrapper.appendChild(link);
-
-
-            eventContainer.appendChild(
-                wrapper
+            $("menuToggle").setAttribute(
+                "aria-expanded",
+                String(!isOpen)
             );
+        });
 
+        function elementsNavIsOpen() {
+            return $("navLinks").classList.contains("open");
         }
 
+        $("navLinks").querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                $("navLinks").classList.remove("open");
+                $("menuToggle").setAttribute("aria-expanded", "false");
+            });
+        });
 
-        // =================================================
-        // START
-        // =================================================
+        /* ------------------------------
+           RETRY + INITIALIZATION
+        ------------------------------ */
 
-        console.log(
-            "================================"
-        );
+        $("retryButton").addEventListener("click", loadEvent);
 
-        console.log(
-            "ADTU BODO UNION EVENT PAGE"
-        );
-
-        console.log(
-            "Event ID:",
-            eventId
-        );
-
-        console.log(
-            "Using MongoDB backend"
-        );
-
-        console.log(
-            "================================"
-        );
-
+        $("currentYear").textContent = new Date().getFullYear();
 
         loadEvent();
-
     </script>
 
 </body>
-
 </html>
