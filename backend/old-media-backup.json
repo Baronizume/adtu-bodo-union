@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "6ac7b614b05409cd48e0940a",
+    "eventId": "6ac7b3bab05409cd48e09409",
+    "type": "photo",
+    "originalName": "anime-japanese-character.jpg",
+    "filename": "1791473171748-anime-japanese-character.jpg",
+    "path": "/uploads/photos/1791473171748-anime-japanese-character.jpg",
+    "__v": 0,
+    "createdAt": "2026-10-08T15:26:12.070Z",
+    "updatedAt": "2026-10-08T15:26:12.070Z"
+  },
+  {
+    "_id": "6ac7b731b05409cd48e0940b",
+    "eventId": "6ac7b3bab05409cd48e09409",
+    "type": "video",
+    "originalName": "WhatsApp Video 2026-10-08 at 9.00.43 PM.mp4",
+    "filename": "1791473457709-WhatsApp_Video_2026-10-08_at_9_00_43_PM.mp4",
+    "path": "/uploads/videos/1791473457709-WhatsApp_Video_2026-10-08_at_9_00_43_PM.mp4",
+    "__v": 0,
+    "createdAt": "2026-10-08T15:30:57.866Z",
+    "updatedAt": "2026-10-08T15:30:57.866Z"
+  }
+]
