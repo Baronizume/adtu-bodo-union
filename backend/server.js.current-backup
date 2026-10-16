@@ -1,0 +1,75 @@
+// MongoDB event routes
+const eventRoutes = require("./routes/events");
+
+// Register this AFTER: const app = express();
+// and AFTER: app.use(express.json());
+app.use("/api/events", eventRoutes);
+
+
+/* ==================================================
+   GET SINGLE EVENT
+   GET /api/events/:id
+   Supports MongoDB IDs and Firebase IDs
+================================================== */
+
+app.get("/api/events/:id", async (req, res) => {
+    const id = String(req.params.id || "").trim();
+
+    if (!id || id.length > 128) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid event ID."
+        });
+    }
+
+    try {
+        // Check MongoDB IDs
+        if (
+            /^[a-fA-F0-9]{24}$/.test(id) &&
+            mongoose.Types.ObjectId.isValid(id)
+        ) {
+            const mongoEvent = await Event.findById(id).lean();
+
+            if (mongoEvent) {
+                return res.json({
+                    success: true,
+                    source: "mongodb",
+                    data: mongoEvent
+                });
+            }
+        }
+
+        // Check Firebase IDs
+        if (typeof admin !== "undefined" && admin.firestore) {
+            const firebaseDoc = await admin
+                .firestore()
+                .collection("events")
+                .doc(id)
+                .get();
+
+            if (firebaseDoc.exists) {
+                return res.json({
+                    success: true,
+                    source: "firebase",
+                    data: {
+                        id: firebaseDoc.id,
+                        ...firebaseDoc.data()
+                    }
+                });
+            }
+        }
+
+        return res.status(404).json({
+            success: false,
+            message: "Event not found."
+        });
+
+    } catch (error) {
+        console.error("Get single event error:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to load event."
+        });
+    }
+});
