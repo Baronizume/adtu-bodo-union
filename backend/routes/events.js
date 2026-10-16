@@ -1,68 +1,108 @@
 const express = require("express");
-
 const router = express.Router();
+const mongoose = require("mongoose");
+const Event = require("../models/Event");
 
-let events = [];
+// ==========================================
+// GET ALL EVENTS FROM MONGODB
+// GET /api/events
+// ==========================================
+router.get("/", async (req, res) => {
+    try {
+        const events = await Event.find()
+            .sort({ date: 1, createdAt: -1 })
+            .lean();
 
-router.get("/", (req, res) => {
-    res.json(events);
+        return res.status(200).json(events);
+    } catch (error) {
+        console.error("Get events error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to load events."
+        });
+    }
 });
 
-router.get("/:id", (req, res) => {
+// ==========================================
+// CREATE A NEW EVENT IN MONGODB
+// POST /api/events
+// ==========================================
+router.post("/", async (req, res) => {
+    try {
+        const { title, description, date, location, image } = req.body;
 
-    const event = events.find(
-        event => event.id === req.params.id
-    );
+        if (
+            typeof title !== "string" || !title.trim() ||
+            typeof description !== "string" || !description.trim() ||
+            !date ||
+            typeof location !== "string" || !location.trim()
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Title, description, date and location are required."
+            });
+        }
 
-    if (!event) {
-
-        return res.status(404).json({
-            message: "Event not found"
+        const newEvent = await Event.create({
+            title: title.trim(),
+            description: description.trim(),
+            date,
+            location: location.trim(),
+            image: typeof image === "string" ? image.trim() : ""
         });
 
+        return res.status(201).json({
+            success: true,
+            message: "Event added successfully to MongoDB.",
+            data: newEvent
+        });
+    } catch (error) {
+        console.error("Create event error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to create event."
+        });
     }
-
-    res.json(event);
-
 });
 
-router.post("/", (req, res) => {
+// ==========================================
+// DELETE A MONGODB EVENT
+// DELETE /api/events/:id
+// ==========================================
+router.delete("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
 
-    const {
-        id,
-        name,
-        description,
-        date
-    } = req.body;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid MongoDB event ID."
+            });
+        }
 
-    if (!id || !name || !date) {
+        const deletedEvent = await Event.findByIdAndDelete(id);
 
-        return res.status(400).json({
-            message: "id, name and date are required"
+        if (!deletedEvent) {
+            return res.status(404).json({
+                success: false,
+                message: "Event not found."
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Event deleted successfully."
         });
+    } catch (error) {
+        console.error("Delete event error:", error);
 
+        return res.status(500).json({
+            success: false,
+            message: "Failed to delete event."
+        });
     }
-
-    const event = {
-
-        id,
-
-        name,
-
-        description:
-            description || "",
-
-        date,
-
-        url:
-            `/events/event.html?id=${id}`
-
-    };
-
-    events.push(event);
-
-    res.status(201).json(event);
-
 });
 
 module.exports = router;

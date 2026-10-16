@@ -2,13 +2,10 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>ADTU Bodo Union | Event</title>
-
+    <meta name="description" content="Event details, photos and videos from ADTU Bodo Union.">
+    <title>ADTU Bodo Union | Event Details</title>
     <link rel="stylesheet" href="../css/style.css">
 
     <style>
@@ -21,62 +18,59 @@
         .back-button {
             display: inline-block;
             margin-bottom: 20px;
-            text-decoration: none;
             color: #2563eb;
             font-weight: 600;
+            text-decoration: none;
         }
 
         .event-details-card {
+            padding: 35px;
             background: #fff;
             border-radius: 18px;
-            padding: 35px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .08);
         }
 
         .event-detail-icon {
-            font-size: 45px;
             margin-bottom: 8px;
+            font-size: 45px;
         }
 
         .section-label {
             display: inline-block;
+            margin-bottom: 8px;
             color: #2563eb;
             font-size: 13px;
             font-weight: 700;
             letter-spacing: 1px;
-            margin-bottom: 8px;
         }
 
         #eventName {
             margin: 0 0 12px;
-            font-size: 38px;
             color: #111827;
+            font-size: 38px;
+            overflow-wrap: anywhere;
         }
 
-        .event-date {
-            color: #666;
+        .event-date,
+        .event-location {
+            margin-bottom: 18px;
+            color: #555;
             font-weight: 600;
-            margin-bottom: 20px;
         }
 
         .event-detail-description {
-            line-height: 1.8;
             color: #444;
+            line-height: 1.8;
             white-space: pre-line;
-        }
-
-        .event-location {
-            color: #555;
-            font-weight: 600;
-            margin-bottom: 20px;
+            overflow-wrap: anywhere;
         }
 
         .event-media-section {
             margin-top: 40px;
             padding: 28px;
-            border-radius: 15px;
             background: #f8f9ff;
             border: 1px solid #e0e4f5;
+            border-radius: 15px;
         }
 
         .event-media-section h2 {
@@ -86,16 +80,16 @@
 
         .media-info {
             display: flex;
-            gap: 12px;
             flex-wrap: wrap;
+            gap: 12px;
             margin: 20px 0;
         }
 
         .media-count {
             padding: 10px 16px;
             background: #fff;
-            border-radius: 8px;
             border: 1px solid #ddd;
+            border-radius: 8px;
             font-weight: 700;
         }
 
@@ -115,78 +109,76 @@
 
         .media-gallery {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 18px;
         }
 
         .media-card {
-            background: #fff;
-            border-radius: 12px;
+            min-width: 0;
             overflow: hidden;
+            background: #fff;
             border: 1px solid #ddd;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .07);
         }
 
         .media-card img {
+            display: block;
             width: 100%;
             height: 240px;
             object-fit: cover;
-            display: block;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .media-card img:hover {
-            transform: scale(1.02);
+            cursor: zoom-in;
         }
 
         .media-card video {
+            display: block;
             width: 100%;
             height: 240px;
-            object-fit: cover;
-            display: block;
             background: #111;
+            object-fit: contain;
         }
 
         .media-name {
+            margin: 0;
             padding: 10px 12px;
-            font-size: 14px;
             color: #555;
-            word-break: break-word;
+            font-size: 14px;
+            overflow-wrap: anywhere;
         }
 
         .media-empty {
-            padding: 35px 20px;
-            text-align: center;
+            padding: 30px 20px;
             background: #fff;
             border: 1px dashed #ccc;
             border-radius: 10px;
             color: #777;
+            text-align: center;
         }
 
         .status-message {
-            margin-top: 15px;
             min-height: 20px;
+            margin-top: 15px;
             color: #666;
+            overflow-wrap: anywhere;
         }
 
-        .success {
+        .status-message.success {
             color: #2e7d32;
         }
 
-        .error {
+        .status-message.error {
             color: #c62828;
         }
 
         .lightbox {
-            display: none;
             position: fixed;
             z-index: 9999;
             inset: 0;
-            background: rgba(0, 0, 0, 0.9);
+            display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            background: rgba(0, 0, 0, .92);
         }
 
         .lightbox.active {
@@ -194,30 +186,36 @@
         }
 
         .lightbox img {
-            max-width: 95%;
+            max-width: 95vw;
             max-height: 90vh;
-            object-fit: contain;
             border-radius: 8px;
+            object-fit: contain;
         }
 
         .lightbox-close {
             position: absolute;
-            top: 20px;
+            top: 15px;
             right: 25px;
+            border: 0;
+            background: transparent;
             color: white;
-            font-size: 40px;
+            font-size: 42px;
             cursor: pointer;
-            line-height: 1;
+        }
+
+        .not-found {
+            padding: 45px 20px;
+            text-align: center;
         }
 
         .button {
             display: inline-block;
+            padding: 12px 18px;
             border: none;
             border-radius: 8px;
-            padding: 12px 18px;
+            font-weight: 600;
             text-decoration: none;
             cursor: pointer;
-            font-weight: 600;
         }
 
         .button-primary {
@@ -229,21 +227,17 @@
             background: #1558b0;
         }
 
-        .not-found {
-            text-align: center;
-            padding: 60px 20px;
+        [hidden] {
+            display: none !important;
         }
 
         @media (max-width: 800px) {
-
             .media-gallery {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
-
         }
 
         @media (max-width: 600px) {
-
             .event-details {
                 padding: 25px 15px;
             }
@@ -268,1007 +262,401 @@
             .event-media-section {
                 padding: 20px;
             }
-
         }
     </style>
-
 </head>
 
-
 <body>
-
-    <!-- =================================================
-         NAVBAR
-    ================================================== -->
-
     <header class="navbar">
-
         <div class="nav-container">
-
             <a href="../index.html" class="brand">
-
-                <div class="brand-logo">
-                    ABU
-                </div>
-
+                <div class="brand-logo">ABU</div>
                 <div class="brand-text">
-
-                    <strong>
-                        ADTU BODO UNION
-                    </strong>
-
-                    <span>
-                        Event &amp; Photo Hub
-                    </span>
-
+                    <strong>ADTU BODO UNION</strong>
+                    <span>Event &amp; Photo Hub</span>
                 </div>
-
             </a>
 
-            <nav>
-
-                <a href="../index.html">
-                    Home
-                </a>
-
-                <a href="../index.html#events">
-                    Events
-                </a>
-
-                <a href="../index.html#photos">
-                    Photos
-                </a>
-
+            <nav aria-label="Main navigation">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#events">Events</a>
+                <a href="../index.html#photos">Photos</a>
             </nav>
-
         </div>
-
     </header>
 
-
-    <!-- =================================================
-         MAIN
-    ================================================== -->
-
     <main>
-
         <section class="event-details">
-
-            <a href="../index.html#events" class="back-button">
-                ← Back to Events
-            </a>
+            <a href="../index.html#events" class="back-button">← Back to Events</a>
 
             <div id="event-details-container" class="event-details-card">
+                <div class="event-detail-icon" aria-hidden="true">📅</div>
+                <span class="section-label">EVENT DETAILS</span>
 
-                <div class="event-detail-icon">
-                    📅
-                </div>
-
-                <span class="section-label">
-                    EVENT
-                </span>
-
-                <h1 id="eventName">
-                    Loading event...
-                </h1>
-
-                <p id="eventDate" class="event-date">
-                    Loading date...
-                </p>
-
-                <p id="eventLocation" class="event-location">
-                    Loading location...
-                </p>
-
+                <h1 id="eventName">Loading event...</h1>
+                <p id="eventDate" class="event-date">Loading date...</p>
+                <p id="eventLocation" class="event-location">Loading location...</p>
                 <p id="eventDescription" class="event-detail-description">
                     Loading event details...
                 </p>
 
-
-                <!-- =================================================
-                     MEDIA SECTION
-                ================================================== -->
-
-                <div class="event-media-section">
-
-                    <h2>
-                        📷🎥 Event Photos &amp; Videos
-                    </h2>
-
-                    <p>
-                        Photos and videos from this event.
-                    </p>
-
+                <section class="event-media-section" aria-labelledby="mediaHeading">
+                    <h2 id="mediaHeading">📷🎥 Event Photos &amp; Videos</h2>
+                    <p>Photos and videos from this event.</p>
 
                     <div class="media-info">
-
-                        <span id="photoCount" class="media-count photo-count">
-                            📷 Photos: 0
-                        </span>
-
-                        <span id="videoCount" class="media-count video-count">
-                            🎥 Videos: 0
-                        </span>
-
+                        <span id="photoCount" class="media-count photo-count">📷 Photos: 0</span>
+                        <span id="videoCount" class="media-count video-count">🎥 Videos: 0</span>
                     </div>
 
-
-                    <!-- PHOTOS -->
-
-                    <h3 class="media-title">
-                        📷 Event Photos
-                    </h3>
-
+                    <h3 class="media-title">📷 Event Photos</h3>
                     <div id="photoGallery" class="media-gallery"></div>
-
-                    <div id="photoEmpty" class="media-empty" style="display: none;">
+                    <div id="photoEmpty" class="media-empty" hidden>
                         No photos uploaded for this event yet.
                     </div>
 
-
-                    <!-- VIDEOS -->
-
-                    <h3 class="media-title">
-                        🎥 Event Videos
-                    </h3>
-
+                    <h3 class="media-title">🎥 Event Videos</h3>
                     <div id="videoGallery" class="media-gallery"></div>
-
-                    <div id="videoEmpty" class="media-empty" style="display: none;">
+                    <div id="videoEmpty" class="media-empty" hidden>
                         No videos uploaded for this event yet.
                     </div>
 
-
-                    <p id="mediaStatus" class="status-message">
+                    <p id="mediaStatus" class="status-message" role="status" aria-live="polite">
                         Loading photos and videos...
                     </p>
-
-                </div>
-
+                </section>
             </div>
-
         </section>
-
     </main>
 
-
-    <!-- =================================================
-         LIGHTBOX
-    ================================================== -->
-
-    <div id="lightbox" class="lightbox">
-
-        <span id="lightboxClose" class="lightbox-close">
-            ×
-        </span>
-
-        <img id="lightboxImage" src="" alt="Event photo">
-
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo preview">
+        <button id="lightboxClose" class="lightbox-close" type="button"
+            aria-label="Close photo preview">&times;</button>
+        <img id="lightboxImage" src="" alt="Enlarged event photo">
     </div>
 
-
-    <!-- =================================================
-         FOOTER
-    ================================================== -->
-
     <footer>
-
         <div class="footer-container">
-
             <div>
-
-                <strong>
-                    ADTU BODO UNION
-                </strong>
-
-                <p>
-                    Event &amp; Photo Hub
-                </p>
-
+                <strong>ADTU BODO UNION</strong>
+                <p>Event &amp; Photo Hub</p>
             </div>
-
-            <p>
-
-                ©
-
-                <span id="year"></span>
-
-                ADTU Bodo Union
-
-            </p>
-
+            <p>© <span id="year"></span> ADTU Bodo Union</p>
         </div>
-
     </footer>
 
-
-    <!-- =================================================
-         JAVASCRIPT
-    ================================================== -->
-
     <script>
-
-        // =================================================
-        // BACKEND
-        // =================================================
+        "use strict";
 
         const API_BASE_URL = "";
+        const $ = (id) => document.getElementById(id);
 
+        const eventName = $("eventName");
+        const eventDate = $("eventDate");
+        const eventLocation = $("eventLocation");
+        const eventDescription = $("eventDescription");
+        const eventContainer = $("event-details-container");
 
-        // =================================================
-        // ELEMENTS
-        // =================================================
+        const photoCount = $("photoCount");
+        const videoCount = $("videoCount");
+        const photoGallery = $("photoGallery");
+        const videoGallery = $("videoGallery");
+        const photoEmpty = $("photoEmpty");
+        const videoEmpty = $("videoEmpty");
+        const mediaStatus = $("mediaStatus");
 
-        const eventName =
-            document.getElementById("eventName");
+        const lightbox = $("lightbox");
+        const lightboxImage = $("lightboxImage");
+        const lightboxClose = $("lightboxClose");
 
-        const eventDate =
-            document.getElementById("eventDate");
+        const eventId = new URLSearchParams(window.location.search).get("id");
+        $("year").textContent = new Date().getFullYear();
 
-        const eventLocation =
-            document.getElementById("eventLocation");
-
-        const eventDescription =
-            document.getElementById("eventDescription");
-
-        const eventContainer =
-            document.getElementById(
-                "event-details-container"
-            );
-
-        const photoCount =
-            document.getElementById("photoCount");
-
-        const videoCount =
-            document.getElementById("videoCount");
-
-        const photoGallery =
-            document.getElementById("photoGallery");
-
-        const videoGallery =
-            document.getElementById("videoGallery");
-
-        const photoEmpty =
-            document.getElementById("photoEmpty");
-
-        const videoEmpty =
-            document.getElementById("videoEmpty");
-
-        const mediaStatus =
-            document.getElementById("mediaStatus");
-
-        const lightbox =
-            document.getElementById("lightbox");
-
-        const lightboxImage =
-            document.getElementById("lightboxImage");
-
-        const lightboxClose =
-            document.getElementById("lightboxClose");
-
-
-        // =================================================
-        // YEAR
-        // =================================================
-
-        document.getElementById("year").textContent =
-            new Date().getFullYear();
-
-
-        // =================================================
-        // EVENT ID
-        // =================================================
-
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-        const eventId =
-            params.get("id");
-
-
-        // =================================================
-        // FORMAT DATE
-        // =================================================
-
-        function formatDate(dateValue) {
-
-            if (!dateValue) {
-                return "Date not available";
-            }
-
-            const date =
-                new Date(
-                    String(dateValue).includes("T")
-                        ? dateValue
-                        : dateValue + "T00:00:00"
-                );
-
-            if (isNaN(date.getTime())) {
-                return String(dateValue);
-            }
-
-            return date.toLocaleDateString(
-                "en-IN",
-                {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric"
-                }
-            );
-
+        function apiUrl(path) {
+            const normalizedPath = path.startsWith("/") ? path : "/" + path;
+            return API_BASE_URL.replace(/\/$/, "") + normalizedPath;
         }
 
+        async function fetchJson(url) {
+            const response = await fetch(url, {
+                headers: { Accept: "application/json" }
+            });
 
-        // =================================================
-        // DISPLAY EVENT
-        // =================================================
+            let result;
+            try {
+                result = await response.json();
+            } catch {
+                throw new Error("Invalid server response (" + response.status + ").");
+            }
+
+            if (!response.ok) {
+                throw new Error(result.message || "Request failed (" + response.status + ").");
+            }
+
+            return result;
+        }
+
+        function formatDate(value) {
+            if (!value) return "Date not available";
+
+            const raw = String(value);
+            const parsed = new Date(
+                /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw + "T00:00:00" : raw
+            );
+
+            if (Number.isNaN(parsed.getTime())) return raw;
+
+            return parsed.toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+        }
 
         function displayEvent(data) {
+            const title = data.title || data.name || data.eventName || "Untitled Event";
 
-            eventName.textContent =
-                data.title ||
-                data.name ||
-                "Untitled Event";
-
-            eventDate.textContent =
-                "📅 " +
-                formatDate(data.date);
-
+            eventName.textContent = title;
+            eventDate.textContent = "📅 " + formatDate(data.date);
             eventLocation.textContent =
-                "📍 " +
-                (
-                    data.location ||
-                    "Location not available"
-                );
-
+                "📍 " + (data.location || data.venue || "Location not available");
             eventDescription.textContent =
-                data.description ||
-                "No description available.";
+                data.description || "No description available.";
 
+            document.title = title + " | ADTU Bodo Union";
         }
-
-
-        // =================================================
-        // GET MEDIA URL
-        // =================================================
 
         function getMediaUrl(media) {
+            let candidate = "";
 
-            if (!media) {
-                return "";
+            if (typeof media === "string") {
+                candidate = media;
+            } else if (media && typeof media === "object") {
+                candidate = media.url || media.secure_url || media.path ||
+                    media.image || media.video || "";
+            }
+
+            if (typeof candidate !== "string") return "";
+            candidate = candidate.trim();
+
+            if (!candidate) return "";
+            if (/^https?:\/\//i.test(candidate)) return candidate;
+            if (candidate.startsWith("//")) return window.location.protocol + candidate;
+            if (/^(data:|blob:)/i.test(candidate)) return candidate;
+
+            return apiUrl(candidate);
+        }
+
+        function getMediaName(media, index, type) {
+            if (media && typeof media === "object") {
+                return media.originalName || media.originalname ||
+                    media.filename || media.name || type + " " + (index + 1);
             }
 
             if (typeof media === "string") {
-                return media;
-            }
-
-            return (
-                media.url ||
-                media.path ||
-                ""
-            );
-
-        }
-
-
-        // =================================================
-        // GET MEDIA NAME
-        // =================================================
-
-        function getMediaName(
-            media,
-            index
-        ) {
-
-            if (!media) {
-                return "Media " + (index + 1);
-            }
-
-            if (typeof media === "string") {
-
-                const parts =
-                    media.split("/");
-
-                return (
-                    parts[parts.length - 1] ||
-                    "Media " + (index + 1)
-                );
-
-            }
-
-            return (
-                media.originalName ||
-                media.filename ||
-                "Media " + (index + 1)
-            );
-
-        }
-
-
-        // =================================================
-        // DISPLAY PHOTOS
-        // =================================================
-
-        function displayPhotos(photos) {
-
-            photoGallery.innerHTML = "";
-
-            if (
-                !Array.isArray(photos) ||
-                photos.length === 0
-            ) {
-
-                photoEmpty.style.display =
-                    "block";
-
-                return;
-
-            }
-
-            photoEmpty.style.display =
-                "none";
-
-
-            photos.forEach(
-                function (photo, index) {
-
-                    const relativeUrl =
-                        getMediaUrl(photo);
-
-                    if (!relativeUrl) {
-                        return;
-                    }
-
-                    const url =
-                        API_BASE_URL +
-                        relativeUrl;
-
-
-                    const card =
-                        document.createElement("div");
-
-                    card.className =
-                        "media-card";
-
-
-                    const image =
-                        document.createElement("img");
-
-                    image.src =
-                        url;
-
-                    image.alt =
-                        getMediaName(
-                            photo,
-                            index
-                        );
-
-                    image.loading =
-                        "lazy";
-
-
-                    image.addEventListener(
-                        "click",
-                        function () {
-
-                            lightboxImage.src =
-                                url;
-
-                            lightbox.classList.add(
-                                "active"
-                            );
-
-                        }
-                    );
-
-
-                    image.addEventListener(
-                        "error",
-                        function () {
-
-                            console.error(
-                                "PHOTO LOAD FAILED:",
-                                url
-                            );
-
-                            card.remove();
-
-                        }
-                    );
-
-
-                    card.appendChild(
-                        image
-                    );
-
-
-                    const name =
-                        document.createElement("div");
-
-                    name.className =
-                        "media-name";
-
-                    name.textContent =
-                        getMediaName(
-                            photo,
-                            index
-                        );
-
-
-                    card.appendChild(
-                        name
-                    );
-
-
-                    photoGallery.appendChild(
-                        card
-                    );
-
-                }
-            );
-
-        }
-
-
-        // =================================================
-        // DISPLAY VIDEOS
-        // =================================================
-
-        function displayVideos(videos) {
-
-            videoGallery.innerHTML = "";
-
-            if (
-                !Array.isArray(videos) ||
-                videos.length === 0
-            ) {
-
-                videoEmpty.style.display =
-                    "block";
-
-                return;
-
-            }
-
-            videoEmpty.style.display =
-                "none";
-
-
-            videos.forEach(
-                function (video, index) {
-
-                    const relativeUrl =
-                        getMediaUrl(video);
-
-                    if (!relativeUrl) {
-                        return;
-                    }
-
-                    const url =
-                        API_BASE_URL +
-                        relativeUrl;
-
-
-                    const card =
-                        document.createElement("div");
-
-                    card.className =
-                        "media-card";
-
-
-                    const videoElement =
-                        document.createElement("video");
-
-                    videoElement.src =
-                        url;
-
-                    videoElement.controls =
-                        true;
-
-                    videoElement.preload =
-                        "metadata";
-
-                    videoElement.playsInline =
-                        true;
-
-
-                    card.appendChild(
-                        videoElement
-                    );
-
-
-                    const name =
-                        document.createElement("div");
-
-                    name.className =
-                        "media-name";
-
-                    name.textContent =
-                        getMediaName(
-                            video,
-                            index
-                        );
-
-
-                    card.appendChild(
-                        name
-                    );
-
-
-                    videoGallery.appendChild(
-                        card
-                    );
-
-                }
-            );
-
-        }
-
-
-        // =================================================
-        // LOAD EVENT MEDIA
-        // =================================================
-
-        async function loadEventMedia() {
-
-            const response =
-                await fetch(
-                    API_BASE_URL +
-                    "/api/media/event/" +
-                    encodeURIComponent(eventId)
-                );
-
-
-            const result =
-                await response.json();
-
-
-            console.log(
-                "EVENT MEDIA RESPONSE:",
-                result
-            );
-
-
-            if (
-                !response.ok ||
-                result.success !== true
-            ) {
-
-                throw new Error(
-                    result.message ||
-                    "Unable to load event media."
-                );
-
-            }
-
-
-            const photos =
-                Array.isArray(result.photos)
-                    ? result.photos
-                    : [];
-
-
-            const videos =
-                Array.isArray(result.videos)
-                    ? result.videos
-                    : [];
-
-
-            photoCount.textContent =
-                "📷 Photos: " +
-                photos.length;
-
-            videoCount.textContent =
-                "🎥 Videos: " +
-                videos.length;
-
-
-            displayPhotos(
-                photos
-            );
-
-            displayVideos(
-                videos
-            );
-
-
-            if (
-                photos.length === 0 &&
-                videos.length === 0
-            ) {
-
-                mediaStatus.textContent =
-                    "No photos or videos have been uploaded for this event yet.";
-
-                mediaStatus.className =
-                    "status-message";
-
-            } else {
-
-                mediaStatus.textContent =
-                    "Event photos and videos are displayed below.";
-
-                mediaStatus.className =
-                    "status-message success";
-
-            }
-
-        }
-
-
-        // =================================================
-        // LOAD EVENT FROM MONGODB
-        // =================================================
-
-        async function loadEvent() {
-
-            if (!eventId) {
-
-                showError(
-                    "No event was selected."
-                );
-
-                return;
-
-            }
-
-
-            try {
-
-                console.log(
-                    "Loading event from MongoDB:",
-                    eventId
-                );
-
-
-                const response =
-                    await fetch(
-                        API_BASE_URL +
-                        "/api/events/" +
-                        encodeURIComponent(eventId)
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                console.log(
-                    "EVENT API RESPONSE:",
-                    result
-                );
-
-
-                if (
-                    !response.ok ||
-                    result.success !== true
-                ) {
-
-                    showError(
-                        result.message ||
-                        "Event not found."
-                    );
-
-                    return;
-
-                }
-
-
-                displayEvent(
-                    result.data
-                );
-
-
-                // Load photos and videos
-
+                const part = media.split("/").pop().split("?")[0];
                 try {
-
-                    await loadEventMedia();
-
-                } catch (mediaError) {
-
-                    console.error(
-                        "MEDIA ERROR:",
-                        mediaError
-                    );
-
-
-                    photoCount.textContent =
-                        "📷 Photos: 0";
-
-                    videoCount.textContent =
-                        "🎥 Videos: 0";
-
-
-                    displayPhotos([]);
-
-                    displayVideos([]);
-
-
-                    mediaStatus.textContent =
-                        "Could not load event photos and videos.";
-
-                    mediaStatus.className =
-                        "status-message error";
-
+                    return decodeURIComponent(part) || type + " " + (index + 1);
+                } catch {
+                    return part || type + " " + (index + 1);
                 }
-
-            } catch (error) {
-
-                console.error(
-                    "EVENT LOADING ERROR:",
-                    error
-                );
-
-
-                showError(
-                    "Could not load the event."
-                );
-
             }
 
+            return type + " " + (index + 1);
         }
 
+        function setMediaStatus(message, kind = "") {
+            mediaStatus.textContent = message;
+            mediaStatus.className = "status-message" + (kind ? " " + kind : "");
+        }
 
-        // =================================================
-        // LIGHTBOX
-        // =================================================
-
-        lightboxClose.onclick =
-            function () {
-
-                closeLightbox();
-
-            };
-
-
-        lightbox.onclick =
-            function (event) {
-
-                if (
-                    event.target ===
-                    lightbox
-                ) {
-
-                    closeLightbox();
-
-                }
-
-            };
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    closeLightbox();
-
-                }
-
-            }
-        );
-
+        function openLightbox(url, alt) {
+            lightboxImage.src = url;
+            lightboxImage.alt = alt || "Event photo";
+            lightbox.classList.add("active");
+            lightboxClose.focus();
+        }
 
         function closeLightbox() {
-
-            lightbox.classList.remove(
-                "active"
-            );
-
-            lightboxImage.src =
-                "";
-
+            lightbox.classList.remove("active");
+            lightboxImage.src = "";
         }
 
+        lightboxClose.addEventListener("click", closeLightbox);
 
-        // =================================================
-        // ERROR
-        // =================================================
+        lightbox.addEventListener("click", (event) => {
+            if (event.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") closeLightbox();
+        });
+
+        function displayPhotos(photos) {
+            photoGallery.replaceChildren();
+
+            (Array.isArray(photos) ? photos : []).forEach((photo, index) => {
+                const url = getMediaUrl(photo);
+                if (!url) return;
+
+                const card = document.createElement("article");
+                card.className = "media-card";
+
+                const image = document.createElement("img");
+                image.src = url;
+                image.alt = getMediaName(photo, index, "Photo");
+                image.loading = "lazy";
+                image.decoding = "async";
+                image.addEventListener("click", () => openLightbox(url, image.alt));
+                image.addEventListener("error", () => {
+                    console.error("Photo failed to load:", url);
+                });
+
+                const caption = document.createElement("p");
+                caption.className = "media-name";
+                caption.textContent = getMediaName(photo, index, "Photo");
+
+                card.append(image, caption);
+                photoGallery.appendChild(card);
+            });
+
+            photoCount.textContent = "📷 Photos: " + photoGallery.children.length;
+            photoEmpty.hidden = photoGallery.children.length > 0;
+        }
+
+        function displayVideos(videos) {
+            videoGallery.replaceChildren();
+
+            (Array.isArray(videos) ? videos : []).forEach((video, index) => {
+                const url = getMediaUrl(video);
+                if (!url) return;
+
+                const card = document.createElement("article");
+                card.className = "media-card";
+
+                const player = document.createElement("video");
+                player.controls = true;
+                player.preload = "metadata";
+                player.playsInline = true;
+                player.src = url;
+                player.setAttribute("aria-label", getMediaName(video, index, "Video"));
+                player.addEventListener("error", () => {
+                    console.error("Video failed to load:", url, player.error);
+                });
+
+                const caption = document.createElement("p");
+                caption.className = "media-name";
+                caption.textContent = getMediaName(video, index, "Video");
+
+                card.append(player, caption);
+                videoGallery.appendChild(card);
+            });
+
+            videoCount.textContent = "🎥 Videos: " + videoGallery.children.length;
+            videoEmpty.hidden = videoGallery.children.length > 0;
+        }
+
+        function extractEvent(result) {
+            if (!result || typeof result !== "object") return null;
+            if (result.success === false) throw new Error(result.message || "Event not found.");
+            if (result.data && typeof result.data === "object") return result.data;
+            if (result.event && typeof result.event === "object") return result.event;
+
+            if (result.success === undefined &&
+                (result._id || result.id || result.title || result.name)) {
+                return result;
+            }
+
+            return null;
+        }
+
+        // Correct backend endpoint: /api/upload/event/:eventId
+        async function loadEventMedia() {
+            const result = await fetchJson(
+                apiUrl("/api/upload/event/" + encodeURIComponent(eventId))
+            );
+
+            if (result.success === false) {
+                throw new Error(result.message || "Could not load media.");
+            }
+
+            displayPhotos(Array.isArray(result.photos) ? result.photos : []);
+            displayVideos(Array.isArray(result.videos) ? result.videos : []);
+
+            setMediaStatus(
+                "Loaded " + photoGallery.children.length +
+                " photo(s) and " + videoGallery.children.length + " video(s).",
+                "success"
+            );
+        }
 
         function showError(message) {
+            eventContainer.replaceChildren();
 
-            eventContainer.innerHTML = "";
+            const wrapper = document.createElement("div");
+            wrapper.className = "not-found";
 
+            const icon = document.createElement("div");
+            icon.style.fontSize = "50px";
+            icon.style.marginBottom = "15px";
+            icon.textContent = "⚠️";
 
-            const wrapper =
-                document.createElement("div");
+            const heading = document.createElement("h1");
+            heading.textContent = message;
 
-            wrapper.className =
-                "not-found";
-
-
-            const icon =
-                document.createElement("div");
-
-            icon.style.fontSize =
-                "50px";
-
-            icon.style.marginBottom =
-                "15px";
-
-            icon.textContent =
-                "⚠️";
-
-
-            const heading =
-                document.createElement("h1");
-
-            heading.textContent =
-                message;
-
-
-            const paragraph =
-                document.createElement("p");
-
+            const paragraph = document.createElement("p");
             paragraph.textContent =
-                "The event may have been removed or the link may be incorrect.";
+                "The event could not be loaded. Check the event ID and server API.";
 
+            const link = document.createElement("a");
+            link.href = "../index.html#events";
+            link.className = "button button-primary";
+            link.textContent = "← Back to Events";
 
-            const link =
-                document.createElement("a");
-
-            link.href =
-                "../index.html#events";
-
-            link.className =
-                "button button-primary";
-
-            link.textContent =
-                "← Back to Events";
-
-
-            wrapper.appendChild(icon);
-
-            wrapper.appendChild(heading);
-
-            wrapper.appendChild(paragraph);
-
-            wrapper.appendChild(link);
-
-
-            eventContainer.appendChild(
-                wrapper
-            );
-
+            wrapper.append(icon, heading, paragraph, link);
+            eventContainer.appendChild(wrapper);
         }
 
+        async function loadEvent() {
+            if (!eventId || !eventId.trim()) {
+                showError("Event ID is missing.");
+                return;
+            }
 
-        // =================================================
-        // START
-        // =================================================
+            try {
+                const result = await fetchJson(
+                    apiUrl("/api/events/" + encodeURIComponent(eventId))
+                );
 
-        console.log(
-            "================================"
-        );
+                const data = extractEvent(result);
+                if (!data) throw new Error("Event not found. The API returned no event data.");
 
-        console.log(
-            "ADTU BODO UNION EVENT PAGE"
-        );
+                displayEvent(data);
 
-        console.log(
-            "Event ID:",
-            eventId
-        );
+                try {
+                    await loadEventMedia();
+                } catch (error) {
+                    console.error("Media loading error:", error);
+                    displayPhotos([]);
+                    displayVideos([]);
+                    setMediaStatus(
+                        "Event details loaded, but media could not be loaded: " + error.message,
+                        "error"
+                    );
+                }
+            } catch (error) {
+                console.error("Event loading error:", error);
+                showError(error.message || "Could not load the event.");
+            }
+        }
 
-        console.log(
-            "Using MongoDB backend"
-        );
-
-        console.log(
-            "================================"
-        );
-
+        console.log("ADTU BODO UNION EVENT PAGE", {
+            eventId,
+            apiOrigin: API_BASE_URL || window.location.origin
+        });
 
         loadEvent();
-
     </script>
-
 </body>
 
 </html>

@@ -1,1226 +1,455 @@
-/*
-====================================================
-ADTU BODO UNION
-EVENT DETAILS PAGE
-
-DATABASE:
-- MongoDB Atlas
-- Express API
-- Mongoose
-
-MEDIA:
-- Local project files
-- No Firebase Storage
-- No Google Drive API
-- No Google OAuth
-- No Google Drive Picker
-====================================================
-*/
-
-
-// ==================================================
-// CONFIGURATION
-// ==================================================
-
-const EVENTS_API = "/api/events";
-
-const ADMIN_UID =
-    "s7XAHabgLfc92ktoM0kBmdLXfAD3";
-
-const DEFAULT_MEDIA_FOLDER =
-    "rwnswndri";
-
-
-// ==================================================
-// LOCAL MEDIA
-// ==================================================
-
-const LOCAL_PHOTOS = [
-    "photo1.jpg",
-    "photo2.jpg",
-    "photo3.jpg"
-];
-
-const LOCAL_VIDEOS = [
-    // "video1.mp4",
-    // "video2.mp4"
-];
-
-
-// ==================================================
-// DOM ELEMENTS
-// ==================================================
-
-const nameElement =
-    document.getElementById(
-        "eventName"
-    );
-
-const descriptionElement =
-    document.getElementById(
-        "eventDescription"
-    );
-
-const yearElement =
-    document.getElementById(
-        "year"
-    );
-
-const deleteEventButton =
-    document.getElementById(
-        "deleteEventButton"
-    );
-
-const editEventButton =
-    document.getElementById(
-        "editEventButton"
-    );
-
-const adminUploadSection =
-    document.getElementById(
-        "adminUploadSection"
-    );
-
-const viewMediaButton =
-    document.getElementById(
-        "viewMediaButton"
-    );
-
-const eventGallery =
-    document.getElementById(
-        "eventGallery"
-    );
-
-const photoGallery =
-    document.getElementById(
-        "photoGallery"
-    );
-
-const videoGallery =
-    document.getElementById(
-        "videoGallery"
-    );
-
-const qrImage =
-    document.getElementById(
-        "eventQrImage"
-    );
-
-const qrButton =
-    document.getElementById(
-        "qrButton"
-    );
-
-const photoLightbox =
-    document.getElementById(
-        "photoLightbox"
-    );
-
-const lightboxImage =
-    document.getElementById(
-        "lightboxImage"
-    );
-
-const lightboxClose =
-    document.getElementById(
-        "lightboxClose"
-    );
-
-
-// ==================================================
-// URL / EVENT ID
-// ==================================================
-
-const urlParams =
-    new URLSearchParams(
-        window.location.search
-    );
-
-const eventId =
-    urlParams.get("id");
-
-
-// ==================================================
-// CURRENT EVENT
-// ==================================================
-
-let currentEvent = null;
-
-
-// ==================================================
-// FOOTER YEAR
-// ==================================================
-
-if (yearElement) {
-
-    yearElement.textContent =
-        new Date().getFullYear();
-
-}
-
-
-// ==================================================
-// ADMIN CHECK
-// ==================================================
-
-function isAdmin() {
-
-    if (
-        typeof auth === "undefined"
-    ) {
-
-        return false;
-
-    }
-
-    const user =
-        auth.currentUser;
-
-    return (
-        user &&
-        user.uid === ADMIN_UID
-    );
-
-}
-
-
-// ==================================================
-// ADMIN CONTROLS
-// ==================================================
-
-function updateAdminControls() {
-
-    const admin =
-        isAdmin();
-
-    if (deleteEventButton) {
-
-        deleteEventButton.style.display =
-            admin
-                ? "inline-block"
-                : "none";
-
-    }
-
-    if (editEventButton) {
-
-        editEventButton.style.display =
-            admin
-                ? "inline-block"
-                : "none";
-
-    }
-
-    /*
-    Old upload section is disabled.
-    */
-
-    if (adminUploadSection) {
-
-        adminUploadSection.remove();
-
-    }
-
-}
-
-
-// ==================================================
-// FIREBASE AUTH
-// ==================================================
-
-if (
-    typeof auth !== "undefined" &&
-    auth.onAuthStateChanged
-) {
-
-    auth.onAuthStateChanged(
-        function (user) {
-
-            console.log(
-                "Authentication:",
-                user
-                    ? user.email
-                    : "Not logged in"
-            );
-
-            updateAdminControls();
-
-        }
-    );
-
-}
-
-
-// ==================================================
-// FORMAT DATE
-// ==================================================
-
-function formatDate(
-    dateString
-) {
-
-    if (!dateString) {
-
-        return "";
-
-    }
-
-    const date =
-        new Date(
-            dateString +
-            "T00:00:00"
-        );
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return dateString;
-
-    }
-
-    return date.toLocaleDateString(
-        "en-IN",
-        {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-        }
-    );
-
-}
-
-
-// ==================================================
-// MEDIA FOLDER
-// ==================================================
-
-function getMediaFolder(
-    event
-) {
-
-    if (
-        event &&
-        typeof event.mediaFolder ===
-        "string" &&
-        event.mediaFolder.trim()
-    ) {
-
-        return event.mediaFolder
-            .trim()
-            .replace(
-                /^\/+|\/+$/g,
-                ""
-            );
-
-    }
-
-    return DEFAULT_MEDIA_FOLDER;
-
-}
-
-
-// ==================================================
-// CREATE LOCAL MEDIA URL
-// ==================================================
-
-function createMediaURL(
-    mediaFolder,
-    filename
-) {
-
-    const encodedFolder =
-        mediaFolder
-            .split("/")
-            .map(
-                function (part) {
-
-                    return encodeURIComponent(
-                        part
-                    );
-
-                }
-            )
-            .join("/");
-
-    const encodedFilename =
-        filename
-            .split("/")
-            .map(
-                function (part) {
-
-                    return encodeURIComponent(
-                        part
-                    );
-
-                }
-            )
-            .join("/");
-
-    return (
-        "../media/" +
-        encodedFolder +
-        "/" +
-        encodedFilename
-    );
-
-}
-
-
-// ==================================================
-// LOAD EVENT FROM MONGODB
-// ==================================================
-
-async function loadEvent() {
-
-    if (!eventId) {
-
-        showEventError(
-            "Event ID is missing."
-        );
-
+document.addEventListener("DOMContentLoaded", () => {
+    const API_URL = "/api/events";
+
+    const eventsContainer = document.getElementById("events-container");
+    const currentEventContainer = document.getElementById("current-event-container");
+    const calendarTitle = document.getElementById("calendarTitle");
+    const calendarDays = document.getElementById("calendarDays");
+    const selectedDateLabel = document.getElementById("selectedDate");
+    const yearElement = document.getElementById("year");
+    const prevMonthButton = document.getElementById("prevMonth");
+    const nextMonthButton = document.getElementById("nextMonth");
+
+    if (!eventsContainer || !calendarTitle || !calendarDays) {
+        console.warn("Events page elements were not found. Check the HTML element IDs.");
         return;
-
     }
 
-    try {
+    let events = [];
+    let activeFilter = "all";
+    let selectedDate = null;
 
-        console.log(
-            "Loading event:",
-            eventId
+    const today = startOfDay(new Date());
+    let displayedMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+
+    // Mobile navigation
+    const menuButton = document.getElementById("menuButton");
+    const navigation = document.getElementById("navigation");
+
+    menuButton?.addEventListener("click", () => {
+        const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+
+        menuButton.setAttribute("aria-expanded", String(!isOpen));
+        navigation?.classList.toggle("open", !isOpen);
+    });
+
+    navigation?.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            navigation.classList.remove("open");
+            menuButton?.setAttribute("aria-expanded", "false");
+        });
+    });
+
+    function startOfDay(date) {
+        return new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate()
         );
+    }
 
-        const response =
-            await fetch(
-                `${EVENTS_API}/${encodeURIComponent(
-                    eventId
-                )}`
-            );
+    function parseEventDate(event) {
+        const raw = event.date || event.eventDate || event.startDate;
 
-        const result =
-            await response.json();
+        if (!raw) return null;
 
-        console.log(
-            "Event API response:",
-            result
-        );
-
+        // Keep YYYY-MM-DD dates on the correct calendar day.
         if (
-            !response.ok ||
-            !result.success
+            typeof raw === "string" &&
+            /^\d{4}-\d{2}-\d{2}$/.test(raw)
         ) {
+            const [year, month, day] = raw.split("-").map(Number);
+            const date = new Date(year, month - 1, day);
 
-            showEventError(
-                result.message ||
-                "This event could not be found."
-            );
-
-            return;
-
+            return Number.isNaN(date.getTime())
+                ? null
+                : startOfDay(date);
         }
 
-        currentEvent =
-            result.data;
+        const date = new Date(raw);
 
-        displayEvent(
-            currentEvent
-        );
-
-        loadEventMedia();
-
-    } catch (error) {
-
-        console.error(
-            "Event loading error:",
-            error
-        );
-
-        showEventError(
-            "Could not load this event."
-        );
-
+        return Number.isNaN(date.getTime())
+            ? null
+            : startOfDay(date);
     }
 
-}
-
-
-// ==================================================
-// DISPLAY EVENT
-// ==================================================
-
-function displayEvent(
-    event
-) {
-
-    if (nameElement) {
-
-        nameElement.textContent =
-            event.title ||
-            event.name ||
-            "Untitled Event";
-
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+        })[character]);
     }
 
-    if (descriptionElement) {
+    function getEventImage(event) {
+        const image =
+            event.image ||
+            event.imageUrl ||
+            event.coverImage;
 
-        let text =
-            event.description ||
-            "";
+        if (!image) return "";
 
-        const date =
-            formatDate(
-                event.date
-            );
+        try {
+            const url = new URL(image, window.location.origin);
 
-        const location =
-            event.location ||
-            "";
-
-        if (date) {
-
-            if (text) {
-
-                text += " ";
-
+            if (!["http:", "https:"].includes(url.protocol)) {
+                return "";
             }
 
-            text +=
-                "Date: " +
-                date;
-
+            return url.href;
+        } catch {
+            return "";
         }
-
-        if (location) {
-
-            if (text) {
-
-                text += " ";
-
-            }
-
-            text +=
-                "Location: " +
-                location;
-
-        }
-
-        descriptionElement.textContent =
-            text;
-
     }
 
-    updateAdminControls();
-
-
-    // ==================================================
-    // QR CODE
-    // ==================================================
-
-    const eventURL =
-        window.location.href;
-
-    const qrURL =
-        "https://api.qrserver.com/v1/create-qr-code/" +
-        "?size=300x300&data=" +
-        encodeURIComponent(
-            eventURL
-        );
-
-    if (qrImage) {
-
-        qrImage.src =
-            qrURL;
-
+    function getEventId(event) {
+        return event._id || event.id || "";
     }
 
-    if (qrButton) {
-
-        qrButton.href =
-            eventURL;
-
-    }
-
-}
-
-// ==================================================
-// LOAD EVENT MEDIA
-// ==================================================
-
-async function loadEventMedia() {
-
-    if (!eventId) {
-
-        showEmptyMedia();
-
-        return;
-
-    }
-
-    try {
-
-        console.log(
-            "Loading media for event:",
-            eventId
-        );
-
-
-        const response =
-            await fetch(
-                `/api/media/event/${encodeURIComponent(eventId)}`
-            );
-
-
-        const result =
-            await response.json();
-
-
-        console.log(
-            "Event media response:",
-            result
-        );
-
-
-        if (
-            !response.ok ||
-            !result.success
-        ) {
-
-            throw new Error(
-                result.message ||
-                "Could not load event media."
-            );
-
-        }
-
-
-        const photos =
-            Array.isArray(result.photos)
-                ? result.photos
-                : [];
-
-
-        const videos =
-            Array.isArray(result.videos)
-                ? result.videos
-                : [];
-
-
-        displayEventPhotos(photos);
-
-        displayEventVideos(videos);
-
-
-        updatePhotoCount(
-            photos.length
-        );
-
-
-        updateVideoCount(
-            videos.length
-        );
-
-
-    }
-    catch (error) {
-
-        console.error(
-            "Event media loading error:",
-            error
-        );
-
-        showEmptyMedia();
-
-    }
-
-}
-
-// ==================================================
-// CHECK PHOTO
-// ==================================================
-
-function isPhoto(
-    filename
-) {
-
-    const lower =
-        filename.toLowerCase();
-
-    return (
-        lower.endsWith(".jpg") ||
-        lower.endsWith(".jpeg") ||
-        lower.endsWith(".png") ||
-        lower.endsWith(".webp") ||
-        lower.endsWith(".gif")
-    );
-
-}
-
-
-// ==================================================
-// CHECK VIDEO
-// ==================================================
-
-function isVideo(
-    filename
-) {
-
-    const lower =
-        filename.toLowerCase();
-
-    return (
-        lower.endsWith(".mp4") ||
-        lower.endsWith(".webm") ||
-        lower.endsWith(".mov") ||
-        lower.endsWith(".m4v")
-    );
-
-}
-
-// ==================================================
-// DISPLAY EVENT PHOTOS
-// ==================================================
-
-function displayEventPhotos(photos) {
-
-    const gallery =
-        document.getElementById(
-            "photoGallery"
-        );
-
-    if (!gallery) {
-        return;
-    }
-
-
-    gallery.innerHTML = "";
-
-
-    if (
-        !Array.isArray(photos) ||
-        photos.length === 0
-    ) {
-
-        gallery.innerHTML = `
-            <p class="empty-media">
-                No photos available.
-            </p>
-        `;
-
-        return;
-    }
-
-
-    photos.forEach(
-        (photo, index) => {
-
-            const image =
-                document.createElement("img");
-
-
-            image.src =
-                photo.url;
-
-
-            image.alt =
-                photo.originalName ||
-                `Event Photo ${index + 1}`;
-
-
-            image.loading =
-                "lazy";
-
-
-            image.className =
-                "event-photo";
-
-
-            image.addEventListener(
-                "click",
-                () => {
-
-                    openLightbox(
-                        photo.url,
-                        photo.originalName ||
-                        `Event Photo ${index + 1}`
-                    );
-
-                }
-            );
-
-
-            gallery.appendChild(
-                image
-            );
-
-        }
-    );
-
-}
-
-// ==================================================
-// DISPLAY EVENT VIDEOS
-// ==================================================
-
-function displayEventVideos(videos) {
-
-    const gallery =
-        document.getElementById(
-            "videoGallery"
-        );
-
-    if (!gallery) {
-        return;
-    }
-
-
-    gallery.innerHTML = "";
-
-
-    if (
-        !Array.isArray(videos) ||
-        videos.length === 0
-    ) {
-
-        gallery.innerHTML = `
-            <p class="empty-media">
-                No videos available.
-            </p>
-        `;
-
-        return;
-    }
-
-
-    videos.forEach(
-        (video, index) => {
-
-            const videoElement =
-                document.createElement("video");
-
-
-            videoElement.src =
-                video.url;
-
-
-            videoElement.controls =
-                true;
-
-
-            videoElement.preload =
-                "metadata";
-
-
-            videoElement.className =
-                "event-video";
-
-
-            videoElement.setAttribute(
-                "playsinline",
-                ""
-            );
-
-
-            videoElement.setAttribute(
-                "title",
-                video.originalName ||
-                `Event Video ${index + 1}`
-            );
-
-
-            gallery.appendChild(
-                videoElement
-            );
-
-        }
-    );
-
-}
-// ==================================================
-// EMPTY MEDIA
-// ==================================================
-
-function showEmptyMedia() {
-
-    updatePhotoCount(0);
-
-    updateVideoCount(0);
-
-    if (photoGallery) {
-
-        photoGallery.innerHTML = `
-            <div class="media-empty">
-                No photos available.
-            </div>
-        `;
-
-    }
-
-    if (videoGallery) {
-
-        videoGallery.innerHTML = `
-            <div class="media-empty">
-                No videos available.
-            </div>
-        `;
-
-    }
-
-}
-
-
-// ==================================================
-// EVENT ERROR
-// ==================================================
-
-function showEventError(
-    message
-) {
-
-    if (nameElement) {
-
-        nameElement.textContent =
-            "Event Not Found";
-
-    }
-
-    if (descriptionElement) {
-
-        descriptionElement.textContent =
-            message;
-
-    }
-
-    showEmptyMedia();
-
-}
-
-
-// ==================================================
-// VIEW MEDIA
-// ==================================================
-
-if (viewMediaButton) {
-
-    viewMediaButton.addEventListener(
-        "click",
-        function () {
-
-            if (!eventGallery) {
-
-                return;
-
-            }
-
-            eventGallery.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+    // Load events from the MongoDB-backed API.
+    async function loadEvents() {
+        eventsContainer.innerHTML =
+            '<p class="event-message">Loading events…</p>';
+
+        try {
+            const response = await fetch(API_URL, {
+                headers: {
+                    Accept: "application/json"
+                },
+                cache: "no-store"
             });
 
+            if (!response.ok) {
+                throw new Error(
+                    `Server returned HTTP ${response.status}`
+                );
+            }
+
+            const result = await response.json();
+
+            const list = Array.isArray(result)
+                ? result
+                : Array.isArray(result.data)
+                    ? result.data
+                    : Array.isArray(result.events)
+                        ? result.events
+                        : Array.isArray(result.data?.events)
+                            ? result.data.events
+                            : null;
+
+            if (!list) {
+                throw new Error(
+                    result.message ||
+                    "The API did not return an events list."
+                );
+            }
+
+            events = list;
+
+            renderCalendar();
+            renderEvents();
+
+        } catch (error) {
+            console.error("Unable to load events:", error);
+
+            eventsContainer.innerHTML = `
+                <p class="event-message">
+                    Unable to load events. Please refresh the page
+                    or try again later.
+                </p>
+            `;
+
+            calendarTitle.textContent = "Calendar unavailable";
+            calendarDays.innerHTML = "";
         }
-    );
-
-}
-
-
-// ==================================================
-// EDIT EVENT
-// ==================================================
-
-if (editEventButton) {
-
-    editEventButton.addEventListener(
-        "click",
-        function () {
-
-            if (!isAdmin()) {
-
-                alert(
-                    "You are not authorized."
-                );
-
-                return;
-
-            }
-
-            if (!eventId) {
-
-                return;
-
-            }
-
-            window.location.href =
-                "admin.html?edit=" +
-                encodeURIComponent(
-                    eventId
-                );
-
-        }
-    );
-
-}
-
-
-// ==================================================
-// DELETE EVENT
-// ==================================================
-
-if (deleteEventButton) {
-
-    deleteEventButton.addEventListener(
-        "click",
-        async function () {
-
-            if (!isAdmin()) {
-
-                alert(
-                    "You are not authorized."
-                );
-
-                return;
-
-            }
-
-            if (!eventId) {
-
-                return;
-
-            }
-
-            const eventName =
-                nameElement
-                    ? nameElement.textContent
-                    : "this event";
-
-            const confirmed =
-                window.confirm(
-                    `Are you sure you want to delete "${eventName}"?`
-                );
-
-            if (!confirmed) {
-
-                return;
-
-            }
-
-            deleteEventButton.disabled =
-                true;
-
-            deleteEventButton.textContent =
-                "Deleting...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${EVENTS_API}/${encodeURIComponent(
-                            eventId
-                        )}`,
-                        {
-                            method: "DELETE"
-                        }
-                    );
-
-                const result =
-                    await response.json();
-
-                if (
-                    !response.ok ||
-                    !result.success
-                ) {
-
-                    throw new Error(
-                        result.message ||
-                        "Could not delete the event."
-                    );
-
-                }
-
-                alert(
-                    "Event deleted successfully."
-                );
-
-                window.location.href =
-                    "../index.html#events";
-
-            } catch (error) {
-
-                console.error(
-                    "Delete error:",
-                    error
-                );
-
-                alert(
-                    "Could not delete the event: " +
-                    (
-                        error.message ||
-                        "Unknown error"
-                    )
-                );
-
-                deleteEventButton.disabled =
-                    false;
-
-                deleteEventButton.textContent =
-                    "🗑️ Delete Event";
-
-            }
-
-        }
-    );
-
-}
-
-
-// ==================================================
-// LIGHTBOX
-// ==================================================
-
-function openLightbox(
-    imageURL,
-    imageAlt
-) {
-
-    if (
-        !photoLightbox ||
-        !lightboxImage
-    ) {
-
-        return;
-
     }
 
-    lightboxImage.src =
-        imageURL;
+    // Render calendar.
+    function renderCalendar() {
+        const year = displayedMonth.getFullYear();
+        const month = displayedMonth.getMonth();
 
-    lightboxImage.alt =
-        imageAlt ||
-        "Event photo";
+        calendarTitle.textContent =
+            displayedMonth.toLocaleDateString("en", {
+                month: "long",
+                year: "numeric"
+            });
 
-    photoLightbox.classList.add(
-        "active"
-    );
+        calendarDays.innerHTML = "";
 
-    document.body.style.overflow =
-        "hidden";
+        const firstWeekday = new Date(year, month, 1).getDay();
+        const numberOfDays =
+            new Date(year, month + 1, 0).getDate();
 
-}
+        for (let i = 0; i < firstWeekday; i++) {
+            const blank = document.createElement("span");
 
+            blank.className = "calendar-empty";
+            blank.setAttribute("aria-hidden", "true");
 
-function closeLightbox() {
+            calendarDays.appendChild(blank);
+        }
 
-    if (!photoLightbox) {
+        for (let day = 1; day <= numberOfDays; day++) {
+            const date = new Date(year, month, day);
+            const dateKey = date.toDateString();
 
-        return;
+            const hasEvents = events.some(event => {
+                const eventDate = parseEventDate(event);
 
-    }
+                return (
+                    eventDate &&
+                    eventDate.toDateString() === dateKey
+                );
+            });
 
-    photoLightbox.classList.remove(
-        "active"
-    );
+            const button = document.createElement("button");
 
-    if (lightboxImage) {
+            button.type = "button";
+            button.className = "calendar-day";
+            button.textContent = day;
+            button.setAttribute(
+                "aria-label",
+                date.toLocaleDateString()
+            );
 
-        lightboxImage.src =
-            "";
+            if (dateKey === today.toDateString()) {
+                button.classList.add("today");
+            }
 
-    }
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-if (lightboxClose) {
-
-    lightboxClose.addEventListener(
-        "click",
-        closeLightbox
-    );
-
-}
-
-
-if (photoLightbox) {
-
-    photoLightbox.addEventListener(
-        "click",
-        function (event) {
+            if (hasEvents) {
+                button.classList.add("has-events");
+            }
 
             if (
-                event.target ===
-                photoLightbox
+                selectedDate &&
+                dateKey === selectedDate.toDateString()
             ) {
-
-                closeLightbox();
-
+                button.classList.add("selected");
             }
 
+            button.addEventListener("click", () => {
+                selectedDate = date;
+                activeFilter = "all";
+
+                document.querySelectorAll("[data-filter]").forEach(
+                    filterButton => {
+                        filterButton.classList.toggle(
+                            "active",
+                            filterButton.dataset.filter === "all"
+                        );
+                    }
+                );
+
+                if (selectedDateLabel) {
+                    selectedDateLabel.textContent =
+                        `Events on ${date.toLocaleDateString("en", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric"
+                        })}`;
+                }
+
+                renderCalendar();
+                renderEvents();
+            });
+
+            calendarDays.appendChild(button);
         }
-    );
-
-}
-
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeLightbox();
-
-        }
-
     }
-);
 
+    // Filter events by date or selected filter.
+    function getFilteredEvents() {
+        return events
+            .filter(event => {
+                const date = parseEventDate(event);
 
-// ==================================================
-// START
-// ==================================================
+                if (selectedDate) {
+                    return (
+                        date &&
+                        date.toDateString() === selectedDate.toDateString()
+                    );
+                }
 
-console.log(
-    "======================================"
-);
+                if (!date) {
+                    return activeFilter === "all";
+                }
 
-console.log(
-    "ADTU Bodo Union Event Page"
-);
+                if (activeFilter === "upcoming") {
+                    return date > today;
+                }
 
-console.log(
-    "MongoDB API MODE"
-);
+                if (activeFilter === "today") {
+                    return date.getTime() === today.getTime();
+                }
 
-console.log(
-    "Firebase Storage: DISABLED"
-);
+                if (activeFilter === "past") {
+                    return date < today;
+                }
 
-console.log(
-    "Google Drive: DISABLED"
-);
+                return true;
+            })
+            .sort((a, b) => {
+                const dateA = parseEventDate(a);
+                const dateB = parseEventDate(b);
 
-console.log(
-    "Google OAuth: DISABLED"
-);
+                return (
+                    (dateA?.getTime() ?? 0) -
+                    (dateB?.getTime() ?? 0)
+                );
+            });
+    }
 
-console.log(
-    "Event ID:",
-    eventId
-);
+    // Render event cards.
+    function renderEvents() {
+        const filteredEvents = getFilteredEvents();
 
-console.log(
-    "======================================"
-);
+        if (currentEventContainer) {
+            currentEventContainer.innerHTML = "";
+        }
 
+        if (filteredEvents.length === 0) {
+            eventsContainer.innerHTML = `
+                <p class="event-message">
+                    ${selectedDate
+                    ? "No events found for this date."
+                    : "No events found for this filter."
+                }
+                </p>
+            `;
 
-// ==================================================
-// LOAD EVENT
-// ==================================================
+            return;
+        }
 
-loadEvent();
+        eventsContainer.innerHTML = filteredEvents
+            .map(event => {
+                const title = escapeHTML(
+                    event.title || event.name || "Untitled event"
+                );
+
+                const description = escapeHTML(
+                    event.description || "More details coming soon."
+                );
+
+                const location = escapeHTML(
+                    event.location || "Location to be announced"
+                );
+
+                const date = parseEventDate(event);
+
+                const formattedDate = date
+                    ? date.toLocaleDateString("en", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    })
+                    : "Date to be announced";
+
+                const image = getEventImage(event);
+
+                const imageHTML = image
+                    ? `<img
+                            src="${escapeHTML(image)}"
+                            alt="${title}"
+                            loading="lazy"
+                       >`
+                    : `<div
+                            class="event-image-placeholder"
+                            aria-hidden="true"
+                       >🎉</div>`;
+
+                const id = getEventId(event);
+
+                // Assumes the details page is frontend/events/event.html.
+                const detailLink = id
+                    ? `./events/event.html?id=${encodeURIComponent(id)}`
+                    : "";
+
+                return `
+                    <article class="event-card">
+                        <div class="event-card-image">
+                            ${imageHTML}
+                        </div>
+
+                        <div class="event-card-content">
+                            <p class="event-date">
+                                📅 ${formattedDate}
+                            </p>
+
+                            <h3>${title}</h3>
+
+                            <p>${description}</p>
+
+                            <p class="event-location">
+                                📍 ${location}
+                            </p>
+
+                            ${detailLink
+                        ? `<a
+                                            class="button button-primary"
+                                            href="${detailLink}"
+                                       >View Details</a>`
+                        : ""
+                    }
+                        </div>
+                    </article>
+                `;
+            })
+            .join("");
+    }
+
+    // Filter buttons.
+    document.querySelectorAll("[data-filter]").forEach(button => {
+        button.addEventListener("click", () => {
+            activeFilter = button.dataset.filter;
+            selectedDate = null;
+
+            document.querySelectorAll("[data-filter]").forEach(item => {
+                item.classList.toggle("active", item === button);
+            });
+
+            if (selectedDateLabel) {
+                selectedDateLabel.textContent =
+                    "Showing " +
+                    (
+                        activeFilter === "all"
+                            ? "all events"
+                            : `${activeFilter} events`
+                    );
+            }
+
+            renderCalendar();
+            renderEvents();
+        });
+    });
+
+    // Previous calendar month.
+    prevMonthButton?.addEventListener("click", () => {
+        displayedMonth = new Date(
+            displayedMonth.getFullYear(),
+            displayedMonth.getMonth() - 1,
+            1
+        );
+
+        renderCalendar();
+    });
+
+    // Next calendar month.
+    nextMonthButton?.addEventListener("click", () => {
+        displayedMonth = new Date(
+            displayedMonth.getFullYear(),
+            displayedMonth.getMonth() + 1,
+            1
+        );
+
+        renderCalendar();
+    });
+
+    loadEvents();
+});
