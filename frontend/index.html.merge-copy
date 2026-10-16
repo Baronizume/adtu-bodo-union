@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Explore ADTU Bodo Union events, cultural celebrations, photos and videos at Assam down town University.">
+    <meta name="theme-color" content="#123c2c">
+    <title>ADTU Bodo Union | Events & Gallery</title>
+
+    <style>
+        :root {
+            --green: #123c2c;
+            --green-light: #216747;
+            --gold: #f5cf72;
+            --background: #f6f8f6;
+            --text: #1f2937;
+            --muted: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --shadow: 0 8px 25px rgba(18, 60, 44, .09);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 85px;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        img,
+        video {
+            max-width: 100%;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1200px, 92%);
+            margin-inline: auto;
+        }
+
+        /* Navigation */
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--green);
+            color: white;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .12);
+        }
+
+        .navbar {
+            min-height: 76px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .brand-logo {
+            display: grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--gold);
+            color: var(--green);
+            font-weight: 900;
+            font-size: 15px;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 16px;
+            line-height: 1.3;
+        }
+
+        .brand-text span {
+            color: #d3e5d9;
+            font-size: 12px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--gold);
+        }
+
+        .menu-toggle {
+            display: none;
+            border: 1px solid rgba(255, 255, 255, .4);
+            border-radius: 8px;
+            padding: 8px 12px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Hero */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 100px 20px 95px;
+            text-align: center;
+            color: white;
+            background:
+                radial-gradient(ellipse at top right, rgba(245, 207, 114, .18), transparent 45%),
+                linear-gradient(135deg, #102e23, #216747);
+        }
+
+        .hero-content {
+            max-width: 820px;
+            margin: auto;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 18px;
+            padding: 7px 14px;
+            border: 1px solid rgba(245, 207, 114, .5);
+            border-radius: 999px;
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            margin-bottom: 18px;
+            font-size: clamp(34px, 5.5vw, 62px);
+            line-height: 1.13;
+            letter-spacing: -1.2px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #e0ebe3;
+            font-size: clamp(16px, 2vw, 19px);
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            min-height: 45px;
+            padding: 12px 21px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .2s, background .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--green);
+        }
+
+        .btn-outline {
+            border-color: rgba(255, 255, 255, .6);
+            color: white;
+            background: transparent;
+        }
+
+        /* Statistics */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: -30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-card {
+            padding: 24px 15px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: white;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            display: block;
+            color: var(--green);
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* General sections */
+
+        .section {
+            padding: 76px 0;
+        }
+
+        .section-alt {
+            background: #edf4ee;
+        }
+
+        .section-heading {
+            max-width: 700px;
+            margin: 0 auto 35px;
+            text-align: center;
+        }
+
+        .section-kicker {
+            margin-bottom: 8px;
+            color: var(--green-light);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            margin-bottom: 10px;
+            color: var(--green);
+            font-size: clamp(27px, 4vw, 36px);
+            line-height: 1.25;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        /* Filters */
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 9px 15px;
+            border: 1px solid #cbd5cf;
+            border-radius: 7px;
+            background: white;
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--green);
+            background: var(--green);
+            color: white;
+        }
+
+        .search-input {
+            width: min(100%, 280px);
+            min-height: 42px;
+            padding: 10px 13px;
+            border: 1px solid #cbd5cf;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+        }
+
+        .search-input:focus {
+            border-color: var(--green-light);
+            box-shadow: 0 0 0 3px rgba(33, 103, 71, .12);
+        }
+
+        /* Event cards */
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 23px;
+        }
+
+        .event-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .045);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .event-cover {
+            position: relative;
+            height: 210px;
+            overflow: hidden;
+            background: #dfe9e0;
+        }
+
+        .event-cover img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-placeholder {
+            display: grid;
+            place-items: center;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #dce9df, #f5ead0);
+            color: var(--green);
+            font-size: 52px;
+        }
+
+        .event-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 10px;
+            border-radius: 5px;
+            background: var(--gold);
+            color: #3c351e;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .event-content {
+            padding: 19px;
+        }
+
+        .event-date {
+            margin-bottom: 8px;
+            color: var(--green-light);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .event-content h3 {
+            margin-bottom: 9px;
+            color: var(--green);
+            font-size: 20px;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+        }
+
+        .event-description {
+            display: -webkit-box;
+            min-height: 48px;
+            overflow: hidden;
+            color: #64748b;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+        }
+
+        .event-location {
+            margin-top: 12px;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .event-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 17px;
+            padding-top: 14px;
+            border-top: 1px solid #edf0ed;
+        }
+
+        .media-summary {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .event-link {
+            color: var(--green-light);
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .event-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading and messages */
+
+        .message {
+            grid-column: 1 / -1;
+            padding: 35px 20px;
+            border: 1px dashed #cbd5cf;
+            border-radius: 12px;
+            background: white;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .message strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--green);
+        }
+
+        .message button {
+            margin-top: 15px;
+        }
+
+        /* Galleries */
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .gallery-item {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .06);
+            transition: transform .2s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .gallery-media {
+            position: relative;
+            overflow: hidden;
+            background: #17221b;
+        }
+
+        .gallery-media img,
+        .gallery-media video {
+            display: block;
+            width: 100%;
+            height: 245px;
+            object-fit: cover;
+        }
+
+        .gallery-media img {
+            cursor: zoom-in;
+        }
+
+        .gallery-media video {
+            object-fit: contain;
+        }
+
+        .gallery-caption {
+            padding: 14px;
+        }
+
+        .gallery-caption strong {
+            display: block;
+            color: var(--green);
+            overflow-wrap: anywhere;
+        }
+
+        .gallery-caption span {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .gallery-caption a {
+            display: inline-block;
+            margin-top: 8px;
+            color: var(--green-light);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .gallery-caption a:hover {
+            text-decoration: underline;
+        }
+
+        .gallery-controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 25px;
+        }
+
+        /* Calendar */
+
+        .calendar-card {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 25px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header h3 {
+            color: var(--green);
+            font-size: 21px;
+            text-align: center;
+        }
+
+        .calendar-nav {
+            width: 42px;
+            height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            color: var(--green);
+            cursor: pointer;
+        }
+
+        .calendar-nav:hover {
+            background: #edf4ee;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 7px;
+        }
+
+        .calendar-weekday {
+            padding: 8px 2px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .calendar-day {
+            position: relative;
+            min-height: 67px;
+            padding: 8px 3px;
+            border: 1px solid #edf0ed;
+            border-radius: 7px;
+            background: #fbfcfb;
+            color: var(--text);
+            text-align: center;
+        }
+
+        button.calendar-day {
+            cursor: pointer;
+        }
+
+        .calendar-day.has-event {
+            border-color: #9dc7aa;
+            background: #eaf5ed;
+            color: var(--green);
+            font-weight: 800;
+        }
+
+        .calendar-day.today {
+            outline: 2px solid var(--gold);
+            outline-offset: -2px;
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        .event-dot {
+            display: block;
+            width: 6px;
+            height: 6px;
+            margin: 5px auto 0;
+            border-radius: 50%;
+            background: var(--green-light);
+        }
+
+        .calendar-help {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .calendar-events {
+            margin-top: 22px;
+        }
+
+        .calendar-events h4 {
+            margin-bottom: 12px;
+            color: var(--green);
+        }
+
+        .calendar-event-link {
+            display: block;
+            margin-top: 8px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f1f7f2;
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        .calendar-event-link:hover {
+            background: #e3f0e6;
+        }
+
+        .calendar-event-link span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* Lightbox */
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, .92);
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 95vw;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 12px;
+            right: 22px;
+            border: 0;
+            background: transparent;
+            color: white;
+            font-size: 42px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+
+        .site-footer {
+            padding: 42px 0 20px;
+            background: #0d2b1e;
+            color: white;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 35px;
+            padding-bottom: 28px;
+        }
+
+        .footer-content h3,
+        .footer-content h4 {
+            margin-bottom: 12px;
+        }
+
+        .footer-content p,
+        .footer-content a {
+            color: #cfddd3;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: grid;
+            align-content: start;
+            gap: 7px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, .15);
+            color: #cfddd3;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 950px) {
+
+            .events-grid,
+            .gallery-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-about {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                min-height: 70px;
+                flex-wrap: wrap;
+                padding: 11px 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 8px 0;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 11px 5px;
+                border-top: 1px solid rgba(255, 255, 255, .12);
+            }
+
+            .hero {
+                padding: 70px 18px 75px;
+            }
+
+            .stats {
+                gap: 9px;
+            }
+
+            .stat-card {
+                padding: 17px 7px;
+            }
+
+            .stat-number {
+                font-size: 25px;
+            }
+
+            .stat-label {
+                font-size: 11px;
+            }
+
+            .section {
+                padding: 55px 0;
+            }
+
+            .toolbar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .filter-buttons {
+                justify-content: flex-start;
+            }
+
+            .calendar-card {
+                padding: 12px;
+            }
+
+            .calendar-grid {
+                gap: 3px;
+            }
+
+            .calendar-day {
+                min-height: 49px;
+                padding: 5px 1px;
+                font-size: 12px;
+            }
+
+            .calendar-weekday {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: 92%;
+            }
+
+            .brand-logo {
+                width: 42px;
+                height: 42px;
+            }
+
+            .brand-text strong {
+                font-size: 14px;
+            }
+
+            .brand-text span {
+                font-size: 11px;
+            }
+
+            .events-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .event-cover {
+                height: 220px;
+            }
+
+            .gallery-media img,
+            .gallery-media video {
+                height: 250px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 23px;
+            }
+
+            .footer-about {
+                grid-column: auto;
+            }
+
+            .calendar-header h3 {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container navbar">
+            <a class="brand" href="#home" aria-label="ADTU Bodo Union home">
+                <div class="brand-logo">ABU</div>
+                <div class="brand-text">
+                    <strong>ADTU BODO UNION</strong>
+                    <span>Culture · Unity · Celebration</span>
+                </div>
+            </a>
+
+            <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks">
+                ☰ Menu
+            </button>
+
+            <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+                <a href="#home">Home</a>
+                <a href="#events">Events</a>
+                <a href="#calendar">Calendar</a>
+                <a href="#photos">Photos</a>
+                <a href="#videos">Videos</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <span class="eyebrow">Assam down town University</span>
+                <h1>Welcome to ADTU Bodo Union</h1>
+                <p>
+                    Celebrating Bodo culture, traditions, unity and student activities.
+                    Discover our events and relive memorable moments from our community.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn btn-gold" href="#events">Explore Events ↓</a>
+                    <a class="btn btn-outline" href="#photos">Explore Gallery</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container stats" aria-label="Website statistics">
+            <div class="stat-card">
+                <span class="stat-number" id="totalEvents">—</span>
+                <span class="stat-label">Total Events</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="totalPhotos">—</span>
+                <span class="stat-label">Event Photos</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="totalVideos">—</span>
+                <span class="stat-label">Event Videos</span>
+            </div>
+        </section>
+
+        <section class="section" id="events">
+            <div class="container">
+                <div class="section-heading">
+                    <div class="section-kicker">What's happening</div>
+                    <h2>Discover Our Events</h2>
+                    <p>Explore upcoming celebrations and revisit our past activities.</p>
+                </div>
+
+                <div class="toolbar">
+                    <div class="filter-buttons" role="group" aria-label="Filter events">
+                        <button class="filter-btn active" data-filter="all" type="button">All Events</button>
+                        <button class="filter-btn" data-filter="upcoming" type="button">Upcoming</button>
+                        <button class="filter-btn" data-filter="past" type="button">Past Events</button>
+                    </div>
+
+                    <input class="search-input" id="eventSearch" type="search" placeholder="Search events..."
+                        aria-label="Search events">
+                </div>
+
+                <div class="events-grid" id="eventsContainer" aria-live="polite">
+                    <div class="message"><strong>Loading events...</strong>Please wait.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-alt" id="photos">
+            <div class="container">
+                <div class="section-heading">
+                    <div class="section-kicker">Moments captured</div>
+                    <h2>Event Photo Gallery</h2>
+                    <p>Browse photos uploaded for our events.</p>
+                </div>
+
+                <div class="gallery-controls">
+                    <button class="filter-btn active" data-gallery-filter="all" type="button">All Photos</button>
+                </div>
+
+                <div class="gallery-grid" id="photosContainer" aria-live="polite">
+                    <div class="message"><strong>Loading photos...</strong>Please wait.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="videos">
+            <div class="container">
+                <div class="section-heading">
+                    <div class="section-kicker">Watch and remember</div>
+                    <h2>Event Video Gallery</h2>
+                    <p>Watch highlights and celebrations from our events.</p>
+                </div>
+
+                <div class="gallery-grid" id="videosContainer" aria-live="polite">
+                    <div class="message"><strong>Loading videos...</strong>Please wait.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-alt" id="calendar">
+            <div class="container">
+                <div class="section-heading">
+                    <div class="section-kicker">Plan ahead</div>
+                    <h2>Event Calendar</h2>
+                    <p>Browse event dates. Days with scheduled events are highlighted.</p>
+                </div>
+
+                <div class="calendar-card">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" id="previousMonth" type="button"
+                            aria-label="Previous month">←</button>
+                        <h3 id="calendarTitle">Event Calendar</h3>
+                        <button class="calendar-nav" id="nextMonth" type="button" aria-label="Next month">→</button>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarDays"></div>
+                    <p class="calendar-help">Select a highlighted date to see its events.</p>
+                    <div class="calendar-events" id="calendarEvents" aria-live="polite"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>ADTU Bodo Union</h3>
+                    <p>
+                        Celebrating our culture, preserving traditions and bringing
+                        our community together at Assam down town University,
+                        Guwahati, Assam.
+                    </p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#events">Events</a>
+                    <a href="#calendar">Calendar</a>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Explore</h4>
+                    <a href="#photos">Photo Gallery</a>
+                    <a href="#videos">Video Gallery</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                © <span id="currentYear"></span> ADTU Bodo Union. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+<<<<<<< HEAD
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo preview">
+        <button class="lightbox-close" id="lightboxClose" type="button"
+            aria-label="Close photo preview">&times;</button>
+        <img id="lightboxImage" src="" alt="Enlarged event photo">
+    </div>
+
+    <script>
+        "use strict";
+
+        /*
+         * This page uses the same Express server as the API.
+         * Event list: /api/events
+         * Event media: /api/upload/event/:eventId
+         * Event details: /events/event.html?id=:eventId
+         */
+        const API_BASE_URL = "";
+
+        const $ = (id) => document.getElementById(id);
+
+        const state = {
+            events: [],
+            mediaByEvent: new Map(),
+            filter: "all",
+            search: "",
+            galleryFilter: "all",
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear(),
+            selectedCalendarDate: null
+        };
+
+        $("currentYear").textContent = new Date().getFullYear();
+
+        const eventsContainer = $("eventsContainer");
+        const photosContainer = $("photosContainer");
+        const videosContainer = $("videosContainer");
+
+        function apiUrl(path) {
+            const normalizedPath = path.startsWith("/") ? path : "/" + path;
+            return API_BASE_URL.replace(/\/$/, "") + normalizedPath;
+        }
+
+        async function fetchJson(url) {
+            const response = await fetch(url, {
+                headers: { Accept: "application/json" }
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                throw new Error("The server returned an invalid response.");
+            }
+
+            if (!response.ok) {
+                throw new Error(data.message || "Request failed: " + response.status);
+            }
+
+            if (data && data.success === false) {
+                throw new Error(data.message || "The request was unsuccessful.");
+            }
+
+            return data;
+        }
+
+        function eventIdOf(event) {
+            return String(event._id || event.id || event.eventId || "");
+        }
+
+        function eventTitle(event) {
+            return event.title || event.name || event.eventName || "Untitled Event";
+        }
+
+        function safeDate(value) {
+            if (!value) return null;
+
+            const raw = String(value);
+            const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+            if (match) {
+                const date = new Date(
+                    Number(match[1]), Number(match[2]) - 1, Number(match[3])
+                );
+
+                if (
+                    date.getFullYear() !== Number(match[1]) ||
+                    date.getMonth() !== Number(match[2]) - 1 ||
+                    date.getDate() !== Number(match[3])
+                ) return null;
+
+                return date;
+            }
+
+            const date = new Date(raw);
+            return Number.isNaN(date.getTime()) ? null : date;
+        }
+
+        function dateKey(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatDate(value) {
+            const date = safeDate(value);
+            if (!date) return "Date not available";
+
+            return date.toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+        }
+
+        function isUpcoming(event) {
+            const date = safeDate(event.date);
+            if (!date) return false;
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            date.setHours(0, 0, 0, 0);
+
+            return date >= today;
+        }
+
+        function createMessage(container, title, message, retry = false) {
+            container.replaceChildren();
+
+            const box = document.createElement("div");
+            box.className = "message";
+
+            const heading = document.createElement("strong");
+            heading.textContent = title;
+
+            const paragraph = document.createElement("p");
+            paragraph.textContent = message;
+
+            box.append(heading, paragraph);
+
+            if (retry) {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "btn btn-gold";
+                button.textContent = "Try Again";
+                button.addEventListener("click", loadEverything);
+                box.appendChild(button);
+            }
+
+            container.appendChild(box);
+        }
+
+        function createElement(tag, className, text) {
+            const element = document.createElement(tag);
+            if (className) element.className = className;
+            if (text !== undefined) element.textContent = text;
+            return element;
+        }
+
+        function getMediaUrl(media) {
+            let url = "";
+
+            if (typeof media === "string") {
+                url = media;
+            } else if (media && typeof media === "object") {
+                url = media.url || media.secure_url || media.path ||
+                    media.image || media.video || "";
+            }
+
+            if (typeof url !== "string") return "";
+            url = url.trim();
+
+            if (!url) return "";
+            if (/^https?:\/\//i.test(url)) return url;
+            if (url.startsWith("//")) return window.location.protocol + url;
+            if (/^(data:|blob:)/i.test(url)) return url;
+
+            return apiUrl(url);
+        }
+
+        function mediaName(media, index, type) {
+            if (media && typeof media === "object") {
+                return media.originalName || media.originalname ||
+                    media.filename || media.name || `${type} ${index + 1}`;
+            }
+
+            if (typeof media === "string") {
+                const part = media.split("/").pop().split("?")[0];
+
+                try {
+                    return decodeURIComponent(part) || `${type} ${index + 1}`;
+                } catch {
+                    return part || `${type} ${index + 1}`;
+                }
+            }
+
+            return `${type} ${index + 1}`;
+        }
+
+        function mediaForEvent(id) {
+            return state.mediaByEvent.get(id) || { photos: [], videos: [] };
+        }
+
+        /* Load each event's media using the existing backend upload route. */
+        async function loadEventMedia(event) {
+            const id = eventIdOf(event);
+            if (!id) return { photos: [], videos: [] };
+
+            try {
+                const result = await fetchJson(
+                    apiUrl("/api/upload/event/" + encodeURIComponent(id))
+                );
+
+                const media = {
+                    photos: Array.isArray(result.photos) ? result.photos : [],
+                    videos: Array.isArray(result.videos) ? result.videos : []
+                };
+
+                state.mediaByEvent.set(id, media);
+                return media;
+            } catch (error) {
+                console.error("Could not load media for event:", id, error);
+                const empty = { photos: [], videos: [] };
+                state.mediaByEvent.set(id, empty);
+                return empty;
+            }
+        }
+
+        /* Events */
+
+        function createEventCard(event) {
+            const id = eventIdOf(event);
+            const media = mediaForEvent(id);
+            const upcoming = isUpcoming(event);
+            const card = createElement("article", "event-card");
+
+            const cover = createElement("div", "event-cover");
+            const badge = createElement(
+                "span", "event-badge", upcoming ? "Upcoming" : "Past Event"
+            );
+
+            const imageCandidate = event.image || event.coverImage || event.thumbnail;
+            const imageUrl = imageCandidate ? getMediaUrl(imageCandidate) : "";
+
+            if (imageUrl) {
+                const image = createElement("img");
+                image.src = imageUrl;
+                image.alt = eventTitle(event);
+                image.loading = "lazy";
+
+                image.addEventListener("error", () => {
+                    image.replaceWith(createElement("div", "event-placeholder", "📅"));
+                });
+
+                cover.appendChild(image);
+            } else {
+                cover.appendChild(createElement("div", "event-placeholder", "📅"));
+            }
+
+            cover.appendChild(badge);
+
+            const content = createElement("div", "event-content");
+            content.appendChild(createElement("p", "event-date", "📅 " + formatDate(event.date)));
+            content.appendChild(createElement("h3", "", eventTitle(event)));
+            content.appendChild(createElement(
+                "p", "event-description", event.description || "Discover this union event."
+            ));
+
+            content.appendChild(createElement(
+                "p", "event-location",
+                "📍 " + (event.location || event.venue || "Location not available")
+            ));
+
+            const footer = createElement("div", "event-footer");
+            footer.appendChild(createElement(
+                "span", "media-summary",
+                `📷 ${media.photos.length} · 🎥 ${media.videos.length}`
+            ));
+
+            const link = createElement("a", "event-link", "View Details →");
+            link.href = "./events/event.html?id=" + encodeURIComponent(id);
+            link.setAttribute("aria-label", "View details for " + eventTitle(event));
+
+            footer.appendChild(link);
+            content.appendChild(footer);
+            card.append(cover, content);
+
+            return card;
+        }
+
+        function renderEvents() {
+            const query = state.search.trim().toLowerCase();
+
+            const filtered = state.events.filter(event => {
+                const upcoming = isUpcoming(event);
+
+                if (state.filter === "upcoming" && !upcoming) return false;
+                if (state.filter === "past" && upcoming) return false;
+
+                const searchable = [
+                    eventTitle(event),
+                    event.description,
+                    event.location,
+                    event.venue
+                ].filter(Boolean).join(" ").toLowerCase();
+
+                return !query || searchable.includes(query);
+            });
+
+            eventsContainer.replaceChildren();
+
+            if (!filtered.length) {
+                createMessage(
+                    eventsContainer,
+                    "No matching events",
+                    state.search
+                        ? "Try another search or choose a different filter."
+                        : "There are no events to display in this category."
+                );
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            filtered.forEach(event => fragment.appendChild(createEventCard(event)));
+            eventsContainer.appendChild(fragment);
+        }
+
+        /* Photo and video galleries */
+
+        function allMedia(type) {
+            const output = [];
+
+            state.events.forEach(event => {
+                const id = eventIdOf(event);
+                const media = mediaForEvent(id);
+                const list = type === "photo" ? media.photos : media.videos;
+
+                list.forEach((item, index) => {
+                    output.push({
+                        event,
+                        item,
+                        index,
+                        type,
+                        id,
+                        key: id + ":" + type + ":" + index
+                    });
+                });
+            });
+
+            return output;
+        }
+
+        function createGalleryCard(entry) {
+            const { event, item, index, type, id } = entry;
+            const url = getMediaUrl(item);
+            const name = mediaName(item, index, type === "photo" ? "Photo" : "Video");
+
+            const card = createElement("article", "gallery-item");
+            const mediaWrapper = createElement("div", "gallery-media");
+
+            if (type === "photo") {
+                const image = createElement("img");
+                image.src = url;
+                image.alt = name;
+                image.loading = "lazy";
+                image.decoding = "async";
+
+                image.addEventListener("click", () => openLightbox(url, name));
+                image.addEventListener("error", () => {
+                    image.alt = "Unable to load " + name;
+                    image.style.objectFit = "contain";
+                });
+
+                mediaWrapper.appendChild(image);
+            } else {
+                const video = createElement("video");
+                video.src = url;
+                video.controls = true;
+                video.preload = "metadata";
+                video.playsInline = true;
+                video.setAttribute("aria-label", name);
+
+                mediaWrapper.appendChild(video);
+            }
+
+            const caption = createElement("div", "gallery-caption");
+            caption.appendChild(createElement("strong", "", name));
+            caption.appendChild(createElement("span", "", eventTitle(event)));
+
+            const detailLink = createElement("a", "", "View Event →");
+            detailLink.href = "./events/event.html?id=" + encodeURIComponent(id);
+            caption.appendChild(detailLink);
+
+            card.append(mediaWrapper, caption);
+            return card;
+        }
+
+        function renderGallery(type) {
+            const container = type === "photo" ? photosContainer : videosContainer;
+            const items = allMedia(type);
+
+            container.replaceChildren();
+
+            if (!items.length) {
+                createMessage(
+                    container,
+                    type === "photo" ? "No photos yet" : "No videos yet",
+                    "Media uploaded for an event will appear here automatically."
+                );
+                return;
+            }
+
+            const fragment = document.createDocumentFragment();
+            items.forEach(entry => fragment.appendChild(createGalleryCard(entry)));
+            container.appendChild(fragment);
+        }
+
+        /* Calendar */
+
+        function renderCalendar() {
+            const title = new Date(
+                state.currentYear, state.currentMonth, 1
+            ).toLocaleDateString("en-IN", { month: "long", year: "numeric" });
+
+            $("calendarTitle").textContent = title;
+
+            const grid = $("calendarDays");
+            grid.replaceChildren();
+
+            ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
+                grid.appendChild(createElement("div", "calendar-weekday", day));
+            });
+
+            const firstDay = new Date(state.currentYear, state.currentMonth, 1).getDay();
+            const daysInMonth = new Date(
+                state.currentYear, state.currentMonth + 1, 0
+            ).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                grid.appendChild(createElement("div", "calendar-day empty", ""));
+            }
+
+            const today = dateKey(new Date());
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(state.currentYear, state.currentMonth, day);
+                const key = dateKey(date);
+
+                const dayEvents = state.events.filter(event => {
+                    const eventDate = safeDate(event.date);
+                    return eventDate && dateKey(eventDate) === key;
+                });
+
+                const button = createElement("button", "calendar-day", String(day));
+                button.type = "button";
+
+                if (key === today) button.classList.add("today");
+
+                if (dayEvents.length) {
+                    button.classList.add("has-event");
+                    button.title = dayEvents.map(eventTitle).join(", ");
+                    button.appendChild(createElement("span", "event-dot", ""));
+                    button.setAttribute(
+                        "aria-label",
+                        `${key}: ${dayEvents.length} event(s)`
+                    );
+                } else {
+                    button.setAttribute("aria-label", key);
+                }
+
+                button.addEventListener("click", () => {
+                    state.selectedCalendarDate = key;
+                    renderCalendarEvents(key);
+                });
+
+                grid.appendChild(button);
+            }
+
+            if (state.selectedCalendarDate) {
+                renderCalendarEvents(state.selectedCalendarDate);
+            } else {
+                renderCalendarEvents(null);
+            }
+        }
+
+        function renderCalendarEvents(key) {
+            const container = $("calendarEvents");
+            container.replaceChildren();
+
+            if (!key) {
+                container.appendChild(createElement(
+                    "p", "calendar-help", "Select a date to see scheduled events."
+                ));
+                return;
+            }
+
+            const matches = state.events.filter(event => {
+                const date = safeDate(event.date);
+                return date && dateKey(date) === key;
+            });
+
+            container.appendChild(createElement(
+                "h4", "", "Events on " + formatDate(key)
+            ));
+
+            if (!matches.length) {
+                container.appendChild(createElement(
+                    "p", "calendar-help", "No events scheduled for this date."
+                ));
+                return;
+            }
+
+            matches.forEach(event => {
+                const link = createElement("a", "calendar-event-link");
+                link.href = "./events/event.html?id=" + encodeURIComponent(eventIdOf(event));
+                link.appendChild(createElement("strong", "", eventTitle(event)));
+                link.appendChild(createElement(
+                    "span", "", event.location || event.venue || "Location not available"
+                ));
+                container.appendChild(link);
+            });
+        }
+
+        /* Statistics */
+
+        function updateStats() {
+            $("totalEvents").textContent = state.events.length;
+
+            let photos = 0;
+            let videos = 0;
+
+            state.mediaByEvent.forEach(media => {
+                photos += media.photos.length;
+                videos += media.videos.length;
+            });
+
+            $("totalPhotos").textContent = photos;
+            $("totalVideos").textContent = videos;
+        }
+
+        /* Controls */
+
+        document.querySelectorAll("[data-filter]").forEach(button => {
+            button.addEventListener("click", () => {
+                state.filter = button.dataset.filter;
+
+                document.querySelectorAll("[data-filter]").forEach(item => {
+                    item.classList.toggle("active", item === button);
+                });
+
+                renderEvents();
+            });
+        });
+
+        $("eventSearch").addEventListener("input", event => {
+            state.search = event.target.value;
+            renderEvents();
+        });
+
+        $("previousMonth").addEventListener("click", () => {
+            state.currentMonth--;
+
+            if (state.currentMonth < 0) {
+                state.currentMonth = 11;
+                state.currentYear--;
+            }
+
+            state.selectedCalendarDate = null;
+            renderCalendar();
+        });
+
+        $("nextMonth").addEventListener("click", () => {
+            state.currentMonth++;
+
+            if (state.currentMonth > 11) {
+                state.currentMonth = 0;
+                state.currentYear++;
+            }
+
+            state.selectedCalendarDate = null;
+            renderCalendar();
+        });
+
+        $("menuToggle").addEventListener("click", () => {
+            const menu = $("navLinks");
+            const open = menu.classList.toggle("open");
+
+            $("menuToggle").setAttribute("aria-expanded", String(open));
+        });
+
+        $("navLinks").querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                $("navLinks").classList.remove("open");
+                $("menuToggle").setAttribute("aria-expanded", "false");
+            });
+        });
+
+        /* Photo lightbox */
+
+        function openLightbox(url, alt) {
+            $("lightboxImage").src = url;
+            $("lightboxImage").alt = alt || "Event photo";
+            $("lightbox").classList.add("active");
+            $("lightboxClose").focus();
+        }
+
+        function closeLightbox() {
+            $("lightbox").classList.remove("active");
+            $("lightboxImage").src = "";
+        }
+
+        $("lightboxClose").addEventListener("click", closeLightbox);
+
+        $("lightbox").addEventListener("click", event => {
+            if (event.target === $("lightbox")) closeLightbox();
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") closeLightbox();
+        });
+
+        /* Load events and their media */
+
+        async function loadEverything() {
+            createMessage(eventsContainer, "Loading events...", "Please wait.");
+            createMessage(photosContainer, "Loading photos...", "Please wait.");
+            createMessage(videosContainer, "Loading videos...", "Please wait.");
+
+            try {
+                const result = await fetchJson(apiUrl("/api/events"));
+
+                let events = Array.isArray(result)
+                    ? result
+                    : Array.isArray(result.events)
+                        ? result.events
+                        : Array.isArray(result.data)
+                            ? result.data
+                            : [];
+
+                state.events = events;
+                state.mediaByEvent.clear();
+
+                // Fetch media for each event from the existing upload API.
+                await Promise.all(state.events.map(loadEventMedia));
+
+                renderEvents();
+                renderGallery("photo");
+                renderGallery("video");
+                renderCalendar();
+                updateStats();
+            } catch (error) {
+                console.error("Homepage loading error:", error);
+
+                createMessage(
+                    eventsContainer,
+                    "Could not load events",
+                    error.message + " Check that the backend is running and /api/events is available.",
+                    true
+                );
+
+                createMessage(
+                    photosContainer,
+                    "Gallery unavailable",
+                    "The event list could not be loaded. Try again after the server is running.",
+                    true
+                );
+
+                createMessage(
+                    videosContainer,
+                    "Gallery unavailable",
+                    "The event list could not be loaded. Try again after the server is running.",
+                    true
+                );
+
+                $("totalEvents").textContent = "—";
+                $("totalPhotos").textContent = "—";
+                $("totalVideos").textContent = "—";
+            }
+        }
+
+        loadEverything();
+    </script>
+=======
+        </a>
+
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            class="menu-button"
+            id="menuButton"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false">
+
+            ☰
+
+        </button>
+   
+        <!-- NAVIGATION -->
+        <nav id="navigation">
+            <a href="#home">Home</a>
+            <a href="#events">Events</a>
+            <a href="#photos">Photos</a>
+        </nav>
+
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================== -->
+
+<main>
+
+
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
+
+    <section
+        class="hero"
+        id="home">
+
+        <div class="hero-content">
+
+            <span class="hero-label">
+                ADTU BODO UNION
+            </span>
+
+
+            <h1>
+                Culture.
+                <span>
+                    Community.
+                </span>
+                Memories.
+            </h1>
+
+
+            <p>
+                Discover ADTU Bodo Union events and capture
+                the moments that bring our community together.
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a
+                    href="#events"
+                    class="button button-primary">
+
+                    Explore Events
+
+                </a>
+
+
+                <a
+                    href="#calendar"
+                    class="button button-outline">
+
+                    View Calendar
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO VISUAL -->
+
+        <div class="hero-visual">
+
+            <div
+                class="visual-circle circle-purple">
+            </div>
+
+            <div
+                class="visual-circle circle-orange">
+            </div>
+
+
+            <div class="camera-card">
+
+                <span>
+                    📸
+                </span>
+
+                <strong>
+                    Capture
+                </strong>
+
+                <small>
+                    Your Moments
+                </small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         EVENTS SECTION
+    ========================== -->
+
+    <section
+        class="events-section"
+        id="events">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-header">
+
+            <div>
+
+                <span class="section-label">
+                    EVENTS
+                </span>
+
+                <h2>
+                    Upcoming Events
+                </h2>
+
+            </div>
+
+
+            <p>
+                Select a date from the calendar
+                to view events.
+            </p>
+
+        </div>
+
+
+        <!-- EVENT FILTERS -->
+
+        <div class="event-filters">
+
+            <button
+                type="button"
+                class="filter-button active"
+                data-filter="all">
+
+                All
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="upcoming">
+
+                Upcoming
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="today">
+
+                Today
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-button"
+                data-filter="past">
+
+                Past
+
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             CALENDAR
+        ========================== -->
+
+        <div
+            class="calendar-wrapper"
+            id="calendar">
+
+
+            <!-- CALENDAR HEADER -->
+
+            <div class="calendar-header">
+
+                <button
+                    type="button"
+                    id="prevMonth"
+                    aria-label="Previous month">
+
+                    ←
+
+                </button>
+
+
+                <h3 id="calendarTitle"></h3>
+
+
+                <button
+                    type="button"
+                    id="nextMonth"
+                    aria-label="Next month">
+
+                    →
+
+                </button>
+
+            </div>
+
+
+            <!-- WEEKDAYS -->
+
+            <div class="calendar-weekdays">
+
+                <span>
+                    Sun
+                </span>
+
+                <span>
+                    Mon
+                </span>
+
+                <span>
+                    Tue
+                </span>
+
+                <span>
+                    Wed
+                </span>
+
+                <span>
+                    Thu
+                </span>
+
+                <span>
+                    Fri
+                </span>
+
+                <span>
+                    Sat
+                </span>
+
+            </div>
+
+
+            <!-- CALENDAR DAYS -->
+
+            <div
+                class="calendar-days"
+                id="calendarDays">
+            </div>
+
+        </div>
+
+
+        <!-- SELECTED DATE -->
+
+        <div
+            class="selected-date"
+            id="selectedDate">
+
+            Select a date to view events.
+
+        </div>
+
+
+        <!-- CURRENT EVENT -->
+
+        <div
+            id="current-event-container"
+            class="current-event-container">
+        </div>
+
+
+        <!-- EVENTS GRID -->
+
+        <div
+            id="events-container"
+            class="events-grid">
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         EVENT PHOTOS SECTION
+    ========================== -->
+
+    <section
+        class="photo-section"
+        id="photos">
+
+
+        <div class="photo-content">
+
+            <span class="section-label">
+                EVENT PHOTOS
+            </span>
+
+
+            <h2>
+                Be part of the memories.
+            </h2>
+
+
+            <p>
+                During events, scan the event QR code
+                to share your photos with the community.
+            </p>
+
+        </div>
+
+
+        <div class="photo-icon">
+            📷
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div>
+
+            <strong>
+                ADTU BODO UNION
+            </strong>
+
+            <p>
+                Event &amp; Photo Hub
+            </p>
+
+        </div>
+
+
+        <p>
+            ©
+            <span id="year"></span>
+            ADTU Bodo Union
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
+<script src="./js/app.js?v=3" defer></script>
+
+
+>>>>>>> 5ad861156f4f8c02a905a7b836a869ba4d9441bb
+
+</body>
+
+</html>

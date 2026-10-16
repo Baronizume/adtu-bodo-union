@@ -1,0 +1,229 @@
+
+<<<<<<< HEAD
+/* ==================================================
+   ADTU BODO UNION - MAIN SERVER
+================================================== */
+
+=======
+>>>>>>> 5ad861156f4f8c02a905a7b836a869ba4d9441bb
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const path = require("path");
+const fs = require("fs");
+<<<<<<< HEAD
+const admin = require("firebase-admin");
+
+const Event = require("./models/Event");
+const eventRoutes = require("./routes/events");
+const uploadRoutes = require("./routes/upload");
+=======
+const cors = require("cors");
+
+const Event = require("./models/Event");
+const Media = require("./models/Media");
+
+
+
+/* ==================================================
+   APP CONFIGURATION
+================================================== */
+>>>>>>> 5ad861156f4f8c02a905a7b836a869ba4d9441bb
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+/* Frontend and media folders */
+
+const frontendPath = path.resolve(__dirname, "../frontend");
+const mediaPath = path.join(frontendPath, "media");
+
+fs.mkdirSync(mediaPath, { recursive: true });
+
+app.use("/media", express.static(mediaPath));
+app.use(express.static(frontendPath));
+
+/* Firebase initialization */
+
+let firebaseReady = false;
+
+try {
+    if (admin.apps.length > 0) {
+        firebaseReady = true;
+    } else if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+        const serviceAccount = JSON.parse(
+            process.env.FIREBASE_SERVICE_ACCOUNT_JSON
+        );
+
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+
+        firebaseReady = true;
+    } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+        admin.initializeApp({
+            credential: admin.credential.applicationDefault()
+        });
+
+        firebaseReady = true;
+    }
+} catch (error) {
+    console.error("Firebase initialization error:", error.message);
+}
+
+/* Health check */
+
+app.get("/health", (req, res) => {
+    res.json({
+        success: true,
+        message: "ADTU Bodo Union backend is running.",
+        mongodb: mongoose.connection.readyState === 1
+            ? "connected"
+            : "disconnected",
+        firebase: firebaseReady ? "configured" : "not configured"
+    });
+});
+
+/* Events list */
+
+app.get("/api/events", async (req, res) => {
+    try {
+        const events = await Event.find()
+            .sort({ date: 1, createdAt: -1 })
+            .lean();
+
+        res.json(events);
+    } catch (error) {
+        console.error("Fetch events error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch events."
+        });
+    }
+});
+
+/* Event creation and deletion routes */
+
+app.use("/api/events", eventRoutes);
+
+/* Single event lookup */
+
+app.get("/api/events/:id", async (req, res) => {
+    const id = String(req.params.id || "").trim();
+
+    try {
+        if (/^[a-fA-F0-9]{24}$/.test(id)) {
+            const event = await Event.findById(id).lean();
+
+            if (event) {
+                return res.json({
+                    success: true,
+                    source: "mongodb",
+                    data: {
+                        ...event,
+                        id: String(event._id)
+                    }
+                });
+            }
+        }
+
+        if (firebaseReady) {
+            const doc = await admin.firestore()
+                .collection("events")
+                .doc(id)
+                .get();
+
+            if (doc.exists) {
+                return res.json({
+                    success: true,
+                    source: "firebase",
+                    data: { id: doc.id, ...doc.data() }
+                });
+            }
+        }
+
+        res.status(404).json({
+            success: false,
+            message: "Event not found."
+        });
+    } catch (error) {
+        console.error("Single event error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to load event."
+        });
+    }
+<<<<<<< HEAD
+});
+
+/* Upload, media listing and deletion routes */
+
+app.use("/api/upload", uploadRoutes);
+
+/* Home page */
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+});
+
+/* 404 */
+
+app.use((req, res) => {
+    if (req.path.startsWith("/api/")) {
+        return res.status(404).json({
+            success: false,
+            message: "API endpoint not found."
+        });
+    }
+
+    res.status(404).send("Page not found.");
+});
+
+/* Error handler */
+
+app.use((error, req, res, next) => {
+    console.error("Server error:", error);
+
+    if (res.headersSent) {
+        return next(error);
+    }
+
+    res.status(500).json({
+        success: false,
+        message: "Internal server error."
+    });
+});
+
+/* Start server */
+
+async function startServer() {
+    try {
+        if (!process.env.MONGODB_URI) {
+            throw new Error("MONGODB_URI is missing.");
+        }
+
+        await mongoose.connect(process.env.MONGODB_URI);
+
+        console.log("MongoDB connected successfully.");
+
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Server running at http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error("Server startup failed:", error.message);
+        process.exit(1);
+    }
+}
+
+startServer();
+=======
+);
+>>>>>>> 5ad861156f4f8c02a905a7b836a869ba4d9441bb
