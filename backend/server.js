@@ -1450,117 +1450,71 @@ app.get(
 );
 
 /* ==================================================
-   EVENT MEDIA COUNT
+   EVENT MEDIA COUNT AND GALLERY MEDIA
 ================================================== */
 
 app.get(
     "/api/upload/event/:eventId",
     async (req, res) => {
-
         try {
+            const eventId = req.params.eventId;
 
-            const eventId =
-                req.params.eventId;
-
-
-            /* ------------------------------------------
-               CHECK EVENT
-            ------------------------------------------ */
-
-            const event =
-                await Event.findById(
-                    eventId
-                );
-
+            // Check whether the event exists
+            const event = await Event.findById(eventId);
 
             if (!event) {
-
                 return res.status(404).json({
-
                     success: false,
-
-                    message:
-                        "Event not found."
-
+                    message: "Event not found."
                 });
-
             }
 
+            // Get all photos and videos for this event
+            const media = await Media.find({
+                eventId: eventId
+            })
+                .sort({ createdAt: -1 })
+                .lean();
 
-            /* ------------------------------------------
-               COUNT PHOTOS
-            ------------------------------------------ */
+            // Prepare photo gallery data
+            const photos = media
+                .filter(item => item.type === "photo" && item.path)
+                .map(item => ({
+                    _id: item._id,
+                    name: item.originalName || item.filename || "Event photo",
+                    url: item.path,
+                    createdAt: item.createdAt
+                }));
 
-            const photoCount =
-                await Media.countDocuments({
+            // Prepare video gallery data
+            const videos = media
+                .filter(item => item.type === "video" && item.path)
+                .map(item => ({
+                    _id: item._id,
+                    name: item.originalName || item.filename || "Event video",
+                    url: item.path,
+                    createdAt: item.createdAt
+                }));
 
-                    eventId:
-                        eventId,
-
-                    type:
-                        "photo"
-
-                });
-
-
-            /* ------------------------------------------
-               COUNT VIDEOS
-            ------------------------------------------ */
-
-            const videoCount =
-                await Media.countDocuments({
-
-                    eventId:
-                        eventId,
-
-                    type:
-                        "video"
-
-                });
-
-
-            /* ------------------------------------------
-               SUCCESS
-            ------------------------------------------ */
-
-            res.json({
-
+            // Return media arrays and counts
+            return res.json({
                 success: true,
-
-                eventId:
-                    eventId,
-
-                photoCount:
-                    photoCount,
-
-                videoCount:
-                    videoCount
-
+                eventId: eventId,
+                eventTitle: event.title,
+                photos: photos,
+                videos: videos,
+                photoCount: photos.length,
+                videoCount: videos.length
             });
 
-        }
-        catch (error) {
+        } catch (error) {
+            console.error("Event media gallery error:", error);
 
-            console.error(
-                "Event media count error:",
-                error
-            );
-
-
-            res.status(500).json({
-
+            return res.status(500).json({
                 success: false,
-
-                message:
-                    "Unable to load media counts.",
-
-                error:
-                    error.message
-
+                message: "Unable to load event media."
             });
-
         }
-
     }
 );
 
