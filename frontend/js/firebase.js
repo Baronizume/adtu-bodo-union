@@ -2,6 +2,7 @@
 // FIREBASE CONFIGURATION
 // =====================================
 
+
 const firebaseConfig = {
 
     apiKey: "AIzaSyBmz7qt4nV8rdTj_lJ_NdNGhV-Acyc2OSw",
@@ -19,6 +20,14 @@ const firebaseConfig = {
     measurementId: "G-MR683YR6LL"
 
 };
+
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+
+window.auth = firebase.auth();
+window.db = firebase.firestore();
+window.storage = firebase.storage();
 
 
 // =====================================

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | ADTU Bodo Union</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #10251b, #176b48);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 410px;
+            padding: 32px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 35px #0003;
+        }
+
+        h1 {
+            text-align: center;
+            color: #176b48;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #176b48;
+            box-shadow: 0 0 0 2px #176b4820;
+        }
+
+        .hint {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .password-box {
+            margin-top: 10px;
+            padding: 12px;
+            background: #f5f8f6;
+            border-radius: 8px;
+        }
+
+        .strength-heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        #strengthText {
+            color: #777;
+            text-align: right;
+        }
+
+        .strength-track {
+            height: 6px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        #strengthBar {
+            width: 0;
+            height: 100%;
+            transition: width .2s;
+        }
+
+        .criteria {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .criteria li {
+            margin: 8px 0;
+            color: #777;
+            font-size: 12px;
+        }
+
+        .criteria li::before {
+            content: "○";
+            display: inline-block;
+            width: 20px;
+        }
+
+        .criteria li.valid {
+            color: #176b48;
+        }
+
+        .criteria li.valid::before {
+            content: "✓";
+            font-weight: bold;
+        }
+
+        #matchMessage {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 22px;
+            border: 0;
+            border-radius: 7px;
+            background: #176b48;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #125539;
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: wait;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a {
+            color: #176b48;
+        }
+
+        @media (max-width: 450px) {
+            .card {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card">
+        <h1>Create Account</h1>
+        <p>Join the ADTU Bodo Union community</p>
+
+        <form id="registerForm" novalidate>
+            <label for="name">Full Name *</label>
+            <input id="name" type="text" placeholder="Enter your full name" autocomplete="name" minlength="2"
+                maxlength="100" required>
+
+            <label for="email">Email Address *</label>
+            <input id="email" type="email" placeholder="name@domain.com" autocomplete="email" required>
+
+            <label for="password">Password *</label>
+            <input id="password" type="password" placeholder="Create a strong password" autocomplete="new-password"
+                required>
+
+            <div class="password-box">
+                <div class="strength-heading">
+                    <span>Password Strength:</span>
+                    <span id="strengthText">Enter password</span>
+                </div>
+
+                <div class="strength-track">
+                    <div id="strengthBar"></div>
+                </div>
+
+                <ul class="criteria">
+                    <li id="ruleLength">At least 8 characters</li>
+                    <li id="ruleUpper">At least one uppercase letter (A-Z)</li>
+                    <li id="ruleLower">At least one lowercase letter (a-z)</li>
+                    <li id="ruleNumber">At least one number (0-9)</li>
+                    <li id="ruleSymbol">At least one special symbol (!@#$%^&*)</li>
+                </ul>
+            </div>
+
+            <label for="confirmPassword">Confirm Password *</label>
+            <input id="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password"
+                required>
+            <small id="matchMessage">Must match password.</small>
+
+            <button id="submitButton" type="submit">Create Account</button>
+
+            <p id="message" class="message" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="links">
+            Already registered? <a href="login.html">Login</a>
+            <br><br>
+            <a href="index.html">Back to Homepage</a>
+        </div>
+    </main>
+
+    <!-- Firebase v8: compatible with your existing firebase.js -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="js/firebase.js"></script>
+
+    <script>
+        const form = document.getElementById("registerForm");
+        const message = document.getElementById("message");
+        const submitButton = document.getElementById("submitButton");
+        const passwordInput = document.getElementById("password");
+        const confirmInput = document.getElementById("confirmPassword");
+        const matchMessage = document.getElementById("matchMessage");
+
+        function checkPassword(password) {
+            return {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                symbol: /[!@#$%^&*]/.test(password)
+            };
+        }
+
+        function updateStrength() {
+            const password = passwordInput.value;
+            const rules = checkPassword(password);
+            const passed = Object.values(rules).filter(Boolean).length;
+
+            document.getElementById("ruleLength").classList.toggle("valid", rules.length);
+            document.getElementById("ruleUpper").classList.toggle("valid", rules.upper);
+            document.getElementById("ruleLower").classList.toggle("valid", rules.lower);
+            document.getElementById("ruleNumber").classList.toggle("valid", rules.number);
+            document.getElementById("ruleSymbol").classList.toggle("valid", rules.symbol);
+
+            const labels = [
+                "Enter password", "Very weak", "Weak",
+                "Fair", "Good", "Strong"
+            ];
+
+            document.getElementById("strengthText").textContent =
+                password ? labels[passed] : "Enter password";
+
+            const bar = document.getElementById("strengthBar");
+            bar.style.width = (passed * 20) + "%";
+
+            const colors = [
+                "#dc2626", "#dc2626", "#ea580c",
+                "#ca8a04", "#16a34a", "#176b48"
+            ];
+            bar.style.background = colors[passed];
+
+            updateMatch();
+            return passed === 5;
+        }
+
+        function updateMatch() {
+            if (!confirmInput.value) {
+                matchMessage.textContent = "Must match password.";
+                matchMessage.style.color = "#777";
+                return false;
+            }
+
+            const matches = passwordInput.value === confirmInput.value;
+
+            matchMessage.textContent = matches
+                ? "✓ Passwords match."
+                : "✗ Passwords do not match.";
+
+            matchMessage.style.color = matches ? "#176b48" : "#dc2626";
+
+            return matches;
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.style.color = type === "success" ? "#176b48" : "#dc2626";
+        }
+
+        passwordInput.addEventListener("input", updateStrength);
+        confirmInput.addEventListener("input", updateMatch);
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmInput.value;
+
+            message.textContent = "";
+
+            if (name.length < 2 || !/[A-Za-z]/.test(name)) {
+                showMessage("Please enter your full name (at least 2 characters).", "error");
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showMessage("Please enter a valid email address.", "error");
+                return;
+            }
+
+            if (!updateStrength()) {
+                showMessage("Please meet all five password requirements.", "error");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                updateMatch();
+                showMessage("Passwords do not match. Please try again.", "error");
+                confirmInput.focus();
+                return;
+            }
+            if (typeof firebase === "undefined" || !firebase.auth) {
+                showMessage("Firebase Authentication did not load. Check your Firebase scripts.", "error");
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Creating Account...";
+
+            try {
+                const result = await firebase.auth().createUserWithEmailAndPassword(
+                    email,
+                    password
+                );
+
+                await result.user.updateProfile({
+                    displayName: name
+                });
+
+
+                showMessage("Registration successful! Redirecting to login...", "success");
+
+                setTimeout(function () {
+                    window.location.href = "login.html";
+                }, 1200);
+
+
+            } catch (error) {
+                let errorMessage = "Registration failed. Please try again.";
+
+                if (error.code === "auth/email-already-in-use") {
+                    errorMessage = "This email is already registered. Please log in.";
+                } else if (error.code === "auth/invalid-email") {
+                    errorMessage = "Please enter a valid email address.";
+                } else if (error.code === "auth/weak-password") {
+                    errorMessage = "Firebase rejected this password. Please choose another.";
+                } else if (error.code === "auth/network-request-failed") {
+                    errorMessage = "Network error. Check your internet connection.";
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+
+                showMessage(errorMessage, "error");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Create Account";
+            }
+        });
+    </script>
+</body>
+
+</html>
