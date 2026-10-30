@@ -261,12 +261,10 @@
     ================================================== -->
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
-    <!-- Firebase configuration -->
     <script src="../js/firebase.js"></script>
 
 
@@ -392,7 +390,7 @@
                     // ==================================================
 
                     const credential =
-                        await auth.signInWithEmailAndPassword(
+                        await window.auth.signInWithEmailAndPassword(
                             email,
                             password
                         );
@@ -415,11 +413,10 @@
                     // CHECK ADMIN DOCUMENT
                     // ==================================================
 
-                    const adminDocument =
-                        await db
-                            .collection("admins")
-                            .doc(user.uid)
-                            .get();
+                    const adminDocument = await window.db
+                        .collection("admins")
+                        .doc(user.uid)
+                        .get();
 
 
                     // Admin document does not exist
