@@ -280,19 +280,15 @@ app.get(
    ADMIN LOGIN PAGE
 ================================================== */
 
-app.get(
-    "/admin/login",
-    (req, res) => {
-
-        res.sendFile(
-            path.join(
-                FRONTEND_PATH,
-                "admin-login.html"
-            )
-        );
-
-    }
-);
+app.get("/admin/login", (req, res) => {
+    res.sendFile(
+        path.join(
+            FRONTEND_PATH,
+            "admin",
+            "login.html"
+        )
+    );
+});
 
 
 /* ==================================================
