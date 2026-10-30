@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+
     function renderPhotos(photos) {
         if (!photosContainer) return;
 
@@ -94,9 +95,26 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const caption = document.createElement("p");
-            caption.textContent = photo.eventTitle || "Event photo";
+            caption.textContent = photo.originalName || photo.filename ||
+                photo.eventTitle || "Event photo";
 
-            card.append(image, caption);
+            // Download button
+            const downloadButton = document.createElement("a");
+
+            downloadButton.href = photo.url.replace(
+                "/image/upload/",
+                "/image/upload/fl_attachment/"
+            );
+
+            downloadButton.download =
+                photo.originalName || photo.filename || "ADTU-Bodo-Union-Photo.jpg";
+
+            downloadButton.className = "download-btn";
+            downloadButton.innerHTML = '<i class="fas fa-download"></i> Download';
+            downloadButton.target = "_blank";
+            downloadButton.rel = "noopener noreferrer";
+
+            card.append(image, caption, downloadButton);
             photosContainer.appendChild(card);
         });
     }

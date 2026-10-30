@@ -2542,6 +2542,26 @@ PHOTO GALLERY
 
 }
 
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: #166534;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.download-btn:hover {
+    background: #14532d;
+}
+
 /* =====================================
 VIDEO GALLERY
 ===================================== */
