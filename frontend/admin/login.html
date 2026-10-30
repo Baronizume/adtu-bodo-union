@@ -579,15 +579,10 @@
 
 
                         default:
-
                             showMessage(
-                                "Unable to login. Please try again."
+                                "Login error: " + (error.code || error.message || "Unknown error")
                             );
-
-                            console.error(
-                                "Firebase error code:",
-                                error.code
-                            );
+                            console.error("ADMIN LOGIN ERROR:", error);
 
                     }
 
