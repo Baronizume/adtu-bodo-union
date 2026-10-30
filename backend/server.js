@@ -295,19 +295,17 @@ app.get("/admin/login", (req, res) => {
    ADMIN DASHBOARD PAGE
 ================================================== */
 
-app.get(
-    "/admin/dashboard",
-    (req, res) => {
 
-        res.sendFile(
-            path.join(
-                FRONTEND_PATH,
-                "admin.html"
-            )
-        );
+app.get("/admin/dashboard", (req, res) => {
+    res.sendFile(
+        path.join(
+            FRONTEND_PATH,
+            "admin",
+            "admin-dashboard.html"
+        )
+    );
+});
 
-    }
-);
 
 
 /* ==================================================
