@@ -1158,6 +1158,11 @@
             aria-label="Close photo preview">&times;</button>
         <img id="lightboxImage" src="" alt="Enlarged event photo">
     </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="js/firebase.js"></script>
 
     <script>
         "use strict";
@@ -1354,6 +1359,19 @@
         function mediaForEvent(id) {
             return state.mediaByEvent.get(id) || { photos: [], videos: [] };
         }
+        function getDownloadUrl(url) {
+            if (!url) return "";
+
+            // Cloudinary attachment download for images and videos
+            if (url.includes("res.cloudinary.com") &&
+                (url.includes("/image/upload/") ||
+                    url.includes("/video/upload/"))) {
+
+                return url.replace("/upload/", "/upload/fl_attachment/");
+            }
+
+            return url;
+        }
 
         /* Load each event's media using the existing backend upload route. */
         async function loadEventMedia(event) {
@@ -1506,28 +1524,38 @@
 
         function createGalleryCard(entry) {
             const { event, item, index, type, id } = entry;
+
             const url = getMediaUrl(item);
-            const name = mediaName(item, index, type === "photo" ? "Photo" : "Video");
+            const name = mediaName(
+                item,
+                index,
+                type === "photo" ? "Photo" : "Video"
+            );
 
             const card = createElement("article", "gallery-item");
             const mediaWrapper = createElement("div", "gallery-media");
 
+            // Display photo or video
             if (type === "photo") {
                 const image = createElement("img");
+
                 image.src = url;
                 image.alt = name;
                 image.loading = "lazy";
                 image.decoding = "async";
 
                 image.addEventListener("click", () => openLightbox(url, name));
+
                 image.addEventListener("error", () => {
                     image.alt = "Unable to load " + name;
                     image.style.objectFit = "contain";
                 });
 
                 mediaWrapper.appendChild(image);
+
             } else {
                 const video = createElement("video");
+
                 video.src = url;
                 video.controls = true;
                 video.preload = "metadata";
@@ -1537,15 +1565,48 @@
                 mediaWrapper.appendChild(video);
             }
 
+            // Caption
             const caption = createElement("div", "gallery-caption");
+
             caption.appendChild(createElement("strong", "", name));
             caption.appendChild(createElement("span", "", eventTitle(event)));
 
+            // View Event link
             const detailLink = createElement("a", "", "View Event →");
-            detailLink.href = "./events/event.html?id=" + encodeURIComponent(id);
+
+            detailLink.href =
+                "./events/event.html?id=" + encodeURIComponent(id);
+
             caption.appendChild(detailLink);
 
-            card.append(mediaWrapper, caption);
+            // Download button
+            const downloadButton = createElement(
+                "a",
+                "download-btn",
+                type === "photo" ? "⬇ Download Photo" : "⬇ Download Video"
+            );
+
+            // Cloudinary attachment URL
+            let downloadUrl = url;
+
+            if (
+                url.includes("res.cloudinary.com") &&
+                (url.includes("/image/upload/") ||
+                    url.includes("/video/upload/"))
+            ) {
+                downloadUrl = url.replace(
+                    "/upload/",
+                    "/upload/fl_attachment/"
+                );
+            }
+
+            downloadButton.href = downloadUrl;
+            downloadButton.setAttribute("download", name);
+            downloadButton.setAttribute("aria-label", "Download " + name);
+
+            // Add everything to the card
+            card.append(mediaWrapper, caption, downloadButton);
+
             return card;
         }
 
@@ -1832,7 +1893,14 @@
             }
         }
 
-        loadEverything();
+        // Check Firebase login status
+        window.auth.onAuthStateChanged(function (user) {
+            if (user) {
+                loadEverything();
+            } else {
+                window.location.replace("login.html");
+            }
+        });
     </script>
 
 </body>
